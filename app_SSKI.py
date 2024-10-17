@@ -15,7 +15,7 @@ import re
 divider_style = """
     <hr style="border: none; 
     height: 2px; 
-    background-color: white; 
+    background-color: black; 
     border-radius: 10px; 
     margin: 20px 0;
     opacity: 0.2">
@@ -26,7 +26,7 @@ def create_pie_chart(miss_data, corr_data):
                 "legend": {
                     "top": "5%", 
                     "left": "center",
-                    "textStyle": {"color": "#fff"}  # Legend text color to white
+                    "textStyle": {"color": "#000"}  # Legend text color to white
                 },
                 "series": [
                     {
@@ -36,13 +36,13 @@ def create_pie_chart(miss_data, corr_data):
                         "avoidLabelOverlap": False,
                         "itemStyle": {
                             "borderRadius": 0,
-                            "borderColor": "#fff",
+                            "borderColor": "#000",
                             "borderWidth": 0,
                         },
                         "label": {
                             "show": False,
                             "position": "center",
-                            "color": "#fff",  # Text color white
+                            "color": "#000",  # Text color white
                             "fontSize": 16,
                             "fontWeight": "bold"
                         },
