@@ -16,7 +16,6 @@ st.markdown("""
 
     *, html, body,h1,h2,h3,h4, p [class="css"] {
         font-family: 'Frutiger LT W02 45 Light', sans-serif;
-        background-color: #fffade
         color: black;
     }
     </style>
@@ -60,7 +59,7 @@ st.markdown("""
         }
         .container:hover {
             transform: scale(1.02);
-            border-color: white !important; 
+            border-color: black !important; 
         }
         .title {
             font-size: 1.5rem; 
