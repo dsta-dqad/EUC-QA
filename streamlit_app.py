@@ -16,7 +16,6 @@ st.markdown("""
 
     *, html, body,h1,h2,h3,h4, p [class="css"] {
         font-family: 'Frutiger LT W02 45 Light', sans-serif;
-        color: black;
     }
     </style>
     """, unsafe_allow_html=True)
