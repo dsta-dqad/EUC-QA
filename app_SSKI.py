@@ -25,8 +25,7 @@ def create_pie_chart(miss_data, corr_data):
                 "tooltip": {"trigger": "item"},
                 "legend": {
                     "top": "5%", 
-                    "left": "center",
-                    "textStyle": {"color": "#000"}  # Legend text color to white
+                    "left": "center",  # Legend text color to white
                 },
                 "series": [
                     {
@@ -36,13 +35,11 @@ def create_pie_chart(miss_data, corr_data):
                         "avoidLabelOverlap": False,
                         "itemStyle": {
                             "borderRadius": 0,
-                            "borderColor": "#000",
                             "borderWidth": 0,
                         },
                         "label": {
                             "show": False,
                             "position": "center",
-                            "color": "#000",  # Text color white
                             "fontSize": 16,
                             "fontWeight": "bold"
                         },

@@ -64,17 +64,14 @@ st.markdown("""
         .title {
             font-size: 1.5rem; 
             font-weight: bold; 
-            color: black;
             margin-bottom: 8px;
         }
         .description {
-            color: black;
             text-align: justify;
         }
         h3.centered-title {
             text-align: center;
             text-decoration: underline;
-            color: black;
             margin-bottom: 15px;
         }
         button{
