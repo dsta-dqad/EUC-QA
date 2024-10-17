@@ -68,7 +68,7 @@ st.markdown("""
             margin-bottom: 8px;
         }
         .description {
-            color: #e0e0e0;
+            color: black;
             text-align: justify;
         }
         h3.centered-title {
