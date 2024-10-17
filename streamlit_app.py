@@ -74,7 +74,7 @@ st.markdown("""
         h3.centered-title {
             text-align: center;
             text-decoration: underline;
-            color: white;
+            color: black;
             margin-bottom: 15px;
         }
         button{
