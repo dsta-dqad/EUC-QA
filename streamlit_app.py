@@ -104,13 +104,13 @@ st.markdown(
 
 # Main page content
 def main_page():
-    st.markdown(f"<h1 class='centered-title'>EUC QUALITY ASSURANCE</h1>", unsafe_allow_html=True)
+    st.markdown(f"<h1 class='left-title'>EUC QUALITY ASSURANCE</h1>", unsafe_allow_html=True)
 
     # Main layout: col1 (4 parts) and col2 (1 part)
     col1, col2 = st.columns((1.5, 4))
 
     with col1:
-        st.text("Ingin melakukan QA pada publikasi apa?")
+        st.markdown("""<h5>Ingin melakukan QA pada publikasi apa?</h5>""", unsafe_allow_html=True)
 
         with st.expander("Statistik Sistem Keuangan Indonesia (SSKI)", expanded=False):
             # Content for 'Apa Itu SSKI?'
@@ -131,8 +131,8 @@ def main_page():
             if st.button("Uji Konsistensi (SSKI)", use_container_width=True):
                 st.session_state['page'] = 'app_SSKI'  # Navigate to SSKI page
 
-            if st.button("Uji Kewajaran (SSKI)", use_container_width=True):
-                st.write("Coming soon...")
+            if st.button("Uji Kewajaran (SSKI)", use_container_width=True,help="COMING SOON"):
+                st.markdown("""<p class="description">Coming Soon.</p>""", unsafe_allow_html=True)
 
         # Expander for SEKDA
         with st.expander("Statistik Ekonomi dan Keuangan Daerah (SEKDA)", expanded=False):
@@ -152,13 +152,14 @@ def main_page():
             if st.button("Uji Konsistensi (SEKDA)", use_container_width=True):
                 st.session_state['page'] = 'app_SEKDA'  # Navigate to SEKDA page
 
-            if st.button("Uji Kewajaran (SEKDA)", use_container_width=True):
-                st.write("Coming soon...")
+            if st.button("Uji Kewajaran (SEKDA)", use_container_width=True,help="COMING SOON"):
+                st.markdown("""<p class="description">Coming Soon.</p>""", unsafe_allow_html=True)
+
 
             # Section for Antar Tabel buttons (under SEKDA)
             st.subheader("Inter Tabel")
-            if st.button("Antar Tabel", use_container_width=True, help="COMING SOON", disabled=True):
-                st.write("Coming soon...")
+            if st.button("Antar Tabel", use_container_width=True, help="COMING SOON"):
+                st.markdown("""<p class="description">Coming Soon.</p>""", unsafe_allow_html=True)
 
 
     with col2:
