@@ -102,7 +102,7 @@ def main():
             [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
         ).format(precision=2))
 
-    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/streamlit/c695f97e81e9a82ecd007c7438a73ec042a26cb7/data_test.json"
+    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/8e72d366e312725516a964fd98050230ab5f3da3/data/data_sski.json"
 
     # Load the JSON file
     response = requests.get(file_path)
