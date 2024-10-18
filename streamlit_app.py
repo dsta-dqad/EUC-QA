@@ -209,13 +209,13 @@ def main_page():
                     <div class="container">
                         <h4>Antar Tabel</h4>
                         <p class="description">
-                            Fitur pengecekan konsistensi nilai indikator yang sama pada satu tabel dengan indikator tersebut di tabel yang lain. 
+                            Fitur pengecekan konsistensi nilai indikator yang sama pada satu tabel dengan indikator tersebut di tabel yang lain di publikasi statistik yang sama. 
                         </p>
                     </div>
                 </div>
                 <div class="inner-column-r">
                     <div class="container">
-                        <h4>Inter Tabel</h4>
+                        <h4>Antar Publikasi</h4>
                         <p class="description">
                             Fitur pengecekan konsistensi nilai indikator yang sama pada suatu publikasi statistik dengan indikator tersebut di publikasi statistik yang lain.
                         </p>
