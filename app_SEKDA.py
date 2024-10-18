@@ -90,7 +90,7 @@ def main():
         """, unsafe_allow_html=True)
 
     # Centered title using custom class
-    st.markdown("<h1 class='centered-title'>LAPORAN SEKDA QUALITY ASSURANCE</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 class='centered-title'>LAPORAN QUALITY ASSURANCE SEKDA</h1>", unsafe_allow_html=True)
     st.markdown(divider_style, unsafe_allow_html=True)
 
     # Centralized styling for the DataFrames
