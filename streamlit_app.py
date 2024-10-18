@@ -22,6 +22,9 @@ st.markdown("""
 # CSS styles for the container and elements
 st.markdown("""
     <style>
+        p{
+            font-size: 0.729vw;
+        }
         .centered-title {
             text-align: center;
             text-decoration: underline;
@@ -82,25 +85,6 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
-
-st.markdown(
-    """
-    <style>
-    .coming-soon {
-        background-color: #d3d3d3; /* Light gray */
-        color: #ffffff;
-        border: none;
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: not-allowed;
-        border-radius: 5px;
-        display: inline-block;
-        text-align: center;
-        width: 100%;
-    }
-    </style>
-    """, unsafe_allow_html=True
-)
 
 # Main page content
 def main_page():
