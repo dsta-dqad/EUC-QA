@@ -161,6 +161,12 @@ def main_page():
             if st.button("Antar Tabel", use_container_width=True, help="COMING SOON"):
                 st.markdown("""<p class="description">Coming Soon.</p>""", unsafe_allow_html=True)
 
+         with st.expander("Utang Luar Negeri: SEKI-SULNI-SDDS:External Debt", expanded=False):
+             # Section for Antar Tabel buttons (under SEKDA)
+            st.subheader("Inter Tabel")
+            if st.button("Antar Publikasi", use_container_width=True, help="COMING SOON"):
+                st.markdown("""<p class="description">Coming Soon.</p>""", unsafe_allow_html=True)
+
 
     with col2:
         st.markdown("""
