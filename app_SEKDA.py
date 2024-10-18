@@ -14,11 +14,11 @@ import re
 
 divider_style = """
     <hr style="border: none; 
-    height: 5px; 
+    height: 2px; 
     background-color: white; 
     border-radius: 10px; 
     margin: 20px 0;
-    opacity: 0.8">
+    opacity: 0.2">
 """
 
 # Set Streamlit to use the wider layout mode
