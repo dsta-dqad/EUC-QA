@@ -104,7 +104,7 @@ st.markdown(
 
 # Main page content
 def main_page():
-    st.markdown(f"<h1 class='left-title'>EUC QUALITY ASSURANCE</h1>", unsafe_allow_html=True)
+    st.markdown(f"<h1 class='centered-title'>EUC QUALITY ASSURANCE</h1>", unsafe_allow_html=True)
 
     # Main layout: col1 (4 parts) and col2 (1 part)
     col1, col2 = st.columns((1.5, 4))
