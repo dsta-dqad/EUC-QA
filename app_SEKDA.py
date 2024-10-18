@@ -122,7 +122,7 @@ def main():
             [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
         ).format(precision=2))
 
-    file_path = "https://raw.githubusercontent.com/annisazahra01/EUC/0a1f5ee99d5848a75824b4aaafb2f834600d3b16/data_SEKDA.json"
+    file_path = "https://raw.githubusercontent.com/annisazahra01/EUC/b5006d9f732310c244572057a41a5d5fa3054218/data_SEKDA.json"
 
     # Load the JSON file
     response = requests.get(file_path)
