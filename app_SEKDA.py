@@ -22,7 +22,7 @@ divider_style = """
 """
 
 # Set Streamlit to use the wider layout mode
-st.set_page_config(layout="wide", page_title="EUC QA")
+# st.set_page_config(layout="wide", page_title="EUC QA")
 
 
 def create_pie_chart(miss_data, corr_data, a, b):
