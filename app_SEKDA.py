@@ -263,7 +263,7 @@ def main():
                     table_label = table.split('-')[1]
 
                     # Use a unique key for each button by appending the full table name
-                    if st.button(f"{table_label}", key=f"button_{table}"):
+                    if st.button(f"Lihat Tabel {table_label}", key=f"button_{table}"):
                         st.session_state.selected_table = table
 
     with col2:
@@ -280,7 +280,7 @@ def main():
                     nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
                     i_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
 
-                    st.subheader(f"Lihat Tabel {i_new}")
+                    st.subheader(f"{i_new}")
 
                     display_dataframe(df_summary)
 
@@ -308,7 +308,7 @@ def main():
                     kode_provinsi, tabel = selected_number.split('-')
                     nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
                     selected_number_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
-                    st.subheader(f"Lihat Tabel {selected_number_new}")
+                    st.subheader(f"{selected_number_new}")
                     st.dataframe(
                         df_clean_hori.style.set_properties(**{'text-align': 'center'})
                             .set_table_styles([{'selector': 'th',
@@ -330,7 +330,7 @@ def main():
                     inew = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
 
                     st.markdown(divider_style, unsafe_allow_html=True)
-                    st.subheader(f"Lihat Tabel {inew}")
+                    st.subheader(f"{inew}")
 
                     display_dataframe(df_summary)
                     st.markdown('**Keterangan**')
@@ -357,7 +357,7 @@ def main():
                     kode_provinsi, tabel = item.split('-')
                     nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
                     item_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
-                    st.subheader(f"Lihat Tabel {item_new}")
+                    st.subheader(f"{item_new}")
                     st.dataframe(df_clean_hori.style.set_properties(**{'text-align': 'center'}).set_table_styles(
                         [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
                     ).format(precision=2))
