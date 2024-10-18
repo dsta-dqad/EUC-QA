@@ -208,7 +208,7 @@ def main_page():
                             <p>Fitur pengecekan nilai pada suatu bulan dengan bulan sebelumnya.</p>
                             <h4>Quarter to Quarter (QtQ)</h4>
                             <p>Fitur pengecekan nilai pada suatu triwulan dengan triwulan sebelumnya.</p>
-                            <h4>Year on Year (YOY)</h4>
+                            <h4>Year on Year (YoY)</h4>
                             <p>Fitur pengecekan nilai pada posisi bulan/kuartal di suatu tahun dengan posisi bulan/kuartal yang sama di tahun sebelumnya.</p>
                         </div>
                     </div>
