@@ -21,6 +21,9 @@ divider_style = """
     opacity: 0.8">
 """
 
+# Set Streamlit to use the wider layout mode
+st.set_page_config(layout="wide", page_title="EUC QA")
+
 
 def create_pie_chart(miss_data, corr_data, a, b):
     options = {
@@ -63,8 +66,6 @@ def create_pie_chart(miss_data, corr_data, a, b):
 
 
 def main():
-    if st.button("Kembali Ke Halaman Utama"):
-        st.session_state['page'] = 'main'
     # Custom CSS to apply Frutiger45 font to the entire page using an external font link
     st.markdown("""
         <style>
@@ -96,13 +97,20 @@ def main():
         'background-color': '#E8F6F3'
     }
 
-    def highlight_rows(row):
-        # Index will be used to check the first and last rows
-        if pd.notna(row['Komponen']) and row['Komponen'].strip() != '':
-            return ['background-color: #A9DFBF; color: black'] * len(row)  # Green background
-        # Check if 'Keterangan' is exactly 'Selisih'
+    def highlight_rows(row, df):
+        # Apply green to the first row
+        if row.name == 0:
+            return ['background-color: #A9DFBF; color: black'] * len(row)  # Green background for the first row
+
+        # Apply red if 'Keterangan' is 'Selisih'
         elif row['Keterangan'] == 'Selisih':
             return ['background-color: #F1948A; color: black'] * len(row)  # Red background
+
+        # Apply green to the row after a 'Selisih' row
+        elif row.name > 0 and df.iloc[row.name - 1]['Keterangan'] == 'Selisih':
+            return ['background-color: #A9DFBF; color: black'] * len(row)  # Green background
+
+        # Apply yellow for all other rows
         else:
             return ['background-color: #F9E79F; color: black'] * len(row)  # Yellow background for other rows
 
@@ -112,17 +120,17 @@ def main():
             [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
         ).format(precision=2))
 
-    file_path = "https://raw.githubusercontent.com/annisazahra01/EUC/0a41a0356c77d2b15d9507584531e55ab350b350/data_verhor3.json"
+    file_path = "https://raw.githubusercontent.com/annisazahra01/EUC/0a1f5ee99d5848a75824b4aaafb2f834600d3b16/data_SEKDA.json"
 
     # Load the JSON file
     response = requests.get(file_path)
     data = response.json()
 
-    #file_path = "C:\\Users\\annis\\Downloads\\Ferro\\data_verhor3.json"
-
-    # Load the JSON file
-    #with open(file_path, 'r') as f:
-    #    data = json.load(f)
+    # file_path = "C:\\Users\\annis\\Downloads\\Ferro\\data_verhor_1810_ver4.json"
+    #
+    # # Load the JSON file
+    # with open(file_path, 'r') as f:
+    #     data = json.load(f)
 
     raw_data = data['vertikal_data_raw']
     raw_keys_list = list(raw_data.keys())
@@ -162,39 +170,6 @@ def main():
         if total_count == 0:
             return 0  # If no data, return 0
         return (error_count / total_count) * 100
-
-    # Define the content for each column
-    definition_content = """
-    ### 📊 Definisi SEKDA
-    SEKDA (Statistik Ekonomi dan Keuangan Daerah) merupakan publikasi statistik Bank Indonesia bulanan yang berisi data ekonomi, keuangan, dan perbankan dengan lingkup provinsi seluruh Indonesia.
-    Data/statistik yang disajikan dapat digunakan oleh pengguna untuk melihat perkembangan ekonomi, keuangan, dan perbankan di masing-masing provinsi.​​
-    """
-
-    vertical_check_content = """
-    ### ✅ Vertical Check
-    Fitur pengecekan konsistensi nilai agregat dengan penjumlahan nilai komponen-komponen pembentuk pada tabel secara vertikal.
-    """
-
-    horizontal_check_content = """
-    ### 📈 Horizontal Check
-    Fitur pengecekan konsistensi nilai tahunan dengan nilai posisi atau nilai transaksi pada komponen tabel. 
-    1. **Data Posisi:** Membandingkan nilai data pada kolom tahunan dengan data dari posisi kolom akhir periode tahun tersebut (Desember). 
-    2. **Data Transaksi:** Membandingkan data pada kolom tahunan dengan hasil penjumlahan nilai seluruh periode di tahun tersebut.
-    """
-
-    # Create three equal columns
-    col1, col2, col3 = st.columns(3)
-
-    # Add content to each column with styling
-    # Add content to each column
-    with col1:
-        st.markdown(definition_content)
-
-    with col2:
-        st.markdown(vertical_check_content)
-
-    with col3:
-        st.markdown(horizontal_check_content)
 
     total_tabel = ringkasan_df['Total tabel'].values[0]
     correct_count = ringkasan_df['Provinsi Lolos QA'].values[0]
@@ -307,17 +282,22 @@ def main():
 
                     display_dataframe(df_summary)
 
-                    with st.expander("See Detail?"):
+                    st.markdown('**Keterangan**')
+                    st.text('✓: Data sudah konsisten pada periode tersebut')
+
+                    with st.expander("Lihat Detail"):
                         st.write("""
                         **Penjelasan Warna:**
                         - 🟩 : Aggregat
                         - 🟨 : Calculated
                         - 🟥 : Selisih
                         """)
-                        st.dataframe(df_clean.style.apply(highlight_rows, axis=1).set_properties(
-                        **{'text-align': 'center'}).set_table_styles(
-                        [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
-                        ).format(precision=2))
+                        st.dataframe(df_clean.style.apply(lambda row: highlight_rows(row, df_clean),axis=1)
+                        .set_properties(**{'text-align': 'center'})  # Set text alignment to center
+                        .set_table_styles([  # Apply styling to the header
+                        {'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}])
+                        .format(precision=2)  # Format numerical values with two decimal places
+                        )
 
             if selected_number in horizontal_clean_data:
                 df_clean_hori = pd.DataFrame(horizontal_clean_data[selected_number])
@@ -333,6 +313,8 @@ def main():
                                                 'props': [('text-align', 'center'),
                                                           ('background-color', '#E8F6F3')]}])
                     )
+                    st.markdown('**Keterangan**')
+                    st.text('✓: Data sudah konsisten pada periode tersebut')
 
 
         else:
@@ -349,18 +331,22 @@ def main():
                     st.subheader(f"{inew}")
 
                     display_dataframe(df_summary)
+                    st.markdown('**Keterangan**')
+                    st.text('✓: Data sudah konsisten pada periode tersebut')
 
-                    with st.expander("See Detail?"):
+                    with st.expander("Lihat Detail"):
                         st.write("""
                         **Penjelasan Warna:**
                         - 🟩 : Aggregat
                         - 🟨 : Calculated
                         - 🟥 : Selisih
                         """)
-                        st.dataframe(df_clean.style.apply(highlight_rows, axis=1).set_properties(
-                        **{'text-align': 'center'}).set_table_styles(
-                        [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
-                        ).format(precision=2))
+                        st.dataframe(df_clean.style.apply(lambda row: highlight_rows(row, df_clean),axis=1)
+                        .set_properties(**{'text-align': 'center'})  # Set text alignment to center
+                        .set_table_styles([  # Apply styling to the header
+                        {'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}])
+                        .format(precision=2)  # Format numerical values with two decimal places
+                        )
 
             for item in horizontal_clean_keys_list:
                 df_clean_hori = pd.DataFrame(horizontal_clean_data[item])
@@ -373,6 +359,8 @@ def main():
                     st.dataframe(df_clean_hori.style.set_properties(**{'text-align': 'center'}).set_table_styles(
                         [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
                     ).format(precision=2))
+                    st.markdown('**Keterangan**')
+                    st.text('✓: Data sudah konsisten pada periode tersebut')
 
 # Example usage of the main function
 list_tahun = ['2022']  # Define list_tahun as needed
