@@ -22,11 +22,7 @@ st.markdown("""
 # CSS styles for the container and elements
 st.markdown("""
     <style>
-        p{
-            font-size: 0.781vw;
-        }
         .centered-title {
-            text-align: center;
             text-decoration: underline;
         }
         .outer-container {
@@ -66,7 +62,6 @@ st.markdown("""
         .title {
             font-size: 1.5rem; 
             font-weight: bold; 
-            margin-bottom: 8px;
         }
         .description {
             text-align: justify;
@@ -74,7 +69,6 @@ st.markdown("""
         h3.centered-title {
             text-align: center;
             text-decoration: underline;
-            margin-bottom: 15px;
         }
         button{
             color:black !important;
@@ -82,13 +76,21 @@ st.markdown("""
         }
         button:hover{
             border-color:black !important
+            color: black !important
+        }
+        h3,h4{
+            margin: 0;
         }
     </style>
 """, unsafe_allow_html=True)
 
 # Main page content
 def main_page():
-    st.markdown(f"<h1 class=centered-title>EUC QUALITY ASSURANCE</h1>", unsafe_allow_html=True)
+
+    col01, col02 = st.columns((1.5, 4))
+    with col02:
+        st.markdown(f"<h1 class=centered-title>EUC QUALITY ASSURANCE</h1>", unsafe_allow_html=True)
+
 
     # Main layout: col1 (4 parts) and col2 (1 part)
     col1, col2 = st.columns((1.5, 4))
@@ -146,7 +148,7 @@ def main_page():
                 st.markdown("""<p class="description">Coming Soon.</p>""", unsafe_allow_html=True)
 
         with st.expander("Utang Luar Negeri: Statistik Ekonomi dan Keuangan Indonesia (SEKI)-Statistik Utang Luar Negeri Indonesia (SULNI)-Spesial Data Dissemination Standard (SDDS):External Debt", expanded=False):
-             # Section for Antar Tabel buttons (under SEKDA)
+            # Section for Antar Tabel buttons (under SEKDA)
             st.subheader("Inter Tabel")
             if st.button("Antar Publikasi (ULN)", use_container_width=True, help="COMING SOON"):
                 st.markdown("""<p class="description">Coming Soon.</p>""", unsafe_allow_html=True)

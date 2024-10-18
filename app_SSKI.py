@@ -15,7 +15,7 @@ import re
 divider_style = """
     <hr style="border: none; 
     height: 2px; 
-    background-color: white; 
+    background-color: black; 
     border-radius: 10px; 
     margin: 20px 0;
     opacity: 0.2">
