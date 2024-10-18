@@ -2,7 +2,7 @@ import streamlit as st
 import app_SSKI  # Import SSKI page module
 import app_SEKDA  # Import SEKDA page module
 
-st.set_page_config(layout="wide", page_title="SSKI QA", page_icon="📊")
+st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 
 # Initialize session state
 if 'page' not in st.session_state:
