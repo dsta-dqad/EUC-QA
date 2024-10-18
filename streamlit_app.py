@@ -23,7 +23,7 @@ st.markdown("""
 st.markdown("""
     <style>
         p{
-            font-size: 0.729vw;
+            font-size: 0.781vw;
         }
         .centered-title {
             text-align: center;
