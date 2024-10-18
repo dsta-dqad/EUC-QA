@@ -248,7 +248,7 @@ def main():
     col1, col2 = st.columns((1, 4))
 
     with col1:
-        sst.markdown("<h4 style='text-align: left;'>Apa yang ingin dilakukan?</h4>", unsafe_allow_html=True)
+        st.markdown("<h4 style='text-align: left;'>Apa yang ingin dilakukan?</h4>", unsafe_allow_html=True)
 
         # Create a button for each distinct number, replace number with province name
         for num in distinct_numbers:
