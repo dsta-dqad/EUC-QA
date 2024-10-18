@@ -15,7 +15,7 @@ import re
 divider_style = """
     <hr style="border: none; 
     height: 2px; 
-    background-color: black; 
+    background-color: white; 
     border-radius: 10px; 
     margin: 20px 0;
     opacity: 0.2">
@@ -40,6 +40,7 @@ def create_pie_chart(miss_data, corr_data):
                         "label": {
                             "show": False,
                             "position": "center",
+                            "fontColor":"white",
                             "fontSize": 16,
                             "fontWeight": "bold"
                         },
