@@ -14,7 +14,7 @@ st.markdown("""
     <style>
     @import url('https://db.onlinewebfonts.com/c/c214e055a9aae386324285c45892f7b5?family=Frutiger+LT+W02+45+Light');
 
-    *, html, body,h1,h2,h3,h4, p [class="css"] {
+    *, html, body,h1,h2,h3,h4,h5, p [class="css"] {
         font-family: 'Frutiger LT W02 45 Light', sans-serif;
     }
     </style>
