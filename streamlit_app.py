@@ -83,29 +83,61 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+st.markdown(
+    """
+    <style>
+    .coming-soon {
+        background-color: #d3d3d3; /* Light gray */
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: not-allowed;
+        border-radius: 5px;
+        display: inline-block;
+        text-align: center;
+        width: 100%;
+    }
+    </style>
+    """, unsafe_allow_html=True
+)
+
 # Main page content
 def main_page():
     st.markdown(f"<h1 class='centered-title'>EUC QUALITY ASSURANCE</h1>", unsafe_allow_html=True)
 
     # Main layout: col1 (4 parts) and col2 (1 part)
-    col1, col2 = st.columns((1, 4))
+    col1, col2 = st.columns((1.5, 4))
 
     with col1:
-        st.markdown("""
-        <div class='container'>
-            <div class='title'>Apa Itu SSKI?</div>
-            <p class='description'>
-                SSKI adalah kumpulan data yang menggambarkan perkembangan elemen ekonomi terkait kebijakan Makroprudensial/Stabilitas Sistem Keuangan (SSK) di Indonesia. 
+        st.text("Ingin melakukan QA pada publikasi apa?")
+
+        with st.expander("Statistik Sistem Keuangan Indonesia (SSKI)", expanded=False):
+            # Content for 'Apa Itu SSKI?'
+            st.markdown("""
+            <div class='container'>
+                <div class='title'>Apa Itu SSKI?</div>
+                <p class='description'>
+                    SSKI adalah kumpulan data yang menggambarkan perkembangan elemen ekonomi terkait kebijakan Makroprudensial/Stabilitas Sistem Keuangan (SSK) di Indonesia. 
                     Data ini mencakup lembaga keuangan (bank dan IKNB), pasar keuangan (uang dan modal), infrastruktur keuangan (sistem pembayaran dan pengedaran uang), 
                     serta elemen ekonomi dari pemerintah, korporasi, dan rumah tangga.
-            </p>
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
 
-        </div>
-        """, unsafe_allow_html=True)
-        if st.button("Menuju Halaman SSKI", use_container_width=True):
-            st.session_state['page'] = 'app_SSKI'  # Switch to SEKDA page
+            # Section for Intra Tabel buttons (under SSKI)
+            st.subheader("Intra Tabel")
+            # Buttons for Uji Konsistensi and Uji Kewajaran under SSKI
+            if st.button("Uji Konsistensi (SSKI)", use_container_width=True):
+                st.session_state['page'] = 'app_SSKI'  # Navigate to SSKI page
 
-        st.markdown("""
+            if st.button("Uji Kewajaran (SSKI)", use_container_width=True):
+                st.write("Coming soon...")
+
+        # Expander for SEKDA
+        with st.expander("Statistik Ekonomi dan Keuangan Daerah (SEKDA)", expanded=False):
+            # Content for 'Apa Itu SEKDA?'
+            st.markdown("""
             <div class='container'>
                 <div class='title'>Apa Itu SEKDA?</div>
                 <p class='description'>
@@ -113,9 +145,21 @@ def main_page():
                     Data ini berguna untuk menganalisis perkembangan ekonomi dan perbankan di setiap provinsi.
                 </p>
             </div>
-        """, unsafe_allow_html=True)
-        if st.button("Menuju Halaman SEKDA",use_container_width=True):
-            st.session_state['page'] = 'app_SEKDA'  # Switch to SEKDA page
+            """, unsafe_allow_html=True)
+
+            # Section for Intra Tabel buttons (under SEKDA)
+            st.subheader("Intra Tabel")
+            if st.button("Uji Konsistensi (SEKDA)", use_container_width=True):
+                st.session_state['page'] = 'app_SEKDA'  # Navigate to SEKDA page
+
+            if st.button("Uji Kewajaran (SEKDA)", use_container_width=True):
+                st.write("Coming soon...")
+
+            # Section for Antar Tabel buttons (under SEKDA)
+            st.subheader("Inter Tabel")
+            if st.button("Antar Tabel", use_container_width=True, help="COMING SOON", disabled=True):
+                st.write("Coming soon...")
+
 
     with col2:
         st.markdown("""
