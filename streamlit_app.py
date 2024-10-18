@@ -142,7 +142,13 @@ def main_page():
 
             # Section for Antar Tabel buttons (under SEKDA)
             st.subheader("Inter Tabel")
-            if st.button("Antar Tabel", use_container_width=True, help="COMING SOON"):
+            if st.button("Antar Tabel (SEKDA)", use_container_width=True, help="COMING SOON"):
+                st.markdown("""<p class="description">Coming Soon.</p>""", unsafe_allow_html=True)
+
+        with st.expander("Utang Luar Negeri: Statistik Ekonomi dan Keuangan Indonesia (SEKI)-Statistik Utang Luar Negeri Indonesia (SULNI)-Spesial Data Dissemination Standard (SDDS):External Debt", expanded=False):
+             # Section for Antar Tabel buttons (under SEKDA)
+            st.subheader("Inter Tabel")
+            if st.button("Antar Publikasi (ULN)", use_container_width=True, help="COMING SOON"):
                 st.markdown("""<p class="description">Coming Soon.</p>""", unsafe_allow_html=True)
 
 
@@ -186,7 +192,7 @@ def main_page():
                             <p>Fitur pengecekan nilai pada suatu bulan dengan bulan sebelumnya.</p>
                             <h4>Quarter to Quarter (QtQ)</h4>
                             <p>Fitur pengecekan nilai pada suatu triwulan dengan triwulan sebelumnya.</p>
-                            <h4>Year on Year (YOY)</h4>
+                            <h4>Year on Year (YoY)</h4>
                             <p>Fitur pengecekan nilai pada posisi bulan/kuartal di suatu tahun dengan posisi bulan/kuartal yang sama di tahun sebelumnya.</p>
                         </div>
                     </div>

@@ -66,6 +66,8 @@ def create_pie_chart(miss_data, corr_data, a, b):
 
 
 def main():
+    if st.button("Kembali Ke Halaman Utama"):
+        st.session_state['page'] = 'main'
     # Custom CSS to apply Frutiger45 font to the entire page using an external font link
     st.markdown("""
         <style>
@@ -88,7 +90,7 @@ def main():
         """, unsafe_allow_html=True)
 
     # Centered title using custom class
-    st.markdown("<h1 class='centered-title'>LAPORAN SEKDA QUALITY ASSURANCE</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 class='centered-title'>LAPORAN QUALITY ASSURANCE SEKDA - AGUSTUS 2024</h1>", unsafe_allow_html=True)
     st.markdown(divider_style, unsafe_allow_html=True)
 
     # Centralized styling for the DataFrames
@@ -246,7 +248,7 @@ def main():
     col1, col2 = st.columns((1, 4))
 
     with col1:
-        st.text("Ingin melakukan apa?")
+        st.markdown("<h4 style='text-align: left;'>Apa yang ingin dilakukan?</h4>", unsafe_allow_html=True)
 
         # Create a button for each distinct number, replace number with province name
         for num in distinct_numbers:
@@ -254,14 +256,14 @@ def main():
             province_name = provinsi_mapping.get(num, [num])[0]
 
             # Create an expander (dropdown) for each province
-            with st.expander(f"{province_name}"):
+            with st.expander(f"Lihat hasil Provinsi {province_name}"):
                 # Inside the expander, display buttons for matching keys from filtered_keys_list
                 matching_keys = [key for key in filtered_keys_list if key.startswith(num)]
                 for table in matching_keys:
                     table_label = table.split('-')[1]
 
                     # Use a unique key for each button by appending the full table name
-                    if st.button(f"{table_label}", key=f"button_{table}"):
+                    if st.button(f"Lihat Tabel {table_label}", key=f"button_{table}"):
                         st.session_state.selected_table = table
 
     with col2:
@@ -298,11 +300,11 @@ def main():
                         {'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}])
                         .format(precision=2)  # Format numerical values with two decimal places
                         )
-
+                        
+            st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
             if selected_number in horizontal_clean_data:
                 df_clean_hori = pd.DataFrame(horizontal_clean_data[selected_number])
                 if df_clean_hori is not None and not df_clean_hori.empty:
-                    st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
                     kode_provinsi, tabel = selected_number.split('-')
                     nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
                     selected_number_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
@@ -347,11 +349,11 @@ def main():
                         {'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}])
                         .format(precision=2)  # Format numerical values with two decimal places
                         )
-
+                        
+            st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
             for item in horizontal_clean_keys_list:
                 df_clean_hori = pd.DataFrame(horizontal_clean_data[item])
                 if df_clean_hori is not None and not df_clean_hori.empty:
-                    st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
                     kode_provinsi, tabel = item.split('-')
                     nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
                     item_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
