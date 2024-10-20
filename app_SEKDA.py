@@ -122,9 +122,14 @@ def main():
             [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
         ).format(precision=2))
 
-    file_path = "https://raw.githubusercontent.com/annisazahra01/EUC/b5006d9f732310c244572057a41a5d5fa3054218/data_SEKDA.json"
+    #file_path = "https://raw.githubusercontent.com/annisazahra01/EUC/b5006d9f732310c244572057a41a5d5fa3054218/data_SEKDA.json"
 
     # Load the JSON file
+    #response = requests.get(file_path)
+    #data = response.json()
+
+
+    file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=Ed4xcagSjORLu6X5LWsSp7sBfBZVp1JmHHbIlbssPylIuA"
     response = requests.get(file_path)
     data = response.json()
 
