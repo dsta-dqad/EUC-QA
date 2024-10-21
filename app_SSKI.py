@@ -195,14 +195,15 @@ def main():
             # Create two columns for better layout
             col1, col2 = st.columns(2)
             with col1:
-                for i, (sski_number, count) in enumerate(error_counts.items()):
-                    softred_background = '#ff6961'  # Soft red color hex code
-                    if count != 0:
-                        st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px;'>"
-                                    f"SSKI - {sski_number}: {count} mismatch(es)</p>", 
-                                    unsafe_allow_html=True)
-                    else:
-                        st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
+                if i % 2 == 0:
+                    for i, (sski_number, count) in enumerate(error_counts.items()):
+                        softred_background = '#ff6961'  # Soft red color hex code
+                        if count != 0:
+                            st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px;'>"
+                                        f"SSKI - {sski_number}: {count} mismatch(es)</p>", 
+                                        unsafe_allow_html=True)
+                        else:
+                            st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
             
             with col2:
                 for i, (sski_number, count) in enumerate(error_counts.items()):
