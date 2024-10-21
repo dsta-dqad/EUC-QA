@@ -170,7 +170,7 @@ def main():
     # Define layout with two columns
     col1_g, col2_g, col3_g = st.columns((2, 2,4))
     with col1_g:
-        st.markdown("<h5 style='text-align: center;'><span style='text-align: center;font-weight: bold;'>Rasio Konsistensi Vertical <br> Check</span></h5>", unsafe_allow_html=True)
+        st.markdown("<h5 style='text-align: center;'><span style='text-align: center;font-weight: bold;'>Rasio Konsistensi Vertical Check</span></h5>", unsafe_allow_html=True)
         create_pie_chart(ver_error_count,ver_total_count)
         st.markdown(f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{(ver_error_count/(ver_error_count + ver_total_count)) * 100:.2f}%</span> data tidak konsisten.</p>", unsafe_allow_html=True)
 
@@ -251,7 +251,7 @@ def main():
 
         # Dynamically create buttons for each item in the table_list
         for table in table_list:
-            if st.button(f"Lihat SSKI Tabel {table}",use_container_width=True):
+            if st.button(f"Lihat Konsistensi SSKI Tabel {table}",use_container_width=True):
                 st.session_state.selected_table = table
 
     with col2:
