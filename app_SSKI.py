@@ -199,9 +199,9 @@ def main():
                     if i % 2 == 0:
                         softred_background = '#ff6961'  # Soft red color hex code
                         if count != 0:
-                            st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px;'>"
-                                        f"SSKI - {sski_number}: {count} mismatch(es)</p>", 
-                                        unsafe_allow_html=True)
+                            st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px; "
+                            f"font-weight:bold;'>SSKI - {sski_number}: {count} mismatch(es)</p>", 
+                            unsafe_allow_html=True)
                         else:
                             st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
         
@@ -210,9 +210,9 @@ def main():
                     if i % 2 != 0:
                         softred_background = '#ff6961'  # Soft red color hex code
                         if count != 0:
-                            st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px;'>"
-                                        f"SSKI - {sski_number}: {count} mismatch(es)</p>", 
-                                        unsafe_allow_html=True)
+                            st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px; "
+                            f"font-weight:bold;'>SSKI - {sski_number}: {count} mismatch(es)</p>", 
+                            unsafe_allow_html=True)
                         else:
                             st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
         
@@ -228,9 +228,9 @@ def main():
                     if i % 2 == 0:
                         softred_background = '#ff6961'  # Soft red color hex code
                         if count != 0:
-                            st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px;'>"
-                                        f"SSKI - {sski_number}: {count} mismatch(es)</p>", 
-                                        unsafe_allow_html=True)
+                            st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px; "
+                            f"font-weight:bold;'>SSKI - {sski_number}: {count} mismatch(es)</p>", 
+                            unsafe_allow_html=True)
                         else:
                             st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
             
@@ -238,9 +238,9 @@ def main():
                 for i, (sski_number, count) in enumerate(hor_error.items()):
                     if i % 2 != 0:
                         if count != 0:
-                            st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px;'>"
-                                        f"SSKI - {sski_number}: {count} mismatch(es)</p>", 
-                                        unsafe_allow_html=True)
+                            st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px; "
+                            f"font-weight:bold;'>SSKI - {sski_number}: {count} mismatch(es)</p>", 
+                            unsafe_allow_html=True)
                         else:
                             st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
 
