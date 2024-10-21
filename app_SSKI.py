@@ -196,13 +196,24 @@ def main():
             col1, col2 = st.columns(2)
             with col1:
                 for i, (sski_number, count) in enumerate(error_counts.items()):
-                    if i % 2 == 0:
+                    softred_background = '#ff6961'  # Soft red color hex code
+                    if count != 0:
+                        st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px;'>"
+                                    f"SSKI - {sski_number}: {count} mismatch(es)</p>", 
+                                    unsafe_allow_html=True)
+                    else:
                         st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
             
             with col2:
                 for i, (sski_number, count) in enumerate(error_counts.items()):
                     if i % 2 != 0:
-                        st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
+                        softred_background = '#ff6961'  # Soft red color hex code
+                        if count != 0:
+                            st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px;'>"
+                                        f"SSKI - {sski_number}: {count} mismatch(es)</p>", 
+                                        unsafe_allow_html=True)
+                        else:
+                            st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
         
         st.markdown("<h4 style='margin: 0;'>Informasi Mengenai Konsistensi Horizontal Check</4>", unsafe_allow_html=True)
         st.markdown(f"<p><strong>{25-len(filtered_dict_hor)}/25</strong> Tabel Sudah Konsisten</p>", unsafe_allow_html=True)
@@ -214,12 +225,23 @@ def main():
             with col1:
                 for i, (sski_number, count) in enumerate(hor_error.items()):
                     if i % 2 == 0:
-                        st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
+                        softred_background = '#ff6961'  # Soft red color hex code
+                        if count != 0:
+                            st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px;'>"
+                                        f"SSKI - {sski_number}: {count} mismatch(es)</p>", 
+                                        unsafe_allow_html=True)
+                        else:
+                            st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
             
             with col2:
                 for i, (sski_number, count) in enumerate(hor_error.items()):
                     if i % 2 != 0:
-                        st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
+                        if count != 0:
+                            st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px;'>"
+                                        f"SSKI - {sski_number}: {count} mismatch(es)</p>", 
+                                        unsafe_allow_html=True)
+                        else:
+                            st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
 
     st.markdown(divider_style, unsafe_allow_html=True)
 
