@@ -21,11 +21,6 @@ divider_style = """
     opacity: 0.2">
 """
 
-
-# Set Streamlit to use the wider layout mode
-st.set_page_config(layout="wide", page_title="EUC QA")
-
-
 def create_pie_chart(miss_data, corr_data, a, b):
     options = {
         "tooltip": {"trigger": "item"},

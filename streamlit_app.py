@@ -1,6 +1,7 @@
 import streamlit as st
 import app_SSKI  # Import SSKI page module
 import app_SEKDA  # Import SEKDA page module
+import app_SEKDA_antartabel
 
 st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 
@@ -145,7 +146,7 @@ def main_page():
             # Section for Antar Tabel buttons (under SEKDA)
             st.subheader("Inter Tabel")
             if st.button("Antar Tabel (SEKDA)", use_container_width=True):
-               st.session_state['page'] = 'app_SEKDA_antartabel'  # Navigate to SEKDA page
+                st.session_state['page'] = 'app_SEKDA_antartabel'  # Navigate to SEKDA page
 
         # with st.expander("Utang Luar Negeri: Statistik Ekonomi dan Keuangan Indonesia (SEKI)-Statistik Utang Luar Negeri Indonesia (SULNI)-Spesial Data Dissemination Standard (SDDS):External Debt", expanded=False):
         #     # Section for Antar Tabel buttons (under SEKDA)
@@ -232,3 +233,5 @@ elif st.session_state['page'] == 'app_SSKI':
     app_SSKI.main()  # Call the main function from app_SSKI.py
 elif st.session_state['page'] == 'app_SEKDA':
     app_SEKDA.main()  # Call the main function from app_SEKDA.py
+elif st.session_state['page'] == 'app_SEKDA_antartabel':
+    app_SEKDA_antartabel.main()
