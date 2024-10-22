@@ -144,7 +144,7 @@ def main_page():
 
             # Section for Antar Tabel buttons (under SEKDA)
             st.subheader("Inter Tabel")
-            if st.button("Antar Tabel (SEKDA)", use_container_width=True, help="COMING SOON"):
+            if st.button("Antar Tabel (SEKDA)", use_container_width=True):
                st.session_state['page'] = 'app_SEKDA_antartabel'  # Navigate to SEKDA page
 
         # with st.expander("Utang Luar Negeri: Statistik Ekonomi dan Keuangan Indonesia (SEKI)-Statistik Utang Luar Negeri Indonesia (SULNI)-Spesial Data Dissemination Standard (SDDS):External Debt", expanded=False):
