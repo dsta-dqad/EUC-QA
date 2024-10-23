@@ -103,18 +103,18 @@ def main():
             [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
         ).format(precision=2))
 
-    # file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/d79dd3708a5c96f9a042bca1047441a026ac66e3/data/data_sski.json"
+    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/e003f8db149b5e5d91eca723f8deecff5ba78360/data/data_sski.json"
 
-    # # Load the JSON file
-    # response = requests.get(file_path)
-    # data = response.json()
+    # Load the JSON file
+    response = requests.get(file_path)
+    data = response.json()
 
     # Specify the local file path
-    file_path = "/Users/ferroyudisthira/Desktop/DSTA_DQAD/V&H_Check/data_test.json"
+    # file_path = "/Users/ferroyudisthira/Desktop/DSTA_DQAD/V&H_Check/data_test.json"
 
-    # Load the JSON file from the local path
-    with open(file_path, 'r') as f:
-        data = json.load(f)
+    # # Load the JSON file from the local path
+    # with open(file_path, 'r') as f:
+    #     data = json.load(f)
     raw_data = data['raw_data']
     raw_keys_list = list(raw_data.keys())
 
