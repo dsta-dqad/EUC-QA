@@ -11,7 +11,7 @@ import requests
 from datetime import datetime
 import calendar
 import re
-
+st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 divider_style = """
     <hr style="border: none; 
     height: 2px; 
@@ -81,6 +81,7 @@ def main():
     current_year = datetime.now().year
     current_month = datetime.now().month -1
 
+    
     month = calendar.month_name[current_month]
     month = month.upper()
     # Centered title using custom class
@@ -102,18 +103,18 @@ def main():
             [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
         ).format(precision=2))
 
-    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/d79dd3708a5c96f9a042bca1047441a026ac66e3/data/data_sski.json"
+    # file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/d79dd3708a5c96f9a042bca1047441a026ac66e3/data/data_sski.json"
 
-    # Load the JSON file
-    response = requests.get(file_path)
-    data = response.json()
+    # # Load the JSON file
+    # response = requests.get(file_path)
+    # data = response.json()
 
-    # # Specify the local file path
-    # file_path = "/Users/ferroyudisthira/Desktop/DSTA_DQAD/V&H_Check/data_test.json"
+    # Specify the local file path
+    file_path = "/Users/ferroyudisthira/Desktop/DSTA_DQAD/V&H_Check/data_test.json"
 
-    # # Load the JSON file from the local path
-    # with open(file_path, 'r') as f:
-    #     data = json.load(f)
+    # Load the JSON file from the local path
+    with open(file_path, 'r') as f:
+        data = json.load(f)
     raw_data = data['raw_data']
     raw_keys_list = list(raw_data.keys())
 
@@ -128,6 +129,119 @@ def main():
 
     horizontal_raw_data = data['horizontal_raw_data']
     hor_raw_keys_list = list(horizontal_raw_data.keys())
+
+    error_counts = {}
+    ver_error_count = 0
+    ver_total_count = 0
+
+    for i in range(len(clean_data)):
+        df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
+        df_raw = pd.DataFrame(raw_data[raw_keys_list[i]])
+
+        sski_path = df_clean['Path'][0]  # Assuming 'Path' column exists
+        sski_number = sski_path.split('.')[1]  # Extract the number after 'SSKI'
+
+        column_count_error = len(df_clean.columns) - 2
+        column_count_total = len(df_raw.columns) - 2
+        column_count_correct = column_count_total - column_count_error  # Calculate correct count
+
+        ver_error_count += column_count_error
+        ver_total_count += column_count_total
+
+        if sski_number not in error_counts:
+            error_counts[sski_number] = {"Vertikal - Jumlah Selisih": 0, "Vertikal - Jumlah Benar": 0, "Vertikal - Jumlah Total": 0}
+
+        error_counts[sski_number]["Vertikal - Jumlah Selisih"] += column_count_error
+        error_counts[sski_number]["Vertikal - Jumlah Benar"] += column_count_correct
+        error_counts[sski_number]["Vertikal - Jumlah Total"] += column_count_total
+
+    total_error_rows = 0
+    total_correct_rows = 0
+    total_rows = 0
+    hor_error = {}
+
+    for item in hor_raw_keys_list:
+        final = pd.DataFrame(horizontal_raw_data[item])
+        
+        if final is not None and not final.empty:
+            total_rows_in_table = len(final)  # Total rows in the table
+            correct_rows = total_rows_in_table  # Assume all rows are correct initially
+
+            if item in horizontal_clean_data:
+                clean = pd.DataFrame(horizontal_clean_data[item])
+                error_rows = len(clean)  # Error rows come from `clean`
+                correct_rows = total_rows_in_table - error_rows  # Correct rows are the difference
+            else:
+                error_rows = 0  # If there's no `clean` data, assume no errors
+
+            hor_error[item] = {
+                "Horizontal - Jumlah Selisih": error_rows,
+                "Horizontal - Jumlah Benar": correct_rows,
+                "Horizontal - Jumlah Total": total_rows_in_table
+            }
+
+            total_error_rows += error_rows
+            total_correct_rows += correct_rows
+            total_rows += total_rows_in_table
+
+    # Assuming error_counts and hor_error are already calculated
+
+    # Create DataFrame from hor_error
+    df_hor_error = pd.DataFrame.from_dict(hor_error, orient='index').reset_index()
+    df_hor_error.rename(columns={'index': 'table_name'}, inplace=True)
+
+    # Create DataFrame from error_counts
+    df_error_counts = pd.DataFrame.from_dict(error_counts, orient='index').reset_index()
+    df_error_counts.rename(columns={'index': 'table_name'}, inplace=True)
+
+    # Merge both DataFrames on 'table_name'
+    df_combined = pd.merge(df_hor_error, df_error_counts, on='table_name', how='outer')
+
+    # Fill NaN values with 0
+    df_combined.fillna(0, inplace=True)
+
+    # Convert all numeric columns to integer
+    numeric_columns = df_combined.select_dtypes(include=['float64']).columns
+    df_combined[numeric_columns] = df_combined[numeric_columns].astype(int)
+
+    # Sort by the table number extracted from the table_name
+    # Assuming table names are in the format 'table_X' where X is the number
+    df_combined['table_number'] = df_combined['table_name'].str.extract('(\d+)').astype(int)
+    df_combined.sort_values(by='table_number', inplace=True)
+
+    # Drop the auxiliary column used for sorting
+    df_combined.drop(columns=['table_number'], inplace=True)
+    # Add the new column to the DataFrame
+
+    # Display the combined DataFrame before merging
+
+    # Define the merging pairs
+    merge_pairs = {
+        '5d.1': '5d1',
+        '5d2': '5.d.2'
+    }
+
+    # Iterate through the DataFrame and sum the relevant rows
+    for table, merge_with in merge_pairs.items():
+        row_to_merge = df_combined[df_combined['table_name'] == table]
+        row_to_merge_with = df_combined[df_combined['table_name'] == merge_with]
+
+        if not row_to_merge.empty and not row_to_merge_with.empty:
+            merged_index = row_to_merge.index[0]  # Use the index of the first row
+            # Sum the values and assign to the existing row
+            df_combined.loc[merged_index, df_combined.columns[2:]] += row_to_merge_with.iloc[0, 2:]
+            # Remove the merged row
+            df_combined = df_combined.drop(row_to_merge_with.index)
+
+    # Reset index for clarity (optional)
+    df_combined.reset_index(drop=True, inplace=True)
+    
+    last_period = f"{month} {current_year}"
+    df_combined['Last Period'] = last_period
+
+    # Display the final merged DataFrame
+    print("Final merged DataFrame:")
+    csv = df_combined.to_csv(index=False).encode('utf-8')
 
     error_counts = {}
     ver_error_count = 0
@@ -147,6 +261,7 @@ def main():
         ver_total_count += column_count_correct
         error_counts[sski_number] = error_counts.get(sski_number, 0) + column_count_error
 
+    print(error_counts)
     total_error_rows = 0
     total_correct_rows = 0
     total_rows = 0
@@ -161,7 +276,6 @@ def main():
                 error_rows = len(clean)  # Error rows come from `clean`
                 correct_rows = total_rows_in_table - error_rows  # Correct rows are the difference
                 hor_error[item] = error_rows
-                # Update counts
                 total_error_rows += error_rows
             
             total_correct_rows += correct_rows
@@ -243,6 +357,13 @@ def main():
                             unsafe_allow_html=True)
                         else:
                             st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
+            # Create a download button
+        st.download_button(
+            label="Unduh Data Rekap",
+            data=csv,
+            file_name='Data Rekap.csv',
+            mime='text/csv',use_container_width=True
+        )
 
     st.markdown(divider_style, unsafe_allow_html=True)
 
