@@ -11,7 +11,7 @@ import requests
 from datetime import datetime
 import calendar
 import re
-st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
+# st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 divider_style = """
     <hr style="border: none; 
     height: 2px; 
@@ -392,7 +392,13 @@ def main():
 
         # Display the list of unique numbers (optional for debugging)
         st.markdown("<h4 class='centered-title'>Apa yang ingin dilakukan?</h4>", unsafe_allow_html=True)
+        
+        if st.button(f"Lihat Konsistensi Vertikal Check Keseluruhan",use_container_width=True):
+                st.session_state.selected_table = "Vertical Check"
 
+        if st.button(f"Lihat Konsistensi Horizontal Check Keseluruhan",use_container_width=True):
+                st.session_state.selected_table = "Horizontal Check"
+                
         # Dynamically create buttons for each item in the table_list
         for table in table_list:
             if st.button(f"Lihat Konsistensi SSKI Tabel {table}",use_container_width=True):
@@ -400,52 +406,92 @@ def main():
 
     with col2:
         if 'selected_table' in st.session_state:
-            selected_number = st.session_state.selected_table
-            filtered_keys = [key for key in clean_keys_list if key.split('-')[0] == str(selected_number)]
-            count = 0
-            for i in filtered_keys:
-                df_clean = pd.DataFrame(clean_data[i])
-                if df_clean is not None and not (len(df_clean.columns) == 2 and 'Path' in df_clean.columns):
-                    df_summary = pd.DataFrame(summary_data[i])
+            if st.session_state.selected_table == "Vertical Check":
+                st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
+                for i in range(len(clean_data)):        
+                    df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
+                    if df_clean is not None and not (len(df_clean.columns) == 2 and 'Path' in df_clean.columns):
+                        df_summary = pd.DataFrame(summary_data[sum_keys_list[i]])
+                        df_clean = df_clean.drop('Path', axis=1)
 
-                    if count == 0:
-                        st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
-                        st.subheader(f"SSKI Tabel {selected_number}")
+                        st.markdown(divider_style, unsafe_allow_html=True)
+                        number, text = clean_keys_list[i].split('-', 1)  
 
-                    number, text = i.split('-', 1)  # Split at the first hyphen
-                    text = text.strip()
-                    st.markdown(f"<p>{text}</p>", unsafe_allow_html=True)
+                        # Strip any leading/trailing spaces
+                        number = number.strip()
+                        st.subheader(f"SSKI Tabel {number}")
+                        st.markdown(f"<p>{text}</p>", unsafe_allow_html=True)
 
-                    display_dataframe(df_summary)
+                        display_dataframe(df_summary)
 
-                    with st.expander("Lihat detail data"):
-                        st.write("""
-                        **Penjelasan Warna:**
-                        - 🟩 : Aggregat
-                        - 🟨 : Calculated
-                        - 🟥 : Selisih
-                        """)
-                        st.dataframe(df_clean.style.apply(highlight_rows, axis=1).set_properties(
-                        **{'text-align': 'center'}).set_table_styles(
+                        with st.expander("See Detail?"):
+                            st.write("""
+                            **Penjelasan Warna:**
+                            - 🟩 : Aggregat
+                            - 🟨 : Calculated
+                            - 🟥 : Selisih
+                            """)
+                            st.dataframe(df_clean.style.apply(highlight_rows, axis=1).set_properties(
+                            **{'text-align': 'center'}).set_table_styles(
+                            [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
+                            ).format(precision=2))
+            if st.session_state.selected_table == "Horizontal Check":
+                st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
+                table_list = ["1", "2", "3", "4", "5a", "5b", "5c", "5d", "5d.1", "5.d.2", "6", 
+                                    "7", "8", "9", "10", "11a", "12", "13", "14", "15", "16a", 
+                                    "17", "18", "19", "20"]
+                for item in hor_clean_keys_list:
+                    df_clean = pd.DataFrame(horizontal_clean_data[item])
+                    st.subheader(f"SSKI - {item}")
+                    st.dataframe(df_clean.style.set_properties(**{'text-align': 'center'}).set_table_styles(
                         [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
-                        ).format(precision=2))
-                    count +=1
+                    ).format(precision=2))
+
+            else:
+                selected_number = st.session_state.selected_table
+                filtered_keys = [key for key in clean_keys_list if key.split('-')[0] == str(selected_number)]
+                count = 0
+                for i in filtered_keys:
+                    df_clean = pd.DataFrame(clean_data[i])
+                    if df_clean is not None and not (len(df_clean.columns) == 2 and 'Path' in df_clean.columns):
+                        df_summary = pd.DataFrame(summary_data[i])
+
+                        if count == 0:
+                            st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
+                            st.subheader(f"SSKI Tabel {selected_number}")
+
+                        number, text = i.split('-', 1)  # Split at the first hyphen
+                        text = text.strip()
+                        st.markdown(f"<p>{text}</p>", unsafe_allow_html=True)
+
+                        display_dataframe(df_summary)
+
+                        with st.expander("Lihat detail data"):
+                            st.write("""
+                            **Penjelasan Warna:**
+                            - 🟩 : Aggregat
+                            - 🟨 : Calculated
+                            - 🟥 : Selisih
+                            """)
+                            st.dataframe(df_clean.style.apply(highlight_rows, axis=1).set_properties(
+                            **{'text-align': 'center'}).set_table_styles(
+                            [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
+                            ).format(precision=2))
+                        count +=1
             
 
-            if selected_number in horizontal_clean_data:
-                st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
-                df_clean = pd.DataFrame(horizontal_clean_data[selected_number])
-                st.subheader(f"SSKI - {selected_number}")
-                st.dataframe(
-                    df_clean.style.set_properties(**{'text-align': 'center'})
-                    .set_table_styles([{'selector': 'th', 
-                                        'props': [('text-align', 'center'), 
-                                                ('background-color', '#E8F6F3')]}])
-                )
-                count +=1
+                if selected_number in horizontal_clean_data:
+                    st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
+                    df_clean = pd.DataFrame(horizontal_clean_data[selected_number])
+                    st.subheader(f"SSKI - {selected_number}")
+                    st.dataframe(
+                        df_clean.style.set_properties(**{'text-align': 'center'})
+                        .set_table_styles([{'selector': 'th', 
+                                            'props': [('text-align', 'center'), 
+                                                    ('background-color', '#E8F6F3')]}])
+                    )
+                    count +=1
 
-            if count == 0:
-                st.text("Tabel ini sudah konsisten")
 
         else:
             st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
