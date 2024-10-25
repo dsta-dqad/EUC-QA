@@ -104,7 +104,9 @@ def main():
         st.dataframe(input_df.style.set_properties(**{'text-align': 'center'}).set_table_styles(
             [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
         ).format(precision=2))
-    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/21b0c4f70af83a73d4410fa86b50703490423344/data/data_sski.json"
+
+        
+    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/075f298eb2f2fee2c18c84cb6d663ba70c3a0a1b/data/data_sski.json"
     # Load the JSON file
     response = requests.get(file_path)
     data = response.json()
@@ -487,8 +489,7 @@ def main():
                         df_clean.style.set_properties(**{'text-align': 'center'})
                         .set_table_styles([{'selector': 'th', 
                                             'props': [('text-align', 'center'), 
-                                                    ('background-color', '#E8F6F3')]}])
-                    )
+                                                    ('background-color', '#E8F6F3')]}]).format(precision=2))
                     count +=1
 
 
