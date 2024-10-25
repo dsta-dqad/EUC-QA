@@ -129,7 +129,7 @@ def main():
     #data = response.json()
 
 
-    file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=Ed4xcagSjORLu6X5LWsSp7sBfBZVp1JmHHbIlbssPylIuA"
+    file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=EZXVNPNPIZ9PjG_P-11IhikBXkyWxJ-SJe-8Vnv1TWmCfg"
     response = requests.get(file_path)
     data = response.json()
 
