@@ -1,6 +1,6 @@
 import streamlit as st
-import app_SSKI  # Import SSKI page module
-import app_SEKDA  # Import SEKDA page module
+import app_SSKI
+import app_SEKDA  
 import app_SEKDA_antartabel
 
 st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
@@ -9,13 +9,30 @@ st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 if 'page' not in st.session_state:
     st.session_state['page'] = 'main'  # Default to main page
 
-# CSS Styling to enhance appearance
-# CSS styles for the bordered container and other elements
+st.markdown("""
+    <style>
+    @import url('https://fonts.cdnfonts.com/css/frutiger');
+    h1 { 
+        font-family: Frutiger; 
+        font-style: normal;
+        font-variant: normal; 
+        font-weight: 700; 
+        letter-spacing: 4px;
+    } h3 { 
+        font-family: Frutiger; 
+        font-style: normal;
+        font-variant: normal; 
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
 st.markdown("""
     <style>
     @import url('https://db.onlinewebfonts.com/c/c214e055a9aae386324285c45892f7b5?family=Frutiger+LT+W02+45+Light');
 
-    *, html, body,h1,h2,h3,h4,h5, p [class="css"] {
+    p [class="css"] {
         font-family: 'Frutiger LT W02 45 Light', sans-serif;
     }
     </style>
@@ -23,12 +40,9 @@ st.markdown("""
 # CSS styles for the container and elements
 st.markdown("""
     <style>
-        .centered-title {
-            text-decoration: underline;
-        }
         .outer-container {
             padding: 20px;
-            border: 3px solid #444444;
+            border: 1px solid #444444;
             border-radius: 15px;
             margin-bottom: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -55,10 +69,7 @@ st.markdown("""
             margin-bottom: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease-in-out;
-        }
-        .container:hover {
-            transform: scale(1.02);
-            border-color: black !important; 
+            border: 1px solid #444444;
         }
         .title {
             font-size: 1.5rem; 
@@ -69,15 +80,6 @@ st.markdown("""
         }
         h3.centered-title {
             text-align: center;
-            text-decoration: underline;
-        }
-        button{
-            color:black !important;
-            background-color:white !important;
-        }
-        button:hover{
-            border-color:black !important
-            color: black !important
         }
         h3,h4{
             margin: 0;
@@ -92,8 +94,6 @@ def main_page():
     with col02:
         st.markdown(f"<h1 class=centered-title>EUC QUALITY ASSURANCE</h1>", unsafe_allow_html=True)
 
-
-    # Main layout: col1 (4 parts) and col2 (1 part)
     col1, col2 = st.columns((1.5, 4))
 
     with col1:
@@ -113,7 +113,7 @@ def main_page():
             """, unsafe_allow_html=True)
 
             # Section for Intra Tabel buttons (under SSKI)
-            st.subheader("Intra Tabel")
+            st.markdown("""<h4>Intra Tabel</h4>""", unsafe_allow_html=True)
             # Buttons for Uji Konsistensi and Uji Kewajaran under SSKI
             if st.button("Uji Konsistensi (SSKI)", use_container_width=True):
                 st.session_state['page'] = 'app_SSKI'  # Navigate to SSKI page
@@ -135,7 +135,7 @@ def main_page():
             """, unsafe_allow_html=True)
 
             # Section for Intra Tabel buttons (under SEKDA)
-            st.subheader("Intra Tabel")
+            st.markdown("""<h4>Intra Tabel</h4>""", unsafe_allow_html=True)
             if st.button("Uji Konsistensi (SEKDA)", use_container_width=True):
                 st.session_state['page'] = 'app_SEKDA'  # Navigate to SEKDA page
 
@@ -144,7 +144,7 @@ def main_page():
 
 
             # Section for Antar Tabel buttons (under SEKDA)
-            st.subheader("Inter Tabel")
+            st.markdown("""<h4>Inter Tabel</h4>""", unsafe_allow_html=True)
             if st.button("Antar Tabel (SEKDA)", use_container_width=True):
                 st.session_state['page'] = 'app_SEKDA_antartabel'  # Navigate to SEKDA page
 
@@ -153,7 +153,6 @@ def main_page():
         #     st.subheader("Inter Tabel")
         #     if st.button("Antar Publikasi (ULN)", use_container_width=True, help="COMING SOON"):
         #         st.markdown("""<p class="description">Coming Soon.</p>""", unsafe_allow_html=True)
-
 
     with col2:
         st.markdown("""
@@ -201,9 +200,6 @@ def main_page():
                     </div>
                 </div>
             </div>
-        """, unsafe_allow_html=True)
-        # Content for the second column (col2)
-        st.markdown("""
             <div class= "outer-container">
                 <h3 class="centered-title">INTER TABEL</h3>
                 <div class="inner-column-r">
@@ -224,14 +220,13 @@ def main_page():
                 </div>
             </div>
         """, unsafe_allow_html=True)
-    # Second row: Explanation of SSKI and SEKDA with buttons
 
 # Control page switching based on session state
 if st.session_state['page'] == 'main':
     main_page()
 elif st.session_state['page'] == 'app_SSKI':
-    app_SSKI.main()  # Call the main function from app_SSKI.py
+    app_SSKI.main()  
 elif st.session_state['page'] == 'app_SEKDA':
-    app_SEKDA.main()  # Call the main function from app_SEKDA.py
+    app_SEKDA.main()  
 elif st.session_state['page'] == 'app_SEKDA_antartabel':
     app_SEKDA_antartabel.main()

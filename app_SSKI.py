@@ -11,7 +11,9 @@ import requests
 from datetime import datetime
 import calendar
 import re
+
 # st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
+
 divider_style = """
     <hr style="border: none; 
     height: 2px; 
@@ -103,18 +105,19 @@ def main():
             [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
         ).format(precision=2))
 
-    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/e003f8db149b5e5d91eca723f8deecff5ba78360/data/data_sski.json"
+    # file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/e003f8db149b5e5d91eca723f8deecff5ba78360/data/data_sski.json"
 
-    # Load the JSON file
-    response = requests.get(file_path)
-    data = response.json()
+    # # Load the JSON file
+    # response = requests.get(file_path)
+    # data = response.json()
 
     # Specify the local file path
-    # file_path = "/Users/ferroyudisthira/Desktop/DSTA_DQAD/V&H_Check/data_test.json"
+    file_path = "/Users/ferroyudisthira/Desktop/DSTA_DQAD/V&H_Check/application/data/data_sski.json"
 
-    # # Load the JSON file from the local path
-    # with open(file_path, 'r') as f:
-    #     data = json.load(f)
+    # Load the JSON file from the local path
+    with open(file_path, 'r') as f:
+        data = json.load(f)
+
     raw_data = data['raw_data']
     raw_keys_list = list(raw_data.keys())
 
@@ -240,7 +243,6 @@ def main():
     df_combined['Last Period'] = last_period
 
     # Display the final merged DataFrame
-    print("Final merged DataFrame:")
     csv = df_combined.to_csv(index=False).encode('utf-8')
 
     error_counts = {}
@@ -261,7 +263,6 @@ def main():
         ver_total_count += column_count_correct
         error_counts[sski_number] = error_counts.get(sski_number, 0) + column_count_error
 
-    print(error_counts)
     total_error_rows = 0
     total_correct_rows = 0
     total_rows = 0
@@ -500,17 +501,17 @@ def main():
                 if df_clean is not None and not (len(df_clean.columns) == 2 and 'Path' in df_clean.columns):
                     df_summary = pd.DataFrame(summary_data[sum_keys_list[i]])
                     df_clean = df_clean.drop('Path', axis=1)
-
+                    
                     st.markdown(divider_style, unsafe_allow_html=True)
                     number, text = clean_keys_list[i].split('-', 1)  
-
+                    
                     # Strip any leading/trailing spaces
                     number = number.strip()
                     st.subheader(f"SSKI Tabel {number}")
                     st.markdown(f"<p>{text}</p>", unsafe_allow_html=True)
-
+                    
                     display_dataframe(df_summary)
-
+                    
                     with st.expander("See Detail?"):
                         st.write("""
                         **Penjelasan Warna:**
@@ -522,9 +523,9 @@ def main():
                         **{'text-align': 'center'}).set_table_styles(
                         [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
                         ).format(precision=2))
-
+            
             st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
-
+            
             table_list = ["1", "2", "3", "4", "5a", "5b", "5c", "5d", "5d.1", "5.d.2", "6", 
                                 "7", "8", "9", "10", "11a", "12", "13", "14", "15", "16a", 
                                 "17", "18", "19", "20"]
