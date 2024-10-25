@@ -298,7 +298,7 @@ def main():
             # Create an expander (dropdown) for each province
             with st.expander(f"Lihat hasil Provinsi {province_name}"):
                 # Inside the expander, display buttons for matching keys from filtered_keys_list
-                matching_keys = [key for key in filtered_keys_list if key.startswith(num)]
+                matching_keys = [key for key in final_filtered_keys_list if key.startswith(num)]
                 for table in matching_keys:
                     table_label = table.split('-')[1]
 
