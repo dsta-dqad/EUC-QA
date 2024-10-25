@@ -340,9 +340,9 @@ def main():
                         {'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}])
                         .format(precision=2)  # Format numerical values with two decimal places
                         )
-                        
+
+            st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
             if selected_number in horizontal_clean_data:
-                st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
                 df_clean_hori = pd.DataFrame(horizontal_clean_data[selected_number])
                 if df_clean_hori is not None and not df_clean_hori.empty:
                     kode_provinsi, tabel = selected_number.split('-')
