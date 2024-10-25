@@ -105,8 +105,7 @@ def main():
             [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
         ).format(precision=2))
 
-    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/644b0d1eb7c2018a3bea615e4d92183d6b9e9b76/data/data_sski.json"
-
+    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/82a56652a20cfd1cea9af9b2e7d0705e32e2de72/data/data_sski.json"
     # Load the JSON file
     response = requests.get(file_path)
     data = response.json()
@@ -536,7 +535,6 @@ def main():
                     [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
                 ).format(precision=2))
 
-# Example usage of the main function
-list_tahun = ['2022']  # Define list_tahun as needed
+
 if __name__ == "__main__":
     main()
