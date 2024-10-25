@@ -58,6 +58,8 @@ def create_pie_chart(miss_data, corr_data):
     st_echarts(
         options=options, height="400px",
     )
+
+
 def main():
     file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/075f298eb2f2fee2c18c84cb6d663ba70c3a0a1b/data/data_sski.json"
     # Load the JSON file
@@ -76,7 +78,7 @@ def main():
 
     with col2:
         st.markdown(
-            f"<p style='text-align: right; font-size:13px;'>Processed on {log_data['created_at']} WIB</p>",
+            f"<p style='text-align: right; font-size:13px;'>Di proses pada {log_data['created_at']} WIB</p>",
             unsafe_allow_html=True
         )
 
