@@ -59,8 +59,23 @@ def create_pie_chart(miss_data, corr_data):
         options=options, height="400px",
     )
 def main():
+
     if st.button("Kembali Ke Halaman Utama"):
         st.session_state['page'] = 'main'
+
+    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/075f298eb2f2fee2c18c84cb6d663ba70c3a0a1b/data/data_sski.json"
+    # Load the JSON file
+    response = requests.get(file_path)
+    data = response.json()
+
+    # # Specify the local file path
+    # file_path = "/Users/ferroyudisthira/Desktop/DSTA_DQAD/V&H_Check/application/data/data_sski.json"
+
+    # # Load the JSON file from the local path
+    # with open(file_path, 'r') as f:
+    #     data = json.load(f)
+
+    log_data = data["log_data"]
     st.markdown("""
         <style>
         @import url('https://db.onlinewebfonts.com/c/c214e055a9aae386324285c45892f7b5?family=Frutiger+LT+W02+45+Light');
@@ -87,7 +102,7 @@ def main():
     month = calendar.month_name[current_month]
     month = month.upper()
     # Centered title using custom class
-    st.markdown(f"<h1 class='centered-title'>SSKI QUALITY ASSURANCE REPORT - {month} {current_year}</h1>", unsafe_allow_html=True)
+    st.markdown(f"<h1 class='centered-title'>SSKI QUALITY ASSURANCE REPORT - {log_data['period']}</h1>", unsafe_allow_html=True)
     st.markdown(divider_style, unsafe_allow_html=True)
 
     def highlight_rows(row):
@@ -104,19 +119,6 @@ def main():
         st.dataframe(input_df.style.set_properties(**{'text-align': 'center'}).set_table_styles(
             [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
         ).format(precision=2))
-
-        
-    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/075f298eb2f2fee2c18c84cb6d663ba70c3a0a1b/data/data_sski.json"
-    # Load the JSON file
-    response = requests.get(file_path)
-    data = response.json()
-
-    # # Specify the local file path
-    # file_path = "/Users/ferroyudisthira/Desktop/DSTA_DQAD/V&H_Check/application/data/data_sski.json"
-
-    # # Load the JSON file from the local path
-    # with open(file_path, 'r') as f:
-    #     data = json.load(f)
 
     raw_data = data['raw_data']
     raw_keys_list = list(raw_data.keys())
