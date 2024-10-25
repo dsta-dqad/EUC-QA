@@ -146,7 +146,7 @@ def main():
     clean_keys_list = list(clean_data.keys())
     filtered_keys_list = [key for key in clean_keys_list if clean_data.get(key, []) != []]
     print(f'vertical clean {filtered_keys_list}')
-    distinct_numbers = sorted(list(set(key.split('-')[0] for key in filtered_keys_list)))
+    #distinct_numbers = sorted(list(set(key.split('-')[0] for key in filtered_keys_list)))
 
     # Province mapping
     provinsi_mapping = {
@@ -193,6 +193,9 @@ def main():
     horizontal_clean_keys_list = list(horizontal_clean_data.keys())
     hor_filtered_keys_list = [key for key in horizontal_clean_keys_list if horizontal_clean_data.get(key, []) != []]
     print(f'horizontal clean {hor_filtered_keys_list}')
+    
+    final_filtered_keys_list = sorted(list(set(filtered_keys_list + hor_filtered_keys_list)))
+    distinct_numbers = sorted(list(set(key.split('-')[0] for key in final_filtered_keys_list)))    
 
     horizontal_raw_data = data['horizontal_raw_data']
     horizontal_raw_keys_list = list(horizontal_raw_data.keys())
@@ -295,7 +298,7 @@ def main():
             # Create an expander (dropdown) for each province
             with st.expander(f"Lihat hasil Provinsi {province_name}"):
                 # Inside the expander, display buttons for matching keys from filtered_keys_list
-                matching_keys = [key for key in filtered_keys_list if key.startswith(num)]
+                matching_keys = [key for key in final_filtered_keys_list if key.startswith(num)]
                 for table in matching_keys:
                     table_label = table.split('-')[1]
 
