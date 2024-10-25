@@ -12,7 +12,7 @@ from datetime import datetime
 import calendar
 import re
 
-# st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
+st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 
 divider_style = """
     <hr style="border: none; 
@@ -59,14 +59,26 @@ def create_pie_chart(miss_data, corr_data):
         options=options, height="400px",
     )
 def main():
-
-    if st.button("Kembali Ke Halaman Utama"):
-        st.session_state['page'] = 'main'
-
     file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/075f298eb2f2fee2c18c84cb6d663ba70c3a0a1b/data/data_sski.json"
     # Load the JSON file
     response = requests.get(file_path)
     data = response.json()
+
+    log_data = data["log_data"]
+
+    # Create two columns
+    col1, col2 = st.columns([1, 3])  # Adjust the column widths if needed
+
+    # Add button and text in each column
+    with col1:
+        if st.button("Kembali Ke Halaman Utama"):
+            st.session_state['page'] = 'main'
+
+    with col2:
+        st.markdown(
+            f"<p style='text-align: right; font-size:13px;'>Processed on {log_data['created_at']} WIB</p>",
+            unsafe_allow_html=True
+        )
 
     # # Specify the local file path
     # file_path = "/Users/ferroyudisthira/Desktop/DSTA_DQAD/V&H_Check/application/data/data_sski.json"
@@ -75,7 +87,6 @@ def main():
     # with open(file_path, 'r') as f:
     #     data = json.load(f)
 
-    log_data = data["log_data"]
     st.markdown("""
         <style>
         @import url('https://db.onlinewebfonts.com/c/c214e055a9aae386324285c45892f7b5?family=Frutiger+LT+W02+45+Light');
@@ -427,7 +438,7 @@ def main():
 
                         display_dataframe(df_summary)
 
-                        with st.expander("See Detail?"):
+                        with st.expander("Lihat detail data?"):
                             st.write("""
                             **Penjelasan Warna:**
                             - 🟩 : Aggregat
@@ -469,7 +480,7 @@ def main():
 
                         display_dataframe(df_summary)
 
-                        with st.expander("Lihat detail data"):
+                        with st.expander("Lihat detail data?"):
                             st.write("""
                             **Penjelasan Warna:**
                             - 🟩 : Aggregat
@@ -513,7 +524,7 @@ def main():
                     
                     display_dataframe(df_summary)
                     
-                    with st.expander("See Detail?"):
+                    with st.expander("Lihat detail data?"):
                         st.write("""
                         **Penjelasan Warna:**
                         - 🟩 : Aggregat
@@ -536,7 +547,6 @@ def main():
                 st.dataframe(df_clean.style.set_properties(**{'text-align': 'center'}).set_table_styles(
                     [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
                 ).format(precision=2))
-
 
 if __name__ == "__main__":
     main()
