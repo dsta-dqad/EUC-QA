@@ -104,8 +104,7 @@ def main():
         st.dataframe(input_df.style.set_properties(**{'text-align': 'center'}).set_table_styles(
             [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
         ).format(precision=2))
-
-    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/82a56652a20cfd1cea9af9b2e7d0705e32e2de72/data/data_sski.json"
+    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/21b0c4f70af83a73d4410fa86b50703490423344/data/data_sski.json"
     # Load the JSON file
     response = requests.get(file_path)
     data = response.json()
