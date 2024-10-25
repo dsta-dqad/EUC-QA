@@ -12,7 +12,7 @@ from datetime import datetime
 import calendar
 import re
 
-st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
+# st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 
 divider_style = """
     <hr style="border: none; 
