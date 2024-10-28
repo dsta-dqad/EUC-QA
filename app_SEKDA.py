@@ -290,6 +290,12 @@ def main():
     with col1:
         st.markdown("<h4 style='text-align: left;'>Apa yang ingin dilakukan?</h4>", unsafe_allow_html=True)
 
+        if st.button(f"Lihat Konsistensi Vertikal Check Keseluruhan",use_container_width=True):
+                st.session_state.selected_table = "Vertical Check"
+
+        if st.button(f"Lihat Konsistensi Horizontal Check Keseluruhan",use_container_width=True):
+                st.session_state.selected_table = "Horizontal Check"
+
         # Create a button for each distinct number, replace number with province name
         for num in distinct_numbers:
             # Get the province name from the mapping, default to num if not found
@@ -310,53 +316,55 @@ def main():
         if 'selected_table' in st.session_state:
             selected_number = st.session_state.selected_table
             filtered_keys = [key for key in clean_keys_list if key.startswith(selected_number)]
-            for i in filtered_keys:
-                df_clean = pd.DataFrame(clean_data[i])
-                if df_clean is not None and not df_clean.empty and not (len(df_clean.columns) == 2 and 'Keterangan' in df_clean.columns):
-                    st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
-                    df_summary = pd.DataFrame(summary_data[i])
-                    st.markdown(divider_style, unsafe_allow_html=True)
-                    kode_provinsi, tabel = i.split('-')
-                    nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
-                    i_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
+            if st.session_state.selected_table == "Vertical Check":
+                for i in filtered_keys:
+                    df_clean = pd.DataFrame(clean_data[i])
+                    if df_clean is not None and not df_clean.empty and not (len(df_clean.columns) == 2 and 'Keterangan' in df_clean.columns):
+                        st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
+                        df_summary = pd.DataFrame(summary_data[i])
+                        st.markdown(divider_style, unsafe_allow_html=True)
+                        kode_provinsi, tabel = i.split('-')
+                        nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
+                        i_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
+    
+                        st.subheader(f"{i_new}")
+    
+                        display_dataframe(df_summary)
+    
+                        st.markdown('**Keterangan**')
+                        st.text('✓: Data sudah konsisten pada periode tersebut')
+    
+                        with st.expander("Lihat Detail"):
+                            st.write("""
+                            **Penjelasan Warna:**
+                            - 🟩 : Aggregat
+                            - 🟨 : Calculated
+                            - 🟥 : Selisih
+                            """)
+                            st.dataframe(df_clean.style.apply(lambda row: highlight_rows(row, df_clean),axis=1)
+                            .set_properties(**{'text-align': 'center'})  # Set text alignment to center
+                            .set_table_styles([  # Apply styling to the header
+                            {'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}])
+                            .format(precision=2)  # Format numerical values with two decimal places
+                            )
 
-                    st.subheader(f"{i_new}")
-
-                    display_dataframe(df_summary)
-
-                    st.markdown('**Keterangan**')
-                    st.text('✓: Data sudah konsisten pada periode tersebut')
-
-                    with st.expander("Lihat Detail"):
-                        st.write("""
-                        **Penjelasan Warna:**
-                        - 🟩 : Aggregat
-                        - 🟨 : Calculated
-                        - 🟥 : Selisih
-                        """)
-                        st.dataframe(df_clean.style.apply(lambda row: highlight_rows(row, df_clean),axis=1)
-                        .set_properties(**{'text-align': 'center'})  # Set text alignment to center
-                        .set_table_styles([  # Apply styling to the header
-                        {'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}])
-                        .format(precision=2)  # Format numerical values with two decimal places
+             if st.session_state.selected_table == "Horizontal Check":
+                if selected_number in horizontal_clean_data:
+                    df_clean_hori = pd.DataFrame(horizontal_clean_data[selected_number])
+                    if df_clean_hori is not None and not df_clean_hori.empty:
+                        st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
+                        kode_provinsi, tabel = selected_number.split('-')
+                        nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
+                        selected_number_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
+                        st.subheader(f"{selected_number_new}")
+                        st.dataframe(
+                            df_clean_hori.style.set_properties(**{'text-align': 'center'})
+                                .set_table_styles([{'selector': 'th',
+                                                    'props': [('text-align', 'center'),
+                                                              ('background-color', '#E8F6F3')]}])
                         )
-
-            if selected_number in horizontal_clean_data:
-                df_clean_hori = pd.DataFrame(horizontal_clean_data[selected_number])
-                if df_clean_hori is not None and not df_clean_hori.empty:
-                    st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
-                    kode_provinsi, tabel = selected_number.split('-')
-                    nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
-                    selected_number_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
-                    st.subheader(f"{selected_number_new}")
-                    st.dataframe(
-                        df_clean_hori.style.set_properties(**{'text-align': 'center'})
-                            .set_table_styles([{'selector': 'th',
-                                                'props': [('text-align', 'center'),
-                                                          ('background-color', '#E8F6F3')]}])
-                    )
-                    st.markdown('**Keterangan**')
-                    st.text('✓: Data sudah konsisten pada periode tersebut')
+                        st.markdown('**Keterangan**')
+                        st.text('✓: Data sudah konsisten pada periode tersebut')
 
 
         else:
