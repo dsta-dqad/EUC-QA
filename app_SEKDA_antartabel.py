@@ -243,7 +243,7 @@ def main():
             matching_keys = [key for key in filtered_keys_list if key.startswith(num)]
             print(f'matching_keys : {matching_keys}')
                 # Use a unique key for each button by appending the full table name
-            if st.button(f"{province_name}", key=f"button_{province_name}"):
+            if st.button(f"Lihat hasil Provinsi {province_name}", key=f"button_{province_name}"):
                 st.session_state.selected_table = matching_keys
 
     with col2:
