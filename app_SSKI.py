@@ -415,10 +415,10 @@ def main():
         # Display the list of unique numbers (optional for debugging)
         st.markdown("<h4 class='centered-title'>Apa yang ingin dilakukan?</h4>", unsafe_allow_html=True)
         
-        if st.button(f"Lihat Konsistensi Vertikal Check Keseluruhan",use_container_width=True):
+        if st.button(f"Lihat Konsistensi Seluruh Vertikal Check",use_container_width=True):
                 st.session_state.selected_table = "Vertical Check"
 
-        if st.button(f"Lihat Konsistensi Horizontal Check Keseluruhan",use_container_width=True):
+        if st.button(f"Lihat Konsistensi Seluruh Horizontal Check",use_container_width=True):
                 st.session_state.selected_table = "Horizontal Check"
                 
         # Dynamically create buttons for each item in the table_list
