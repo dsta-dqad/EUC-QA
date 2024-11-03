@@ -128,8 +128,8 @@ def main():
     #response = requests.get(file_path)
     #data = response.json()
 
-
-    file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=EZ4eO2Fc6u1Lpb1urKG7x9ABV9bJaZeMZGAky4ZHDl32Ag"
+    #file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=EZ4eO2Fc6u1Lpb1urKG7x9ABV9bJaZeMZGAky4ZHDl32Ag"
+    file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=EZMj1B1iEkBLvDPUl5WYzC8BAdZfnLkNHf0geWw9ZGhEVQ"
     response = requests.get(file_path)
     data = response.json()
 
@@ -145,7 +145,6 @@ def main():
     clean_data = data['vertikal_data_clean']
     clean_keys_list = list(clean_data.keys())
     filtered_keys_list = [key for key in clean_keys_list if clean_data.get(key, []) != []]
-    print(f'vertical clean {filtered_keys_list}')
     #distinct_numbers = sorted(list(set(key.split('-')[0] for key in filtered_keys_list)))
 
     # Province mapping
@@ -192,13 +191,15 @@ def main():
     horizontal_clean_data = data['horizontal_clean_data']
     horizontal_clean_keys_list = list(horizontal_clean_data.keys())
     hor_filtered_keys_list = [key for key in horizontal_clean_keys_list if horizontal_clean_data.get(key, []) != []]
-    print(f'horizontal clean {hor_filtered_keys_list}')
     
     final_filtered_keys_list = sorted(list(set(filtered_keys_list + hor_filtered_keys_list)))
     distinct_numbers = sorted(list(set(key.split('-')[0] for key in final_filtered_keys_list)))    
 
     horizontal_raw_data = data['horizontal_raw_data']
     horizontal_raw_keys_list = list(horizontal_raw_data.keys())
+
+    beforeafter_data = data['beforeafter_data']
+    beforeafter_data_keys_list = list(beforeafter_data.keys())
 
     rincian_data = data['rincian_data']
     rincian_df = pd.DataFrame(rincian_data)
@@ -219,70 +220,78 @@ def main():
     total_count = ringkasan_df['Total provinsi'].values[0]
     ver_error_tabel = ringkasan_df['Error Vertikal'].values[0]
     hor_error_tabel = ringkasan_df['Error Horizontal'].values[0]
+    ba_error_tabel = ringkasan_df['Error Before After'].values[0]
     total_tabel = int(total_tabel)
     correct_count = int(correct_count)
     error_count = int(error_count)
     total_count = int(total_count)
     ver_error_tabel = int(ver_error_tabel)
     hor_error_tabel = int(hor_error_tabel)
+    ba_error_tabel = int(ba_error_tabel)
 
     # Calculate mismatch ratio
     mismatch_ratio_prov = calculate_mismatch_ratio(error_count, total_count)
     mismatch_ratio_ver = calculate_mismatch_ratio(ver_error_tabel, total_tabel)
     mismatch_ratio_hor = calculate_mismatch_ratio(hor_error_tabel, total_tabel)
+    mismatch_ratio_ba = calculate_mismatch_ratio(ba_error_tabel, total_tabel)
 
-    col1_g, col2_g, col3_g, col4_g = st.columns((2, 2, 2, 3))
-
-    with col1_g:
-        st.markdown(
-            "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Cek Vertikal</span></p>",
-            unsafe_allow_html=True)
-
-        ver_correct_count =  total_tabel - ver_error_tabel
-
-        # Create pie chart with mismatch (errors) and correct counts
-        create_pie_chart(ver_error_tabel, ver_correct_count, "Konsisten", "Tidak Konsisten")
-
-        # Display the mismatch ratio as a percentage
-        st.markdown(
-            f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_ver:.2f}%</span> data tidak konsisten.</p>",
-            unsafe_allow_html=True)
-
-    with col2_g:
-        st.markdown(
-            "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Cek Horizontal</span></p>",
-            unsafe_allow_html=True)
-
-        hor_correct_count =  total_tabel - hor_error_tabel
-
-        # Create pie chart with mismatch (errors) and correct counts
-        create_pie_chart(hor_error_tabel, hor_correct_count, "Konsisten", "Tidak Konsisten")
-
-        # Display the mismatch ratio as a percentage
-        st.markdown(
-            f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_hor:.2f}%</span> data tidak konsisten.</p>",
-            unsafe_allow_html=True)
-
-    with col3_g:
-        st.markdown(
-            "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Provinsi Lolos dan Tidak Lolos QA</span></p>",
-            unsafe_allow_html=True)
-
-        # Create pie chart with mismatch (errors) and correct counts
-        create_pie_chart(error_count, correct_count, "Lolos", "Tidak Lolos")
-
-        # Display the mismatch ratio as a percentage
-        st.markdown(
-            f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_prov:.2f}%</span> provinsi tidak lolos.</p>",
-            unsafe_allow_html=True)
-
+    # Define the main two-column layout: left for pie charts and right for col4_g
+    left_col, col4_g = st.columns((6, 3))  # Adjust width ratio as needed
+    
+    # In the left column, create two rows with two pie charts each
+    with left_col:
+        # First row: pie chart 1 and pie chart 2
+        row1_col1, row1_col2 = st.columns(2)
+        
+        with row1_col1:
+            st.markdown(
+                "<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Cek Vertikal</span></p>",
+                unsafe_allow_html=True)
+            ver_correct_count = total_tabel - ver_error_tabel
+            create_pie_chart(ver_error_tabel, ver_correct_count, "Konsisten", "Tidak Konsisten")
+            st.markdown(
+                f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_ver:.2f}%</span> data tidak konsisten.</p>",
+                unsafe_allow_html=True)
+    
+        with row1_col2:
+            st.markdown(
+                "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Cek Horizontal</span></p>",
+                unsafe_allow_html=True)
+            hor_correct_count = total_tabel - hor_error_tabel
+            create_pie_chart(hor_error_tabel, hor_correct_count, "Konsisten", "Tidak Konsisten")
+            st.markdown(
+                f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_hor:.2f}%</span> data tidak konsisten.</p>",
+                unsafe_allow_html=True)
+    
+        # Second row: pie chart 3 and pie chart 4
+        row2_col1, row2_col2 = st.columns(2)
+        
+        with row2_col1:
+            st.markdown(
+                "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Cek Before After</span></p>",
+                unsafe_allow_html=True)
+            ba_correct_count = total_tabel - ba_error_tabel
+            create_pie_chart(ba_error_tabel, ba_correct_count, "Konsisten", "Tidak Konsisten")
+            st.markdown(
+                f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_hor:.2f}%</span> data tidak konsisten.</p>",
+                unsafe_allow_html=True)
+    
+        with row2_col2:
+            st.markdown(
+                "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Provinsi Lolos dan Tidak Lolos QA</span></p>",
+                unsafe_allow_html=True)
+            create_pie_chart(error_count, correct_count, "Lolos", "Tidak Lolos")
+            st.markdown(
+                f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_prov:.2f}%</span> provinsi tidak lolos.</p>",
+                unsafe_allow_html=True)
+    
+    # Right column for col4_g
     with col4_g:
         st.markdown("<h1 style='text-align: center;'>RINGKASAN</h1>", unsafe_allow_html=True)
         st.markdown(divider_style, unsafe_allow_html=True)
         # Use an expander to show the dataframe in a dropdown-like view
         with st.expander("Lihat rincian:"):
             st.markdown(html_rincian_df, unsafe_allow_html=True)
-
 
     # Define layout with two columns
     col1, col2 = st.columns((1, 4))
