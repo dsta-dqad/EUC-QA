@@ -190,16 +190,17 @@ def main():
 
     horizontal_clean_data = data['horizontal_clean_data']
     horizontal_clean_keys_list = list(horizontal_clean_data.keys())
-    hor_filtered_keys_list = [key for key in horizontal_clean_keys_list if horizontal_clean_data.get(key, []) != []]
-    
-    final_filtered_keys_list = sorted(list(set(filtered_keys_list + hor_filtered_keys_list)))
-    distinct_numbers = sorted(list(set(key.split('-')[0] for key in final_filtered_keys_list)))    
+    hor_filtered_keys_list = [key for key in horizontal_clean_keys_list if horizontal_clean_data.get(key, []) != []]  
 
     horizontal_raw_data = data['horizontal_raw_data']
     horizontal_raw_keys_list = list(horizontal_raw_data.keys())
 
     beforeafter_data = data['beforeafter_data']
     beforeafter_data_keys_list = list(beforeafter_data.keys())
+    ba_filtered_keys_list = [key for key in beforeafter_data_keys_list if beforeafter_data.get(key, []) != []]
+    
+    final_filtered_keys_list = sorted(list(set(filtered_keys_list + hor_filtered_keys_list + ba_filtered_keys_list)))
+    distinct_numbers = sorted(list(set(key.split('-')[0] for key in final_filtered_keys_list)))  
 
     rincian_data = data['rincian_data']
     rincian_df = pd.DataFrame(rincian_data)
@@ -425,6 +426,20 @@ def main():
                     item_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
                     st.subheader(f"{item_new}")
                     st.dataframe(df_clean_hori.style.set_properties(**{'text-align': 'center'}).set_table_styles(
+                        [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
+                    ).format(precision=2))
+                    st.markdown('**Keterangan**')
+                    st.text('✓: Data sudah konsisten pada periode tersebut')
+
+            st.markdown("<h1 class='centered-title'>BEFORE AFTER CHECK</h1>", unsafe_allow_html=True)
+            for item in ba_clean_keys_list:
+                df_clean_ba = pd.DataFrame(beforeafter_data[item])
+                if df_clean_ba is not None and not df_clean_ba.empty:
+                    kode_provinsi, tabel = item.split('-')
+                    nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
+                    item_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
+                    st.subheader(f"{item_new}")
+                    st.dataframe(df_clean_ba.style.set_properties(**{'text-align': 'center'}).set_table_styles(
                         [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
                     ).format(precision=2))
                     st.markdown('**Keterangan**')
