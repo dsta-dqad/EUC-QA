@@ -367,6 +367,23 @@ def main():
                     st.markdown('**Keterangan**')
                     st.text('✓: Data sudah konsisten pada periode tersebut')
 
+            if selected_number in beforeafter_data:
+                df_clean_ba = pd.DataFrame(beforeafter_data[selected_number])
+                if df_clean_ba is not None and not df_clean_ba.empty:
+                    st.markdown("<h1 class='centered-title'>BEFORE AFTER CHECK</h1>", unsafe_allow_html=True)
+                    kode_provinsi, tabel = selected_number.split('-')
+                    nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
+                    selected_number_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
+                    st.subheader(f"{selected_number_new}")
+                    st.dataframe(
+                        df_clean_ba.style.set_properties(**{'text-align': 'center'})
+                            .set_table_styles([{'selector': 'th',
+                                                'props': [('text-align', 'center'),
+                                                          ('background-color', '#E8F6F3')]}])
+                    )
+                    st.markdown('**Keterangan**')
+                    st.text('✓: Data sudah konsisten pada periode tersebut')
+
 
         else:
             st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
