@@ -11,6 +11,7 @@ import requests
 from datetime import datetime
 import calendar
 import re
+import io
 
 divider_style = """
     <hr style="border: none; 
@@ -72,7 +73,7 @@ def main():
     file_path_csv = "https://drive.google.com/uc?export=download&id=1ynA1FQEVMK3ILegoq7Le04vMitPC6WxP"
     response_csv = requests.get(file_path_csv)
 
-    csv_data = pd.read_csv(pd.compat.StringIO(response_csv.text))
+    csv_data = pd.read_csv(io.StringIO(response_csv.text))
     csv = csv_data.to_csv(index=False)
 
     log_data = data["log_data"]
