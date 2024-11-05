@@ -319,8 +319,6 @@ def main():
         st.session_state.show_all_results_hori = False
     if "show_all_results_beforeafter" not in st.session_state:
         st.session_state.show_all_results_beforeafter = False
-    if "selected_table" not in st.session_state:
-        st.session_state.selected_table = None
 
     with col1:
         st.markdown("<h4 style='text-align: left;'>Apa yang ingin dilakukan?</h4>", unsafe_allow_html=True)
@@ -329,19 +327,16 @@ def main():
             st.session_state.show_all_results_verti = True
             st.session_state.show_all_results_hori = False
             st.session_state.show_all_results_beforeafter = False
-            st.session_state.selected_table = None
 
         if st.button("Lihat Hasil Horizontal Check Keseluruhan"):
             st.session_state.show_all_results_verti = False
             st.session_state.show_all_results_hori = True
             st.session_state.show_all_results_beforeafter = False
-            st.session_state.selected_table = None
 
         if st.button("Lihat Hasil Before After Check Keseluruhan"):
             st.session_state.show_all_results_verti = False
             st.session_state.show_all_results_hori = False
             st.session_state.show_all_results_beforeafter = True
-            st.session_state.selected_table = None
 
         # Create a button for each distinct number, replace number with province name
         for num in distinct_numbers:
