@@ -297,13 +297,15 @@ def main():
     # Define layout with two columns
     col1, col2 = st.columns((1, 4))
 
+    if "show_all_results_verti" not in st.session_state:
+        st.session_state.show_all_results_verti = False
+    if "show_all_results_hori" not in st.session_state:
+        st.session_state.show_all_results_hori = False
+    if "show_all_results_beforeafter" not in st.session_state:
+        st.session_state.show_all_results_beforeafter = False
+
     with col1:
         st.markdown("<h4 style='text-align: left;'>Apa yang ingin dilakukan?</h4>", unsafe_allow_html=True)
-
-        # Ensure session state flags are initialized only once
-        st.session_state.setdefault("show_all_results_verti", False)
-        st.session_state.setdefault("show_all_results_hori", False)
-        st.session_state.setdefault("show_all_results_beforeafter", False)
 
         if st.button("Lihat Hasil Cek Vertikal Keseluruhan"):
             st.session_state.show_all_results_verti = True
@@ -405,7 +407,7 @@ def main():
                     st.markdown('**Keterangan**')
                     st.text('✓: Data sudah konsisten pada periode tersebut')
 
-        if st.session_state.get("show_all_results_verti", False):
+        if st.session_state.show_all_results_verti:
             st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
             for i in range(len(clean_data)):
                 df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
@@ -436,7 +438,7 @@ def main():
                             .format(precision=2)  # Format numerical values with two decimal places
                         )
                         
-        if st.session_state.get("show_all_results_hori", False):
+        elif st.session_state.show_all_results_hori:
             st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
             for item in horizontal_clean_keys_list:
                 df_clean_hori = pd.DataFrame(horizontal_clean_data[item])
