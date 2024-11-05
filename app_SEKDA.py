@@ -31,7 +31,6 @@ def create_pie_chart(miss_data, corr_data, a, b):
         "legend": {
             "top": "5%",
             "left": "center",
-            "textStyle": {"color": "#000"}  # Legend text color to white
         },
         "series": [
             {
@@ -41,13 +40,12 @@ def create_pie_chart(miss_data, corr_data, a, b):
                 "avoidLabelOverlap": False,
                 "itemStyle": {
                     "borderRadius": 0,
-                    "borderColor": "#000",
                     "borderWidth": 0,
                 },
                 "label": {
                     "show": False,
                     "position": "center",
-                    "color": "#000",  # Text color white
+                    "fontColor":"white",
                     "fontSize": 16,
                     "fontWeight": "bold"
                 },
@@ -74,12 +72,11 @@ def main():
         <style>
         @import url('https://db.onlinewebfonts.com/c/c214e055a9aae386324285c45892f7b5?family=Frutiger+LT+W02+45+Light');
 
-        *,html, body, h1, h2, h3, h4 [class*="css"] {
+        *, html, body,h3,h4 [class="css"] {
             font-family: 'Frutiger LT W02 45 Light', sans-serif;
         }
         </style>
         """, unsafe_allow_html=True)
-
     # Custom CSS to center the title
     st.markdown("""
         <style>
