@@ -408,7 +408,7 @@ def main():
                     st.text('✓: Data sudah konsisten pada periode tersebut')
 
         if st.session_state.show_all_results_verti:
-            st.markdown("<h1 class='centered-title'>CEK VERTICAL</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 class='centered-title'>CEK VERTIKAL</h1>", unsafe_allow_html=True)
             for i in range(len(clean_data)):
                 df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
                 if df_clean is not None and not df_clean.empty and not (len(df_clean.columns) == 2 and 'Keterangan' in df_clean.columns):
