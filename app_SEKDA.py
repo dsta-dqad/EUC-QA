@@ -357,9 +357,6 @@ def main():
 
                     # Use a unique key for each button by appending the full table name
                     if st.button(f"Lihat Tabel {table_label}", key=f"button_{table}"):
-                        st.session_state.show_all_results_verti = False
-                        st.session_state.show_all_results_hori = False
-                        st.session_state.show_all_results_beforeafter = False
                         st.session_state.selected_table = table
 
 
