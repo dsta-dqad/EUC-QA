@@ -301,7 +301,7 @@ def main():
         st.markdown("<h4 style='text-align: left;'>Apa yang ingin dilakukan?</h4>", unsafe_allow_html=True)
 
         if st.button("Lihat Hasil Cek Vertikal Keseluruhan"):
-            st.session_state.show_all_results_verti = table
+            st.session_state.show_all_results_verti = True 
 
         # Create a button for each distinct number, replace number with province name
         for num in distinct_numbers:
