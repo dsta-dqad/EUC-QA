@@ -471,7 +471,7 @@ def main():
                     st.text('✓: Data sudah konsisten pada periode tersebut')
 
         elif st.session_state.show_all_results_beforeafter:
-            #st.markdown("<h1 class='centered-title'>BEFORE AFTER CHECK</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 class='centered-title'>BEFORE AFTER CHECK</h1>", unsafe_allow_html=True)
             for item in beforeafter_data_keys_list:
                 df_clean_ba = pd.DataFrame(beforeafter_data[item])
                 if df_clean_ba is not None and not df_clean_ba.empty:
