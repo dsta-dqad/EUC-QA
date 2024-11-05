@@ -2,6 +2,7 @@ import streamlit as st
 import app_SSKI
 import app_SEKDA  
 import app_SEKDA_antartabel
+import app_SSKI_kewajaran
 
 st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 
@@ -118,8 +119,8 @@ def main_page():
             if st.button("Uji Konsistensi (SSKI)", use_container_width=True):
                 st.session_state['page'] = 'app_SSKI'  # Navigate to SSKI page
 
-            if st.button("Uji Kewajaran (SSKI)", use_container_width=True,help="COMING SOON"):
-                st.markdown("""<p class="description">Coming Soon.</p>""", unsafe_allow_html=True)
+            if st.button("Uji Kewajaran (SSKI)", use_container_width=True):
+                st.session_state['page'] = 'app_SSKI_kewajaran'  # Navigate to SSKI page
 
         # Expander for SEKDA
         with st.expander("Statistik Ekonomi dan Keuangan Daerah (SEKDA)", expanded=False):
@@ -161,6 +162,13 @@ def main_page():
             <div class="inner-column">
                 <h3 class="centered-title">Uji Konsistensi</h3>
                 <div class="container">
+                    <h4>Vertical Check</h4>
+                    <p class="description">
+                    Fitur pengecekan konsistensi nilai agregat dengan penjumlahan
+                    nilai komponen-komponen pembentuk pada tabel secara vertikal.
+                    </p>
+                </div>
+                <div class="container">
                     <h4>Horizontal Check</h4>
                     <p class="description">
                         Fitur pengecekan konsistensi nilai tahunan dengan nilai posisi atau
@@ -178,12 +186,12 @@ def main_page():
                     </p>
                 </div>
                 <div class="container">
-                    <h4>Vertical Check</h4>
+                    <h4>Before After Check </h4>
                     <p class="description">
-                    Fitur pengecekan konsistensi nilai agregat dengan penjumlahan
-                    nilai komponen-komponen pembentuk pada tabel secara vertikal.
+                    Fitur pengecekan konsistensi data periode yang akan dirilis dibandingkan dengan data periode terakhir dirilis.
                     </p>
                 </div>
+
 
             </div>
                 <div class="inner-column">
@@ -230,3 +238,5 @@ elif st.session_state['page'] == 'app_SEKDA':
     app_SEKDA.main()  
 elif st.session_state['page'] == 'app_SEKDA_antartabel':
     app_SEKDA_antartabel.main()
+elif st.session_state['page'] == 'app_SSKI_kewajaran':
+    app_SSKI_kewajaran.main()
