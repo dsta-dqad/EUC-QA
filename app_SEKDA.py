@@ -64,8 +64,23 @@ def create_pie_chart(miss_data, corr_data, a, b):
 
 
 def main():
-    if st.button("Kembali Ke Halaman Utama"):
-        st.session_state['page'] = 'main'
+    file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=ES0AUKl8jblBrp7BkbpUitQBrA3RE96Yg6ItD4msu3HXfg"
+    response = requests.get(file_path)
+    data = response.json()
+
+    log_data = data["log_data"]
+
+    col1a, col2a = st.columns([1, 3]) 
+
+    with col1a:
+        if st.button("Kembali Ke Halaman Utama"):
+            st.session_state['page'] = 'main'
+
+    with col2a:
+        st.markdown(
+            f"<p style='text-align: right; font-size:13px;'>Di proses pada {log_data['created_at']} WIB</p>",
+            unsafe_allow_html=True
+        )
 
     # Custom CSS to apply Frutiger45 font to the entire page using an external font link
     st.markdown("""
@@ -126,10 +141,7 @@ def main():
     #response = requests.get(file_path)
     #data = response.json()
     #file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=EZ4eO2Fc6u1Lpb1urKG7x9ABV9bJaZeMZGAky4ZHDl32Ag"
-    
-    file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=EdeaGueAxc5KgdTwnPC0LM8BsEyOcemT5ZxlbaQpV9NYKg"
-    response = requests.get(file_path)
-    data = response.json()
+
 
     # file_path = "C:\\Users\\annis\\Downloads\\Ferro\\data_verhor_1810_ver4.json"
     #
@@ -213,14 +225,19 @@ def main():
             return 0  # If no data, return 0
         return (error_count / total_count) * 100
 
-    total_tabel = ringkasan_df['Total tabel'].values[0]
+    total_horizontal = ringkasan_df['Total Horizontal'].values[0]
+    total_vertikal = ringkasan_df['Total Vertikal'].values[0]
+    total_beforeafter = ringkasan_df['Total Before After'].values[0]
     correct_count = ringkasan_df['Provinsi Lolos QA'].values[0]
     error_count = ringkasan_df['Provinsi Tidak Lolos QA'].values[0]
     total_count = ringkasan_df['Total provinsi'].values[0]
     ver_error_tabel = ringkasan_df['Error Vertikal'].values[0]
     hor_error_tabel = ringkasan_df['Error Horizontal'].values[0]
     ba_error_tabel = ringkasan_df['Error Before After'].values[0]
-    total_tabel = int(total_tabel)
+    periode_publikasi = ringkasan_df['Periode Publikasi'].values[0]
+    total_horizontal = int(total_horizontal)
+    total_vertikal = int(total_vertikal)
+    total_beforeafter = int(total_beforeafter)
     correct_count = int(correct_count)
     error_count = int(error_count)
     total_count = int(total_count)
@@ -230,9 +247,9 @@ def main():
 
     # Calculate mismatch ratio
     mismatch_ratio_prov = calculate_mismatch_ratio(error_count, total_count)
-    mismatch_ratio_ver = calculate_mismatch_ratio(ver_error_tabel, total_tabel)
-    mismatch_ratio_hor = calculate_mismatch_ratio(hor_error_tabel, total_tabel)
-    mismatch_ratio_ba = calculate_mismatch_ratio(ba_error_tabel, total_tabel)
+    mismatch_ratio_ver = calculate_mismatch_ratio(ver_error_tabel, total_vertikal)
+    mismatch_ratio_hor = calculate_mismatch_ratio(hor_error_tabel, total_horizontal)
+    mismatch_ratio_ba = calculate_mismatch_ratio(ba_error_tabel, total_beforeafter)
 
     # Define the main two-column layout: left for pie charts and right for col4_g
     left_col, col4_g = st.columns((6, 3))  # Adjust width ratio as needed
@@ -246,7 +263,7 @@ def main():
             st.markdown(
                 "<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Vertical Check</span></p>",
                 unsafe_allow_html=True)
-            ver_correct_count = total_tabel - ver_error_tabel
+            ver_correct_count = total_vertikal - ver_error_tabel
             create_pie_chart(ver_error_tabel, ver_correct_count, "Konsisten", "Tidak Konsisten")
             st.markdown(
                 f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_ver:.2f}%</span> data tidak konsisten.</p>",
@@ -256,7 +273,7 @@ def main():
             st.markdown(
                 "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Horizontal Check</span></p>",
                 unsafe_allow_html=True)
-            hor_correct_count = total_tabel - hor_error_tabel
+            hor_correct_count = total_horizontal - hor_error_tabel
             create_pie_chart(hor_error_tabel, hor_correct_count, "Konsisten", "Tidak Konsisten")
             st.markdown(
                 f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_hor:.2f}%</span> data tidak konsisten.</p>",
@@ -269,7 +286,7 @@ def main():
             st.markdown(
                 "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Before After Check</span></p>",
                 unsafe_allow_html=True)
-            ba_correct_count = total_tabel - ba_error_tabel
+            ba_correct_count = total_beforeafter - ba_error_tabel
             create_pie_chart(ba_error_tabel, ba_correct_count, "Konsisten", "Tidak Konsisten")
             st.markdown(
                 f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_hor:.2f}%</span> data tidak konsisten.</p>",
