@@ -12,13 +12,15 @@ from datetime import datetime
 import calendar
 import re
 import matplotlib.pyplot as plt
+from io import BytesIO
 
-# st.set_page_config(layout="wide", page_title="Development", page_icon="📊")
-# super_sheet = pd.ExcelFile("/Users/ferroyudisthira/Desktop/DSTA_DQAD/V&H_Check/Sumber_Data_Lama/SSKI/SSKI EKSTERNAL_25 Okt 2024.xlsx")
+file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/a71ab9cb64890af49881cd25327b2d153c1d0bf2/data/data_pencilan_sski.csv"
 
-# outlier_df = pd.DataFrame(outlier_data)
-outlier_df = pd.read_excel("/Users/ferroyudisthira/Desktop/DSTA_DQAD/V&H_Check/combined.xlsx")
-outlier_df = outlier_df[["table", "Nomor_Komponen", "Komponen", "Tahun", "Nilai", "Outlier"]]
+# Load the Excel file into a DataFrame
+outlier_df = pd.read_csv(file_path)
+outlier_df = outlier_df[["Tabel", "No_Komponen", "Komponen", "Tahun", "Nilai", "Outlier"]]
+
+
 
 def is_numeric(x):
     # Convert to string and strip whitespace
@@ -150,9 +152,9 @@ def create_dataframe(_super_sheet, sheet_to_check):
 def highlight_outliers(row, sheet_to_check):
     tokens = sheet_to_check.split(":")
     # Here we assume outlier_df is accessible in this scope
-    if any((row['NO'] == outlier_df['Nomor_Komponen']) & 
+    if any((row['NO'] == outlier_df['No_Komponen']) & 
         (row['Komponen'] == outlier_df['Komponen']) & 
-        (tokens[0] == outlier_df['table'])):
+        (tokens[0] == outlier_df['Tabel'])):
         return ['background-color: #CBF3F9'] * len(row)  
     return [''] * len(row)  
 
@@ -235,9 +237,9 @@ def show_dropdown(sheet_to_check, start_df):
 
                 tokens = sheet_to_check.split(":")
                 filtered_outliers = outlier_df[
-                    (outlier_df['Nomor_Komponen'] == number) & 
+                    (outlier_df['No_Komponen'] == number) & 
                     (outlier_df['Komponen'] == component) & 
-                    (outlier_df['table'] == tokens[0])
+                    (outlier_df['Tabel'] == tokens[0])
                 ]
                 # Assuming filtered_outliers is your DataFrame
                 filtered_outliers['Tahun'] = filtered_outliers['Tahun'].astype(str).str.replace("-", "", regex=False)
@@ -320,13 +322,12 @@ def card_component(title,data):
         unsafe_allow_html=True
     )
 
+st.set_page_config(layout="wide", page_title="Development", page_icon="📊")
 def main():
     st.title("UJI KEWAJARAN SSKI OKTOBER 2024")
+    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/3792a5695653dbbe2b98bffa9c704571edc1be23/data/SSKI%20EKSTERNAL_25%20Okt%202024.xlsx"
 
-    # Load dataset
-    file_path = "/Users/ferroyudisthira/Desktop/DSTA_DQAD/V&H_Check/Sumber_Data_Lama/SSKI/SSKI EKSTERNAL_25 Okt 2024.xlsx"
     super_sheet = pd.ExcelFile(file_path)
-
     # Filter dataset table list
     sheet_list = super_sheet.sheet_names
     filtered_list = [name for name in sheet_list if re.search(r'\d', name)]
@@ -340,10 +341,10 @@ def main():
 
         unique_outliers = outlier_df.drop_duplicates(subset=['Komponen'])
 
-        unique_outliers_display = unique_outliers[['table', 'Nomor_Komponen', 'Komponen']].rename(
+        unique_outliers_display = unique_outliers[['Tabel', 'No_Komponen', 'Komponen']].rename(
             columns={
-                'table': 'Tabel',
-                'Nomor_Komponen': 'Nomor',
+                'Tabel': 'Tabel',
+                'No_Komponen': 'Nomor',
                 'Komponen': 'Komponen'
             }
         )
@@ -355,20 +356,22 @@ def main():
         col1_c, col2_c, col3_c = st.columns((1, 1, 1))
 
         with col2_c:
-            total_outliers = outlier_df.drop_duplicates(subset=['Nomor_Komponen', 'table']).shape[0]
+            total_outliers = outlier_df.drop_duplicates(subset=['No_Komponen', 'Tabel']).shape[0]
             card_component("Jumlah Komponen Pencilan", total_outliers)
         with col3_c:
             card_component("Tanggal Di Proses", "2024-10-25")
 
         # Group by 'table' and count outliers for each table
-        outlier_counts = outlier_df.groupby('table')['Nomor_Komponen'].nunique()
-        desired_order = ['1', '2', '3', '4', '5a', '5b', '5c', '5d', '5d.1', '5.d.2', '6', '7', '8', '9', '10', '11', '11a', '12', '13', '14', '15', '16', '17', '18', '19', '20']
+        outlier_counts = outlier_df.groupby('Tabel')['No_Komponen'].nunique()
+        print(outlier_counts)
+        desired_order = ["1","2","3","4","5a","5b","5c","5d","5d.1","5.d.2","6","7","8","9","10","11","11a","12","13","14","15","16","16a","17","18","19","20"]  # Replace with actual sheet names
 
         # Convert index to categorical type with the specified order
         outlier_counts.index = pd.Categorical(outlier_counts.index, categories=desired_order, ordered=True)
-
+        print(outlier_counts)
         # Sort the Series by the new categorical index
         sorted_outlier_counts = outlier_counts.sort_index()
+        print(sorted_outlier_counts)
 
         # Output the sorted Series
         # print(sorted_outlier_counts)
@@ -403,7 +406,7 @@ def main():
         st.markdown("<h4 style='text-align: left;'>Apa yang ingin dilakukan?</h4>", unsafe_allow_html=True)
         for table in filtered_list:
             # For tables starting with "5", use an expander with multiple buttons
-            unique_tahun = outlier_df[outlier_df['table'] == table]
+            unique_tahun = outlier_df[outlier_df['Tabel'] == table]
             unique_tahun = list(unique_tahun['Tahun'].unique())
 
             extracted_data = set()
