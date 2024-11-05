@@ -306,13 +306,19 @@ def main():
         st.session_state.setdefault("show_all_results_beforeafter", False)
 
         if st.button("Lihat Hasil Cek Vertikal Keseluruhan"):
-            st.session_state.show_all_results_verti = True 
+            st.session_state.show_all_results_verti = True
+            st.session_state.show_all_results_hori = False
+            st.session_state.show_all_results_beforeafter = False
 
         if st.button("Lihat Hasil Cek Horizontal Keseluruhan"):
-            st.session_state.show_all_results_hori = True 
+            st.session_state.show_all_results_verti = False
+            st.session_state.show_all_results_hori = True
+            st.session_state.show_all_results_beforeafter = False
 
         if st.button("Lihat Hasil Cek Before After Keseluruhan"):
-            st.session_state.show_all_results_beforeafter = True 
+            st.session_state.show_all_results_verti = False
+            st.session_state.show_all_results_hori = False
+            st.session_state.show_all_results_beforeafter = True
 
         # Create a button for each distinct number, replace number with province name
         for num in distinct_numbers:
