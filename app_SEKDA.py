@@ -388,7 +388,8 @@ def main():
                     st.markdown('**Keterangan**')
                     st.text('✓: Data sudah konsisten pada periode tersebut')
 
-        if st.session_state.get("show_all_results_verti", False):              
+        if st.session_state.get("show_all_results_verti", False):
+            st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
             for i in range(len(clean_data)):
                 df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
                 if df_clean is not None and not df_clean.empty and not (len(df_clean.columns) == 2 and 'Keterangan' in df_clean.columns):
