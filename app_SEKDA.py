@@ -31,7 +31,6 @@ def create_pie_chart(miss_data, corr_data, a, b):
         "legend": {
             "top": "5%",
             "left": "center",
-            "textStyle": {"color": "#000"}  # Legend text color to white
         },
         "series": [
             {
@@ -41,13 +40,12 @@ def create_pie_chart(miss_data, corr_data, a, b):
                 "avoidLabelOverlap": False,
                 "itemStyle": {
                     "borderRadius": 0,
-                    "borderColor": "#000",
                     "borderWidth": 0,
                 },
                 "label": {
                     "show": False,
                     "position": "center",
-                    "color": "#000",  # Text color white
+                    "fontColor":"white",
                     "fontSize": 16,
                     "fontWeight": "bold"
                 },
@@ -66,19 +64,35 @@ def create_pie_chart(miss_data, corr_data, a, b):
 
 
 def main():
-    if st.button("Kembali Ke Halaman Utama"):
-        st.session_state['page'] = 'main'
+    #file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=ES0AUKl8jblBrp7BkbpUitQBrA3RE96Yg6ItD4msu3HXfg"
+    file_path = "https://drive.google.com/uc?export=download&id=1XV5Pt-i5cND1IJfNPfaKmhEpsK4ggnTQ"
+    response = requests.get(file_path)
+    data = response.json()
+
+    log_data = data["log_data"]
+
+    col1a, col2a = st.columns([1, 3]) 
+
+    with col1a:
+        if st.button("Kembali Ke Halaman Utama"):
+            st.session_state['page'] = 'main'
+
+    with col2a:
+        st.markdown(
+            f"<p style='text-align: right; font-size:13px;'>Di proses pada {log_data['created_at']} WIB</p>",
+            unsafe_allow_html=True
+        )
+
     # Custom CSS to apply Frutiger45 font to the entire page using an external font link
     st.markdown("""
         <style>
         @import url('https://db.onlinewebfonts.com/c/c214e055a9aae386324285c45892f7b5?family=Frutiger+LT+W02+45+Light');
 
-        *,html, body, h1, h2, h3, h4 [class*="css"] {
+        *, html, body,h3,h4 [class="css"] {
             font-family: 'Frutiger LT W02 45 Light', sans-serif;
         }
         </style>
         """, unsafe_allow_html=True)
-
     # Custom CSS to center the title
     st.markdown("""
         <style>
@@ -89,9 +103,6 @@ def main():
         </style>
         """, unsafe_allow_html=True)
 
-    # Centered title using custom class
-    st.markdown("<h1 class='centered-title'>LAPORAN QUALITY ASSURANCE SEKDA - AGUSTUS 2024</h1>", unsafe_allow_html=True)
-    st.markdown(divider_style, unsafe_allow_html=True)
 
     # Centralized styling for the DataFrames
     dataframe_style = {
@@ -127,11 +138,8 @@ def main():
     # Load the JSON file
     #response = requests.get(file_path)
     #data = response.json()
+    #file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=EZ4eO2Fc6u1Lpb1urKG7x9ABV9bJaZeMZGAky4ZHDl32Ag"
 
-
-    file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=EZ4eO2Fc6u1Lpb1urKG7x9ABV9bJaZeMZGAky4ZHDl32Ag"
-    response = requests.get(file_path)
-    data = response.json()
 
     # file_path = "C:\\Users\\annis\\Downloads\\Ferro\\data_verhor_1810_ver4.json"
     #
@@ -145,7 +153,6 @@ def main():
     clean_data = data['vertikal_data_clean']
     clean_keys_list = list(clean_data.keys())
     filtered_keys_list = [key for key in clean_keys_list if clean_data.get(key, []) != []]
-    print(f'vertical clean {filtered_keys_list}')
     #distinct_numbers = sorted(list(set(key.split('-')[0] for key in filtered_keys_list)))
 
     # Province mapping
@@ -191,14 +198,17 @@ def main():
 
     horizontal_clean_data = data['horizontal_clean_data']
     horizontal_clean_keys_list = list(horizontal_clean_data.keys())
-    hor_filtered_keys_list = [key for key in horizontal_clean_keys_list if horizontal_clean_data.get(key, []) != []]
-    print(f'horizontal clean {hor_filtered_keys_list}')
-    
-    final_filtered_keys_list = sorted(list(set(filtered_keys_list + hor_filtered_keys_list)))
-    distinct_numbers = sorted(list(set(key.split('-')[0] for key in final_filtered_keys_list)))    
+    hor_filtered_keys_list = [key for key in horizontal_clean_keys_list if horizontal_clean_data.get(key, []) != []]  
 
     horizontal_raw_data = data['horizontal_raw_data']
     horizontal_raw_keys_list = list(horizontal_raw_data.keys())
+
+    beforeafter_data = data['beforeafter_data']
+    beforeafter_data_keys_list = list(beforeafter_data.keys())
+    ba_filtered_keys_list = [key for key in beforeafter_data_keys_list if beforeafter_data.get(key, []) != []]
+    
+    final_filtered_keys_list = sorted(list(set(filtered_keys_list + hor_filtered_keys_list + ba_filtered_keys_list)))
+    distinct_numbers = sorted(list(set(key.split('-')[0] for key in final_filtered_keys_list)))  
 
     rincian_data = data['rincian_data']
     rincian_df = pd.DataFrame(rincian_data)
@@ -213,82 +223,121 @@ def main():
             return 0  # If no data, return 0
         return (error_count / total_count) * 100
 
-    total_tabel = ringkasan_df['Total tabel'].values[0]
+    total_horizontal = ringkasan_df['Total Horizontal'].values[0]
+    total_vertikal = ringkasan_df['Total Vertikal'].values[0]
+    total_beforeafter = ringkasan_df['Total Before After'].values[0]
     correct_count = ringkasan_df['Provinsi Lolos QA'].values[0]
     error_count = ringkasan_df['Provinsi Tidak Lolos QA'].values[0]
     total_count = ringkasan_df['Total provinsi'].values[0]
     ver_error_tabel = ringkasan_df['Error Vertikal'].values[0]
     hor_error_tabel = ringkasan_df['Error Horizontal'].values[0]
-    total_tabel = int(total_tabel)
+    ba_error_tabel = ringkasan_df['Error Before After'].values[0]
+    periode_publikasi = ringkasan_df['Periode Publikasi'].values[0]
+    total_horizontal = int(total_horizontal)
+    total_vertikal = int(total_vertikal)
+    total_beforeafter = int(total_beforeafter)
     correct_count = int(correct_count)
     error_count = int(error_count)
     total_count = int(total_count)
     ver_error_tabel = int(ver_error_tabel)
     hor_error_tabel = int(hor_error_tabel)
+    ba_error_tabel = int(ba_error_tabel)
 
     # Calculate mismatch ratio
     mismatch_ratio_prov = calculate_mismatch_ratio(error_count, total_count)
-    mismatch_ratio_ver = calculate_mismatch_ratio(ver_error_tabel, total_tabel)
-    mismatch_ratio_hor = calculate_mismatch_ratio(hor_error_tabel, total_tabel)
+    mismatch_ratio_ver = calculate_mismatch_ratio(ver_error_tabel, total_vertikal)
+    mismatch_ratio_hor = calculate_mismatch_ratio(hor_error_tabel, total_horizontal)
+    mismatch_ratio_ba = calculate_mismatch_ratio(ba_error_tabel, total_beforeafter)
 
-    col1_g, col2_g, col3_g, col4_g = st.columns((2, 2, 2, 3))
+    # Centered title using custom class
+    st.markdown(f"<h1 class='centered-title'>LAPORAN QUALITY ASSURANCE SEKDA - {periode_publikasi.upper()} </h1>", unsafe_allow_html=True)
+    st.markdown(divider_style, unsafe_allow_html=True)
 
-    with col1_g:
-        st.markdown(
-            "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Cek Vertikal</span></p>",
-            unsafe_allow_html=True)
-
-        ver_correct_count =  total_tabel - ver_error_tabel
-
-        # Create pie chart with mismatch (errors) and correct counts
-        create_pie_chart(ver_error_tabel, ver_correct_count, "Konsisten", "Tidak Konsisten")
-
-        # Display the mismatch ratio as a percentage
-        st.markdown(
-            f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_ver:.2f}%</span> data tidak konsisten.</p>",
-            unsafe_allow_html=True)
-
-    with col2_g:
-        st.markdown(
-            "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Cek Horizontal</span></p>",
-            unsafe_allow_html=True)
-
-        hor_correct_count =  total_tabel - hor_error_tabel
-
-        # Create pie chart with mismatch (errors) and correct counts
-        create_pie_chart(hor_error_tabel, hor_correct_count, "Konsisten", "Tidak Konsisten")
-
-        # Display the mismatch ratio as a percentage
-        st.markdown(
-            f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_hor:.2f}%</span> data tidak konsisten.</p>",
-            unsafe_allow_html=True)
-
-    with col3_g:
-        st.markdown(
-            "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Provinsi Lolos dan Tidak Lolos QA</span></p>",
-            unsafe_allow_html=True)
-
-        # Create pie chart with mismatch (errors) and correct counts
-        create_pie_chart(error_count, correct_count, "Lolos", "Tidak Lolos")
-
-        # Display the mismatch ratio as a percentage
-        st.markdown(
-            f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_prov:.2f}%</span> provinsi tidak lolos.</p>",
-            unsafe_allow_html=True)
-
+    # Define the main two-column layout: left for pie charts and right for col4_g
+    left_col, col4_g = st.columns((6, 3))  # Adjust width ratio as needed
+    
+    # In the left column, create two rows with two pie charts each
+    with left_col:
+        # First row: pie chart 1 and pie chart 2
+        row1_col1, row1_col2 = st.columns(2)
+        
+        with row1_col1:
+            st.markdown(
+                "<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Vertical Check</span></p>",
+                unsafe_allow_html=True)
+            ver_correct_count = total_vertikal - ver_error_tabel
+            create_pie_chart(ver_error_tabel, ver_correct_count, "Konsisten", "Tidak Konsisten")
+            st.markdown(
+                f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_ver:.2f}%</span> data tidak konsisten.</p>",
+                unsafe_allow_html=True)
+    
+        with row1_col2:
+            st.markdown(
+                "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Horizontal Check</span></p>",
+                unsafe_allow_html=True)
+            hor_correct_count = total_horizontal - hor_error_tabel
+            create_pie_chart(hor_error_tabel, hor_correct_count, "Konsisten", "Tidak Konsisten")
+            st.markdown(
+                f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_hor:.2f}%</span> data tidak konsisten.</p>",
+                unsafe_allow_html=True)
+    
+        # Second row: pie chart 3 and pie chart 4
+        row2_col1, row2_col2 = st.columns(2)
+        
+        with row2_col1:
+            st.markdown(
+                "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Before After Check</span></p>",
+                unsafe_allow_html=True)
+            ba_correct_count = total_beforeafter - ba_error_tabel
+            create_pie_chart(ba_error_tabel, ba_correct_count, "Konsisten", "Tidak Konsisten")
+            st.markdown(
+                f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_ba:.2f}%</span> data tidak konsisten.</p>",
+                unsafe_allow_html=True)
+    
+        with row2_col2:
+            st.markdown(
+                "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Provinsi Lolos dan Tidak Lolos QA</span></p>",
+                unsafe_allow_html=True)
+            create_pie_chart(error_count, correct_count, "Lolos", "Tidak Lolos")
+            st.markdown(
+                f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_prov:.2f}%</span> provinsi tidak lolos.</p>",
+                unsafe_allow_html=True)
+    
+    # Right column for col4_g
     with col4_g:
-        st.markdown("<h1 style='text-align: center;'>RINGKASAN</h1>", unsafe_allow_html=True)
+        st.markdown("<h1 style='text-align: center;'>Ringkasan Singkat</h1>", unsafe_allow_html=True)
         st.markdown(divider_style, unsafe_allow_html=True)
         # Use an expander to show the dataframe in a dropdown-like view
         with st.expander("Lihat rincian:"):
             st.markdown(html_rincian_df, unsafe_allow_html=True)
 
-
     # Define layout with two columns
     col1, col2 = st.columns((1, 4))
 
+    if "show_all_results_verti" not in st.session_state:
+        st.session_state.show_all_results_verti = False
+    if "show_all_results_hori" not in st.session_state:
+        st.session_state.show_all_results_hori = False
+    if "show_all_results_beforeafter" not in st.session_state:
+        st.session_state.show_all_results_beforeafter = False
+
     with col1:
         st.markdown("<h4 style='text-align: left;'>Apa yang ingin dilakukan?</h4>", unsafe_allow_html=True)
+
+        if st.button("Lihat Hasil Vertikal Check Keseluruhan"):
+            st.session_state.show_all_results_verti = True
+            st.session_state.show_all_results_hori = False
+            st.session_state.show_all_results_beforeafter = False
+
+        if st.button("Lihat Hasil Horizontal Check Keseluruhan"):
+            st.session_state.show_all_results_verti = False
+            st.session_state.show_all_results_hori = True
+            st.session_state.show_all_results_beforeafter = False
+
+        if st.button("Lihat Hasil Before After Check Keseluruhan"):
+            st.session_state.show_all_results_verti = False
+            st.session_state.show_all_results_hori = False
+            st.session_state.show_all_results_beforeafter = True
 
         # Create a button for each distinct number, replace number with province name
         for num in distinct_numbers:
@@ -358,7 +407,84 @@ def main():
                     st.markdown('**Keterangan**')
                     st.text('✓: Data sudah konsisten pada periode tersebut')
 
+            if selected_number in beforeafter_data:
+                df_clean_ba = pd.DataFrame(beforeafter_data[selected_number])
+                if df_clean_ba is not None and not df_clean_ba.empty:
+                    st.markdown("<h1 class='centered-title'>BEFORE AFTER CHECK</h1>", unsafe_allow_html=True)
+                    kode_provinsi, tabel = selected_number.split('-')
+                    nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
+                    selected_number_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
+                    st.subheader(f"{selected_number_new}")
+                    st.dataframe(
+                        df_clean_ba.style.set_properties(**{'text-align': 'center'})
+                            .set_table_styles([{'selector': 'th',
+                                                'props': [('text-align', 'center'),
+                                                          ('background-color', '#E8F6F3')]}])
+                    )
+                    st.markdown('**Keterangan**')
+                    st.text('✓: Data sudah konsisten pada periode tersebut')
 
+        if st.session_state.show_all_results_verti:
+            st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
+            for i in range(len(clean_data)):
+                df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
+                if df_clean is not None and not df_clean.empty and not (len(df_clean.columns) == 2 and 'Keterangan' in df_clean.columns):
+                    df_summary = pd.DataFrame(summary_data[sum_keys_list[i]])
+                    kode_provinsi, tabel = clean_keys_list[i].split('-')
+                    nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
+                    inew = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
+    
+                    st.markdown(divider_style, unsafe_allow_html=True)
+                    st.subheader(f"{inew}")
+    
+                    display_dataframe(df_summary)
+                    st.markdown('**Keterangan**')
+                    st.text('✓: Data sudah konsisten pada periode tersebut')
+    
+                    with st.expander("Lihat Detail"):
+                        st.write("""
+                        **Penjelasan Warna:**
+                        - 🟩 : Aggregat
+                        - 🟨 : Calculated
+                        - 🟥 : Selisih
+                        """)
+                        st.dataframe(df_clean.style.apply(lambda row: highlight_rows(row, df_clean), axis=1)
+                            .set_properties(**{'text-align': 'center'})  # Set text alignment to center
+                            .set_table_styles([  # Apply styling to the header
+                            {'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}])
+                            .format(precision=2)  # Format numerical values with two decimal places
+                        )
+                        
+        elif st.session_state.show_all_results_hori:
+            st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
+            for item in horizontal_clean_keys_list:
+                df_clean_hori = pd.DataFrame(horizontal_clean_data[item])
+                if df_clean_hori is not None and not df_clean_hori.empty:
+                    kode_provinsi, tabel = item.split('-')
+                    nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
+                    item_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
+                    st.subheader(f"{item_new}")
+                    st.dataframe(df_clean_hori.style.set_properties(**{'text-align': 'center'}).set_table_styles(
+                        [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
+                    ).format(precision=2))
+                    st.markdown('**Keterangan**')
+                    st.text('✓: Data sudah konsisten pada periode tersebut')
+
+        elif st.session_state.show_all_results_beforeafter:
+            st.markdown("<h1 class='centered-title'>BEFORE AFTER CHECK</h1>", unsafe_allow_html=True)
+            for item in beforeafter_data_keys_list:
+                df_clean_ba = pd.DataFrame(beforeafter_data[item])
+                if df_clean_ba is not None and not df_clean_ba.empty:
+                    kode_provinsi, tabel = item.split('-')
+                    nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
+                    item_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
+                    st.subheader(f"{item_new}")
+                    st.dataframe(df_clean_ba.style.set_properties(**{'text-align': 'center'}).set_table_styles(
+                        [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
+                    ).format(precision=2))
+                    st.markdown('**Keterangan**')
+                    st.text('✓: Data sudah konsisten pada periode tersebut')
+                            
         else:
             st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
             for i in range(len(clean_data)):
@@ -404,7 +530,19 @@ def main():
                     st.markdown('**Keterangan**')
                     st.text('✓: Data sudah konsisten pada periode tersebut')
 
-# Example usage of the main function
-list_tahun = ['2022']  # Define list_tahun as needed
+            st.markdown("<h1 class='centered-title'>BEFORE AFTER CHECK</h1>", unsafe_allow_html=True)
+            for item in beforeafter_data_keys_list:
+                df_clean_ba = pd.DataFrame(beforeafter_data[item])
+                if df_clean_ba is not None and not df_clean_ba.empty:
+                    kode_provinsi, tabel = item.split('-')
+                    nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
+                    item_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
+                    st.subheader(f"{item_new}")
+                    st.dataframe(df_clean_ba.style.set_properties(**{'text-align': 'center'}).set_table_styles(
+                        [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
+                    ).format(precision=2))
+                    st.markdown('**Keterangan**')
+                    st.text('✓: Data sudah konsisten pada periode tersebut')
+
 if __name__ == "__main__":
     main()
