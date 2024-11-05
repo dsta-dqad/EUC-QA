@@ -493,7 +493,9 @@ def main():
                     st.markdown('**Keterangan**')
                     st.text('✓: Data sudah konsisten pada periode tersebut')
                             
-        else:
+        elif not st.session_state.selected_table and not (st.session_state.show_all_results_verti or 
+                                                      st.session_state.show_all_results_hori or 
+                                                      st.session_state.show_all_results_beforeafter):
             st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
             for i in range(len(clean_data)):
                 df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
