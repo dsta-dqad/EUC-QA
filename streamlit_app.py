@@ -154,6 +154,8 @@ def main_page():
         st.markdown("""
             <div class="outer-container">
             <h3 class="centered-title">INTRA TABEL</h3>
+            <div class="inner-column">
+                <h3 class="centered-title">Uji Konsistensi</h3>
                 <div class="container">
                     <h4>Vertical Check</h4>
                     <p class="description">
@@ -162,8 +164,6 @@ def main_page():
                     </p>
                 </div>
 
-            <div class="inner-column">
-                <h3 class="centered-title">Uji Konsistensi</h3>
                 <div class="container">
                     <h4>Horizontal Check</h4>
                     <p class="description">
