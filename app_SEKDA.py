@@ -70,11 +70,12 @@ def main():
     response = requests.get(file_path)
     data = response.json()
 
-    file_path_csv = "https://drive.google.com/uc?export=download&id=1ynA1FQEVMK3ILegoq7Le04vMitPC6WxP"
-    response_csv = requests.get(file_path_csv)
-
-    csv_data = pd.read_csv(io.StringIO(response_csv.text))
-    csv = csv_data.to_csv(index=False)
+    # File CSV
+    file_path_json = "https://drive.google.com/uc?export=download&id=1gfwP6Lci1S0Eb0oHURhjkjw7AjlNTXlk"
+    response_json = requests.get(file_path_json)
+    json_data = response_json.json()
+    df = pd.json_normalize(json_data)
+    csv = df.to_csv(index=False)
 
     log_data = data["log_data"]
 
@@ -139,20 +140,6 @@ def main():
         st.dataframe(input_df.style.set_properties(**{'text-align': 'center'}).set_table_styles(
             [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
         ).format(precision=2))
-
-    #file_path = "https://raw.githubusercontent.com/annisazahra01/EUC/b5006d9f732310c244572057a41a5d5fa3054218/data_SEKDA.json"
-
-    # Load the JSON file
-    #response = requests.get(file_path)
-    #data = response.json()
-    #file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=EZ4eO2Fc6u1Lpb1urKG7x9ABV9bJaZeMZGAky4ZHDl32Ag"
-
-
-    # file_path = "C:\\Users\\annis\\Downloads\\Ferro\\data_verhor_1810_ver4.json"
-    #
-    # # Load the JSON file
-    # with open(file_path, 'r') as f:
-    #     data = json.load(f)
 
     raw_data = data['vertikal_data_raw']
     raw_keys_list = list(raw_data.keys())
