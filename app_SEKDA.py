@@ -249,7 +249,7 @@ def main():
     mismatch_ratio_ba = calculate_mismatch_ratio(ba_error_tabel, total_beforeafter)
 
     # Centered title using custom class
-    st.markdown(f"<h1 class='centered-title'>LAPORAN QUALITY ASSURANCE SEKDA - {periode_publikasi} </h1>", unsafe_allow_html=True)
+    st.markdown(f"<h1 class='centered-title'>LAPORAN QUALITY ASSURANCE SEKDA - {periode_publikasi.upper()} </h1>", unsafe_allow_html=True)
     st.markdown(divider_style, unsafe_allow_html=True)
 
     # Define the main two-column layout: left for pie charts and right for col4_g
