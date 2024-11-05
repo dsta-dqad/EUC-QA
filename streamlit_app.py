@@ -162,25 +162,25 @@ def main_page():
                     </p>
                 </div>
 
-                <div class="inner-column">
-                    <h3 class="centered-title">Uji Konsistensi</h3>
-                    <div class="container">
-                        <h4>Horizontal Check</h4>
-                        <p class="description">
-                            Fitur pengecekan konsistensi nilai tahunan dengan nilai posisi atau
-                            nilai transaksi pada komponen tabel.
-                        </p>
-                        <p class="description">
-                            <strong>Data Posisi</strong>: Membandingkan nilai data pada kolom
-                            tahunan dengan data dari posisi kolom akhir periode tahun tersebut
-                            (Desember).
-                        </p>
-                        <p class="description">
-                            <strong>Data Transaksi</strong>: Membandingkan data pada kolom
-                            tahunan dengan hasil penjumlahan nilai seluruh periode di tahun
-                            tersebut.
-                        </p>
-                    </div>
+            <div class="inner-column">
+                <h3 class="centered-title">Uji Konsistensi</h3>
+                <div class="container">
+                    <h4>Horizontal Check</h4>
+                    <p class="description">
+                        Fitur pengecekan konsistensi nilai tahunan dengan nilai posisi atau
+                        nilai transaksi pada komponen tabel.
+                    </p>
+                    <p class="description">
+                        <strong>Data Posisi</strong>: Membandingkan nilai data pada kolom
+                        tahunan dengan data dari posisi kolom akhir periode tahun tersebut
+                        (Desember).
+                    </p>
+                    <p class="description">
+                        <strong>Data Transaksi</strong>: Membandingkan data pada kolom
+                        tahunan dengan hasil penjumlahan nilai seluruh periode di tahun
+                        tersebut.
+                    </p>
+                </div>
             
                 <div class="container">
                     <h4>Before After Check</h4>
