@@ -408,7 +408,7 @@ def main():
                     st.text('✓: Data sudah konsisten pada periode tersebut')
 
         if st.session_state.show_all_results_verti:
-            st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 class='centered-title'>CEK VERTICAL</h1>", unsafe_allow_html=True)
             for i in range(len(clean_data)):
                 df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
                 if df_clean is not None and not df_clean.empty and not (len(df_clean.columns) == 2 and 'Keterangan' in df_clean.columns):
@@ -439,7 +439,7 @@ def main():
                         )
                         
         elif st.session_state.show_all_results_hori:
-            st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 class='centered-title'>CEK HORIZONTAL</h1>", unsafe_allow_html=True)
             for item in horizontal_clean_keys_list:
                 df_clean_hori = pd.DataFrame(horizontal_clean_data[item])
                 if df_clean_hori is not None and not df_clean_hori.empty:
@@ -448,6 +448,21 @@ def main():
                     item_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
                     st.subheader(f"{item_new}")
                     st.dataframe(df_clean_hori.style.set_properties(**{'text-align': 'center'}).set_table_styles(
+                        [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
+                    ).format(precision=2))
+                    st.markdown('**Keterangan**')
+                    st.text('✓: Data sudah konsisten pada periode tersebut')
+
+        elif st.session_state.show_all_results_beforeafter:
+            st.markdown("<h1 class='centered-title'>CEK BEFORE AFTER</h1>", unsafe_allow_html=True)
+            for item in beforeafter_data_keys_list:
+                df_clean_ba = pd.DataFrame(beforeafter_data[item])
+                if df_clean_ba is not None and not df_clean_ba.empty:
+                    kode_provinsi, tabel = item.split('-')
+                    nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
+                    item_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
+                    st.subheader(f"{item_new}")
+                    st.dataframe(df_clean_ba.style.set_properties(**{'text-align': 'center'}).set_table_styles(
                         [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
                     ).format(precision=2))
                     st.markdown('**Keterangan**')
