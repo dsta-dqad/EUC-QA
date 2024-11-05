@@ -65,7 +65,7 @@ def create_pie_chart(miss_data, corr_data, a, b):
 
 def main():
     #file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=ES0AUKl8jblBrp7BkbpUitQBrA3RE96Yg6ItD4msu3HXfg"
-    file_path = "https://drive.google.com/uc?export=download&id=16Goab_p5cfV3KISgYT5BS5Zw61RcA3wm"
+    file_path = "https://drive.google.com/uc?export=download&id=1XV5Pt-i5cND1IJfNPfaKmhEpsK4ggnTQ"
     response = requests.get(file_path)
     data = response.json()
 
