@@ -74,7 +74,7 @@ def main():
     file_path_json = "https://drive.google.com/uc?export=download&id=1gfwP6Lci1S0Eb0oHURhjkjw7AjlNTXlk"
     response_json = requests.get(file_path_json)
     json_data = response_json.json()
-    df = pd.json_normalize(json_data)
+    df = pd.DataFrame(json_data)
     csv = df.to_csv(index=False)
 
     log_data = data["log_data"]
