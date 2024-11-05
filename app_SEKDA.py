@@ -290,7 +290,7 @@ def main():
             ba_correct_count = total_beforeafter - ba_error_tabel
             create_pie_chart(ba_error_tabel, ba_correct_count, "Konsisten", "Tidak Konsisten")
             st.markdown(
-                f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_hor:.2f}%</span> data tidak konsisten.</p>",
+                f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_ba:.2f}%</span> data tidak konsisten.</p>",
                 unsafe_allow_html=True)
     
         with row2_col2:
