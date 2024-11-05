@@ -69,6 +69,12 @@ def main():
     response = requests.get(file_path)
     data = response.json()
 
+    file_path_csv = "https://drive.google.com/uc?export=download&id=1ynA1FQEVMK3ILegoq7Le04vMitPC6WxP"
+    response_csv = requests.get(file_path_csv)
+
+    csv_data = pd.read_csv(pd.compat.StringIO(response_csv.text))
+    csv = csv_data.to_csv(index=False)
+
     log_data = data["log_data"]
 
     col1a, col2a = st.columns([1, 3]) 
@@ -310,6 +316,13 @@ def main():
         # Use an expander to show the dataframe in a dropdown-like view
         with st.expander("Lihat rincian:"):
             st.markdown(html_rincian_df, unsafe_allow_html=True)
+        
+        st.download_button(
+            label="Unduh Data Rekapitulasi",
+            data=csv,
+            file_name='Data Rekap.csv',
+            mime='text/csv',use_container_width=True
+        )
 
     col1, col2 = st.columns((1, 4))
 
