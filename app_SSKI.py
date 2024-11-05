@@ -104,16 +104,16 @@ def display_detail_data(df_clean,summary_data, sum_keys_list,i,clean_keys_list):
 
 
 def main():
-    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/09b3fa2da193d1c26269f02b4643c3574204e0ab/data/data_sski.json"
-    # Load the JSON file
-    response = requests.get(file_path)
-    data = response.json()
-
-    # file_path = "/Users/ferroyudisthira/Desktop/DSTA_DQAD/V&H_Check/application/data/data_sski.json"
-    
+    # file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/09b3fa2da193d1c26269f02b4643c3574204e0ab/data/data_sski.json"
     # # Load the JSON file
-    # with open(file_path, 'r') as f:
-    #     data = json.load(f)
+    # response = requests.get(file_path)
+    # data = response.json()
+
+    file_path = "/Users/ferroyudisthira/Desktop/DSTA_DQAD/V&H_Check/application/data/data_sski.json"
+    
+    # Load the JSON file
+    with open(file_path, 'r') as f:
+        data = json.load(f)
 
     log_data = data["log_data"]
 
@@ -171,7 +171,7 @@ def main():
     horizontal_raw_data = data['horizontal_raw_data']
     hor_raw_keys_list = list(horizontal_raw_data.keys())
 
-    before_after_data = data["before_after_data"]
+    before_after_data = data['before_after_data']
     before_after_keys_list = list(before_after_data.keys())
 
     df_recap = data['recap_download']
