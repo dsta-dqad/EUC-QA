@@ -410,7 +410,7 @@ def main():
             if selected_number in beforeafter_data:
                 df_clean_ba = pd.DataFrame(beforeafter_data[selected_number])
                 if df_clean_ba is not None and not df_clean_ba.empty:
-                    #st.markdown("<h1 class='centered-title'>BEFORE AFTER CHECK</h1>", unsafe_allow_html=True)
+                    st.markdown("<h1 class='centered-title'>BEFORE AFTER CHECK</h1>", unsafe_allow_html=True)
                     kode_provinsi, tabel = selected_number.split('-')
                     nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
                     selected_number_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
@@ -471,7 +471,7 @@ def main():
                     st.text('✓: Data sudah konsisten pada periode tersebut')
 
         elif st.session_state.show_all_results_beforeafter:
-            st.markdown("<h1 class='centered-title'>BEFORE AFTER CHECK</h1>", unsafe_allow_html=True)
+            #st.markdown("<h1 class='centered-title'>BEFORE AFTER CHECK</h1>", unsafe_allow_html=True)
             for item in beforeafter_data_keys_list:
                 df_clean_ba = pd.DataFrame(beforeafter_data[item])
                 if df_clean_ba is not None and not df_clean_ba.empty:
