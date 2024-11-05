@@ -311,7 +311,6 @@ def main():
         with st.expander("Lihat rincian:"):
             st.markdown(html_rincian_df, unsafe_allow_html=True)
 
-    # Define layout with two columns
     col1, col2 = st.columns((1, 4))
 
     if "show_all_results_verti" not in st.session_state:
@@ -353,7 +352,7 @@ def main():
 
                     # Use a unique key for each button by appending the full table name
                     if st.button(f"Lihat Tabel {table_label}", key=f"button_{table}"):
-                        st.session_state.selected_table = table 
+                        st.session_state.selected_table = table
 
 
     with col2:
