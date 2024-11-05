@@ -139,10 +139,6 @@ def main_page():
             if st.button("Uji Konsistensi (SEKDA)", use_container_width=True):
                 st.session_state['page'] = 'app_SEKDA'  # Navigate to SEKDA page
 
-            if st.button("Uji Kewajaran (SEKDA)", use_container_width=True,help="COMING SOON"):
-                st.markdown("""<p class="description">Coming Soon.</p>""", unsafe_allow_html=True)
-
-
             # Section for Antar Tabel buttons (under SEKDA)
             st.markdown("""<h4>Inter Tabel</h4>""", unsafe_allow_html=True)
             if st.button("Antar Tabel (SEKDA)", use_container_width=True):
