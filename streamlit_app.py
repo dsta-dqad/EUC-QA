@@ -157,13 +157,13 @@ def main_page():
             <div class="inner-column">
                 <h3 class="centered-title">Uji Konsistensi</h3>
                 
-                <div class="container">
-                    <h4>Vertical Check</h4>
-                    <p class="description">
-                    Fitur pengecekan konsistensi nilai agregat dengan penjumlahan
-                    nilai komponen-komponen pembentuk pada tabel secara vertikal.
-                    </p>
-                </div>
+                    <div class="container">
+                        <h4>Vertical Check</h4>
+                        <p class="description">
+                        Fitur pengecekan konsistensi nilai agregat dengan penjumlahan
+                        nilai komponen-komponen pembentuk pada tabel secara vertikal.
+                        </p>
+                    </div>
     
                 <div class="container">
                     <h4>Horizontal Check</h4>
