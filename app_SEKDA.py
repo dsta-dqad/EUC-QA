@@ -300,35 +300,7 @@ def main():
     with col1:
         st.markdown("<h4 style='text-align: left;'>Apa yang ingin dilakukan?</h4>", unsafe_allow_html=True)
 
-        if st.button("Lihat Hasil Cek Vertikal Keseluruhan"):
-            for i in range(len(clean_data)):
-                df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
-                if df_clean is not None and not df_clean.empty and not (len(df_clean.columns) == 2 and 'Keterangan' in df_clean.columns):
-                    df_summary = pd.DataFrame(summary_data[sum_keys_list[i]])
-                    kode_provinsi, tabel = clean_keys_list[i].split('-')
-                    nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
-                    inew = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
-
-                    st.markdown(divider_style, unsafe_allow_html=True)
-                    st.subheader(f"{inew}")
-
-                    display_dataframe(df_summary)
-                    st.markdown('**Keterangan**')
-                    st.text('✓: Data sudah konsisten pada periode tersebut')
-
-                    with st.expander("Lihat Detail"):
-                        st.write("""
-                        **Penjelasan Warna:**
-                        - 🟩 : Aggregat
-                        - 🟨 : Calculated
-                        - 🟥 : Selisih
-                        """)
-                        st.dataframe(df_clean.style.apply(lambda row: highlight_rows(row, df_clean),axis=1)
-                        .set_properties(**{'text-align': 'center'})  # Set text alignment to center
-                        .set_table_styles([  # Apply styling to the header
-                        {'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}])
-                        .format(precision=2)  # Format numerical values with two decimal places
-                        )
+        show_all_results_verti = st.button("Lihat Hasil Cek Vertikal Keseluruhan")
 
         # Create a button for each distinct number, replace number with province name
         for num in distinct_numbers:
@@ -345,6 +317,35 @@ def main():
                     # Use a unique key for each button by appending the full table name
                     if st.button(f"Lihat Tabel {table_label}", key=f"button_{table}"):
                         st.session_state.selected_table = table
+    if show_all_results_verti:                   
+        for i in range(len(clean_data)):
+            df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
+            if df_clean is not None and not df_clean.empty and not (len(df_clean.columns) == 2 and 'Keterangan' in df_clean.columns):
+                df_summary = pd.DataFrame(summary_data[sum_keys_list[i]])
+                kode_provinsi, tabel = clean_keys_list[i].split('-')
+                nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
+                inew = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
+    
+                st.markdown(divider_style, unsafe_allow_html=True)
+                st.subheader(f"{inew}")
+    
+                display_dataframe(df_summary)
+                st.markdown('**Keterangan**')
+                st.text('✓: Data sudah konsisten pada periode tersebut')
+    
+                with st.expander("Lihat Detail"):
+                    st.write("""
+                    **Penjelasan Warna:**
+                    - 🟩 : Aggregat
+                    - 🟨 : Calculated
+                    - 🟥 : Selisih
+                    """)
+                    st.dataframe(df_clean.style.apply(lambda row: highlight_rows(row, df_clean),axis=1)
+                    .set_properties(**{'text-align': 'center'})  # Set text alignment to center
+                    .set_table_styles([  # Apply styling to the header
+                    {'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}])
+                    .format(precision=2)  # Format numerical values with two decimal places
+                    )
 
     with col2:
         if 'selected_table' in st.session_state:
