@@ -286,7 +286,7 @@ def main():
     
     # Right column for col4_g
     with col4_g:
-        st.markdown("<h1 style='text-align: center;'>RINGKASAN</h1>", unsafe_allow_html=True)
+        st.markdown("<h1 style='text-align: center;'>Ringkasan Singkat</h1>", unsafe_allow_html=True)
         st.markdown(divider_style, unsafe_allow_html=True)
         # Use an expander to show the dataframe in a dropdown-like view
         with st.expander("Lihat rincian:"):
