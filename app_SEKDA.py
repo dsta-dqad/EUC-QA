@@ -303,6 +303,12 @@ def main():
         if st.button("Lihat Hasil Cek Vertikal Keseluruhan"):
             st.session_state.show_all_results_verti = True 
 
+        if st.button("Lihat Hasil Cek Horizontal Keseluruhan"):
+            st.session_state.show_all_results_hori = True 
+
+        if st.button("Lihat Hasil Cek Before After Keseluruhan"):
+            st.session_state.show_all_results_beforeafter = True 
+
         # Create a button for each distinct number, replace number with province name
         for num in distinct_numbers:
             # Get the province name from the mapping, default to num if not found
@@ -418,6 +424,21 @@ def main():
                             {'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}])
                             .format(precision=2)  # Format numerical values with two decimal places
                         )
+                        
+        if st.session_state.get("show_all_results_hori", False):
+            st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
+            for item in horizontal_clean_keys_list:
+                df_clean_hori = pd.DataFrame(horizontal_clean_data[item])
+                if df_clean_hori is not None and not df_clean_hori.empty:
+                    kode_provinsi, tabel = item.split('-')
+                    nama_provinsi = provinsi_mapping.get(kode_provinsi, ['Unknown'])[0]
+                    item_new = f"{nama_provinsi} ({kode_provinsi}) - Tabel {tabel}"
+                    st.subheader(f"{item_new}")
+                    st.dataframe(df_clean_hori.style.set_properties(**{'text-align': 'center'}).set_table_styles(
+                        [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
+                    ).format(precision=2))
+                    st.markdown('**Keterangan**')
+                    st.text('✓: Data sudah konsisten pada periode tersebut')
                             
         else:
             st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
