@@ -345,7 +345,7 @@ def main():
             for i in filtered_keys:
                 df_clean = pd.DataFrame(clean_data[i])
                 if df_clean is not None and not df_clean.empty and not (len(df_clean.columns) == 2 and 'Keterangan' in df_clean.columns):
-                    st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
+                    st.markdown("<h1 class='centered-title'>VERTIKAL CHECK</h1>", unsafe_allow_html=True)
                     df_summary = pd.DataFrame(summary_data[i])
                     st.markdown(divider_style, unsafe_allow_html=True)
                     kode_provinsi, tabel = i.split('-')
@@ -469,7 +469,7 @@ def main():
                     st.text('✓: Data sudah konsisten pada periode tersebut')
                             
         else:
-            st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 class='centered-title'>CEK VERTIKAL</h1>", unsafe_allow_html=True)
             for i in range(len(clean_data)):
                 df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
                 if df_clean is not None and not df_clean.empty and not (len(df_clean.columns) == 2 and 'Keterangan' in df_clean.columns):
@@ -499,7 +499,7 @@ def main():
                         .format(precision=2)  # Format numerical values with two decimal places
                         )
                         
-            st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 class='centered-title'>CEK HORIZONTAL</h1>", unsafe_allow_html=True)
             for item in horizontal_clean_keys_list:
                 df_clean_hori = pd.DataFrame(horizontal_clean_data[item])
                 if df_clean_hori is not None and not df_clean_hori.empty:
@@ -513,7 +513,7 @@ def main():
                     st.markdown('**Keterangan**')
                     st.text('✓: Data sudah konsisten pada periode tersebut')
 
-            st.markdown("<h1 class='centered-title'>BEFORE AFTER CHECK</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 class='centered-title'>CEK BEFORE AFTER</h1>", unsafe_allow_html=True)
             for item in beforeafter_data_keys_list:
                 df_clean_ba = pd.DataFrame(beforeafter_data[item])
                 if df_clean_ba is not None and not df_clean_ba.empty:
