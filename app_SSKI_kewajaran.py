@@ -11,8 +11,6 @@ import requests
 from datetime import datetime
 import calendar
 import re
-import matplotlib.pyplot as plt
-from io import BytesIO
 
 file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/a71ab9cb64890af49881cd25327b2d153c1d0bf2/data/data_pencilan_sski.csv"
 
