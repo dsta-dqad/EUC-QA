@@ -322,7 +322,7 @@ def card_component(title,data):
         unsafe_allow_html=True
     )
 
-st.set_page_config(layout="wide", page_title="Development", page_icon="📊")
+# st.set_page_config(layout="wide", page_title="Development", page_icon="📊")
 def main():
     st.title("UJI KEWAJARAN SSKI OKTOBER 2024")
     file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/3792a5695653dbbe2b98bffa9c704571edc1be23/data/SSKI%20EKSTERNAL_25%20Okt%202024.xlsx"
