@@ -66,8 +66,16 @@ def create_pie_chart(miss_data, corr_data, a, b):
 
 
 def main():
-    if st.button("Kembali Ke Halaman Utama"):
-        st.session_state['page'] = 'main'
+    col1a, col2a = st.columns([1, 3])  # Adjust the column widths if needed
+    with col1a:
+        if st.button("Kembali Ke Halaman Utama"):
+            st.session_state['page'] = 'main'
+
+    with col2a:
+        st.markdown(
+            f"<p style='text-align: right; font-size:13px;'>Di proses pada {log_data['created_at']} WIB</p>",
+            unsafe_allow_html=True
+        )
     # Custom CSS to apply Frutiger45 font to the entire page using an external font link
     st.markdown("""
         <style>
