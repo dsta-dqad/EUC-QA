@@ -308,17 +308,17 @@ def main():
     with col1:
         st.markdown("<h4 style='text-align: left;'>Apa yang ingin dilakukan?</h4>", unsafe_allow_html=True)
 
-        if st.button("Lihat Hasil Cek Vertikal Keseluruhan"):
+        if st.button("Lihat Hasil Vertikal Check Keseluruhan"):
             st.session_state.show_all_results_verti = True
             st.session_state.show_all_results_hori = False
             st.session_state.show_all_results_beforeafter = False
 
-        if st.button("Lihat Hasil Cek Horizontal Keseluruhan"):
+        if st.button("Lihat Hasil Horizontal Check Keseluruhan"):
             st.session_state.show_all_results_verti = False
             st.session_state.show_all_results_hori = True
             st.session_state.show_all_results_beforeafter = False
 
-        if st.button("Lihat Hasil Cek Before After Keseluruhan"):
+        if st.button("Lihat Hasil Before After Check Keseluruhan"):
             st.session_state.show_all_results_verti = False
             st.session_state.show_all_results_hori = False
             st.session_state.show_all_results_beforeafter = True
@@ -346,7 +346,7 @@ def main():
             for i in filtered_keys:
                 df_clean = pd.DataFrame(clean_data[i])
                 if df_clean is not None and not df_clean.empty and not (len(df_clean.columns) == 2 and 'Keterangan' in df_clean.columns):
-                    st.markdown("<h1 class='centered-title'>VERTIKAL CHECK</h1>", unsafe_allow_html=True)
+                    st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
                     df_summary = pd.DataFrame(summary_data[i])
                     st.markdown(divider_style, unsafe_allow_html=True)
                     kode_provinsi, tabel = i.split('-')
