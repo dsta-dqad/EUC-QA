@@ -11,6 +11,7 @@ import requests
 from datetime import datetime
 import calendar
 import re
+import io
 
 divider_style = """
     <hr style="border: none; 
@@ -68,6 +69,13 @@ def main():
     file_path = "https://drive.google.com/uc?export=download&id=1XV5Pt-i5cND1IJfNPfaKmhEpsK4ggnTQ"
     response = requests.get(file_path)
     data = response.json()
+
+    # File CSV
+    file_path_json = "https://drive.google.com/uc?export=download&id=1gfwP6Lci1S0Eb0oHURhjkjw7AjlNTXlk"
+    response_json = requests.get(file_path_json)
+    json_data = response_json.json()
+    df = pd.DataFrame(json_data)
+    csv = df.to_csv(index=False)
 
     log_data = data["log_data"]
 
@@ -132,20 +140,6 @@ def main():
         st.dataframe(input_df.style.set_properties(**{'text-align': 'center'}).set_table_styles(
             [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
         ).format(precision=2))
-
-    #file_path = "https://raw.githubusercontent.com/annisazahra01/EUC/b5006d9f732310c244572057a41a5d5fa3054218/data_SEKDA.json"
-
-    # Load the JSON file
-    #response = requests.get(file_path)
-    #data = response.json()
-    #file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=EZ4eO2Fc6u1Lpb1urKG7x9ABV9bJaZeMZGAky4ZHDl32Ag"
-
-
-    # file_path = "C:\\Users\\annis\\Downloads\\Ferro\\data_verhor_1810_ver4.json"
-    #
-    # # Load the JSON file
-    # with open(file_path, 'r') as f:
-    #     data = json.load(f)
 
     raw_data = data['vertikal_data_raw']
     raw_keys_list = list(raw_data.keys())
@@ -310,8 +304,14 @@ def main():
         # Use an expander to show the dataframe in a dropdown-like view
         with st.expander("Lihat rincian:"):
             st.markdown(html_rincian_df, unsafe_allow_html=True)
+        
+        st.download_button(
+            label="Unduh Data Rekapitulasi",
+            data=csv,
+            file_name='Data Rekap.csv',
+            mime='text/csv',use_container_width=True
+        )
 
-    # Define layout with two columns
     col1, col2 = st.columns((1, 4))
 
     if "show_all_results_verti" not in st.session_state:
@@ -320,6 +320,8 @@ def main():
         st.session_state.show_all_results_hori = False
     if "show_all_results_beforeafter" not in st.session_state:
         st.session_state.show_all_results_beforeafter = False
+    if "selected_table" not in st.session_state:
+        st.session_state.selected_table = None
 
     with col1:
         st.markdown("<h4 style='text-align: left;'>Apa yang ingin dilakukan?</h4>", unsafe_allow_html=True)
@@ -328,16 +330,19 @@ def main():
             st.session_state.show_all_results_verti = True
             st.session_state.show_all_results_hori = False
             st.session_state.show_all_results_beforeafter = False
+            st.session_state.selected_table = None
 
         if st.button("Lihat Hasil Horizontal Check Keseluruhan"):
             st.session_state.show_all_results_verti = False
             st.session_state.show_all_results_hori = True
             st.session_state.show_all_results_beforeafter = False
+            st.session_state.selected_table = None
 
         if st.button("Lihat Hasil Before After Check Keseluruhan"):
             st.session_state.show_all_results_verti = False
             st.session_state.show_all_results_hori = False
             st.session_state.show_all_results_beforeafter = True
+            st.session_state.selected_table = None
 
         # Create a button for each distinct number, replace number with province name
         for num in distinct_numbers:
@@ -354,9 +359,13 @@ def main():
                     # Use a unique key for each button by appending the full table name
                     if st.button(f"Lihat Tabel {table_label}", key=f"button_{table}"):
                         st.session_state.selected_table = table
+                        st.session_state.show_all_results_verti = False
+                        st.session_state.show_all_results_hori = False
+                        st.session_state.show_all_results_beforeafter = False
+
 
     with col2:
-        if 'selected_table' in st.session_state:
+        if 'selected_table' in st.session_state and st.session_state.selected_table:
             selected_number = st.session_state.selected_table
             filtered_keys = [key for key in clean_keys_list if key.startswith(selected_number)]
             for i in filtered_keys:
@@ -485,7 +494,9 @@ def main():
                     st.markdown('**Keterangan**')
                     st.text('✓: Data sudah konsisten pada periode tersebut')
                             
-        else:
+        elif not st.session_state.selected_table and not (st.session_state.show_all_results_verti or 
+                                                      st.session_state.show_all_results_hori or 
+                                                      st.session_state.show_all_results_beforeafter):
             st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
             for i in range(len(clean_data)):
                 df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
