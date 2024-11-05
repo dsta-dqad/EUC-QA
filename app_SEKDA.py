@@ -102,9 +102,6 @@ def main():
         </style>
         """, unsafe_allow_html=True)
 
-    # Centered title using custom class
-    st.markdown("<h1 class='centered-title'>LAPORAN QUALITY ASSURANCE SEKDA - AGUSTUS 2024</h1>", unsafe_allow_html=True)
-    st.markdown(divider_style, unsafe_allow_html=True)
 
     # Centralized styling for the DataFrames
     dataframe_style = {
@@ -250,6 +247,10 @@ def main():
     mismatch_ratio_ver = calculate_mismatch_ratio(ver_error_tabel, total_vertikal)
     mismatch_ratio_hor = calculate_mismatch_ratio(hor_error_tabel, total_horizontal)
     mismatch_ratio_ba = calculate_mismatch_ratio(ba_error_tabel, total_beforeafter)
+
+    # Centered title using custom class
+    st.markdown(f"<h1 class='centered-title'>LAPORAN QUALITY ASSURANCE SEKDA - {periode_publikasi} </h1>", unsafe_allow_html=True)
+    st.markdown(divider_style, unsafe_allow_html=True)
 
     # Define the main two-column layout: left for pie charts and right for col4_g
     left_col, col4_g = st.columns((6, 3))  # Adjust width ratio as needed
