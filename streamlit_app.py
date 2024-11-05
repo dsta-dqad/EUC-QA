@@ -154,34 +154,36 @@ def main_page():
         st.markdown("""
             <div class="outer-container">
             <h3 class="centered-title">INTRA TABEL</h3>
-            <div class="inner-column">
-                <h3 class="centered-title">Uji Konsistensi</h3>
                 <div class="container">
-                    <h4>Cek Horizontal</h4>
-                    <p class="description">
-                        Fitur pengecekan konsistensi nilai tahunan dengan nilai posisi atau
-                        nilai transaksi pada komponen tabel.
-                    </p>
-                    <p class="description">
-                        <strong>Data Posisi</strong>: Membandingkan nilai data pada kolom
-                        tahunan dengan data dari posisi kolom akhir periode tahun tersebut
-                        (Desember).
-                    </p>
-                    <p class="description">
-                        <strong>Data Transaksi</strong>: Membandingkan data pada kolom
-                        tahunan dengan hasil penjumlahan nilai seluruh periode di tahun
-                        tersebut.
-                    </p>
-                </div>
-                <div class="container">
-                    <h4>Cek Vertikal</h4>
+                    <h4>Vertical Check</h4>
                     <p class="description">
                     Fitur pengecekan konsistensi nilai agregat dengan penjumlahan
                     nilai komponen-komponen pembentuk pada tabel secara vertikal.
                     </p>
                 </div>
+
+                <div class="inner-column">
+                    <h3 class="centered-title">Uji Konsistensi</h3>
+                    <div class="container">
+                        <h4>Horizontal Check</h4>
+                        <p class="description">
+                            Fitur pengecekan konsistensi nilai tahunan dengan nilai posisi atau
+                            nilai transaksi pada komponen tabel.
+                        </p>
+                        <p class="description">
+                            <strong>Data Posisi</strong>: Membandingkan nilai data pada kolom
+                            tahunan dengan data dari posisi kolom akhir periode tahun tersebut
+                            (Desember).
+                        </p>
+                        <p class="description">
+                            <strong>Data Transaksi</strong>: Membandingkan data pada kolom
+                            tahunan dengan hasil penjumlahan nilai seluruh periode di tahun
+                            tersebut.
+                        </p>
+                    </div>
+            
                 <div class="container">
-                    <h4>Cek Before After</h4>
+                    <h4>Before After Check</h4>
                     <p class="description">
                     Fitur pengecekan konsistensi data periode yang akan dirilis dibandingkan dengan data periode terakhir dirilis.
                     </p>
