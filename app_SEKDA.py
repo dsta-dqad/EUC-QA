@@ -59,7 +59,7 @@ def create_pie_chart(miss_data, corr_data, a, b):
     }
 
     st_echarts(
-        options=options, height="400px",
+        options=options, height="300px",
     )
 
 
