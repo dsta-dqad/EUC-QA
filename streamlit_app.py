@@ -156,6 +156,7 @@ def main_page():
             <h3 class="centered-title">INTRA TABEL</h3>
             <div class="inner-column">
                 <h3 class="centered-title">Uji Konsistensi</h3>
+                
                 <div class="container">
                     <h4>Vertical Check</h4>
                     <p class="description">
@@ -163,7 +164,7 @@ def main_page():
                     nilai komponen-komponen pembentuk pada tabel secara vertikal.
                     </p>
                 </div>
-
+    
                 <div class="container">
                     <h4>Horizontal Check</h4>
                     <p class="description">
