@@ -247,7 +247,7 @@ def main():
         
         with row1_col1:
             st.markdown(
-                "<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Cek Vertikal</span></p>",
+                "<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Vertical Check</span></p>",
                 unsafe_allow_html=True)
             ver_correct_count = total_tabel - ver_error_tabel
             create_pie_chart(ver_error_tabel, ver_correct_count, "Konsisten", "Tidak Konsisten")
@@ -257,7 +257,7 @@ def main():
     
         with row1_col2:
             st.markdown(
-                "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Cek Horizontal</span></p>",
+                "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Horizontal Check</span></p>",
                 unsafe_allow_html=True)
             hor_correct_count = total_tabel - hor_error_tabel
             create_pie_chart(hor_error_tabel, hor_correct_count, "Konsisten", "Tidak Konsisten")
@@ -270,7 +270,7 @@ def main():
         
         with row2_col1:
             st.markdown(
-                "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Cek Before After</span></p>",
+                "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Before After Check</span></p>",
                 unsafe_allow_html=True)
             ba_correct_count = total_tabel - ba_error_tabel
             create_pie_chart(ba_error_tabel, ba_correct_count, "Konsisten", "Tidak Konsisten")
@@ -409,7 +409,7 @@ def main():
                     st.text('✓: Data sudah konsisten pada periode tersebut')
 
         if st.session_state.show_all_results_verti:
-            st.markdown("<h1 class='centered-title'>CEK VERTIKAL</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
             for i in range(len(clean_data)):
                 df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
                 if df_clean is not None and not df_clean.empty and not (len(df_clean.columns) == 2 and 'Keterangan' in df_clean.columns):
@@ -440,7 +440,7 @@ def main():
                         )
                         
         elif st.session_state.show_all_results_hori:
-            st.markdown("<h1 class='centered-title'>CEK HORIZONTAL</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
             for item in horizontal_clean_keys_list:
                 df_clean_hori = pd.DataFrame(horizontal_clean_data[item])
                 if df_clean_hori is not None and not df_clean_hori.empty:
@@ -455,7 +455,7 @@ def main():
                     st.text('✓: Data sudah konsisten pada periode tersebut')
 
         elif st.session_state.show_all_results_beforeafter:
-            st.markdown("<h1 class='centered-title'>CEK BEFORE AFTER</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 class='centered-title'>BEFORE AFTER CHECK</h1>", unsafe_allow_html=True)
             for item in beforeafter_data_keys_list:
                 df_clean_ba = pd.DataFrame(beforeafter_data[item])
                 if df_clean_ba is not None and not df_clean_ba.empty:
@@ -470,7 +470,7 @@ def main():
                     st.text('✓: Data sudah konsisten pada periode tersebut')
                             
         else:
-            st.markdown("<h1 class='centered-title'>CEK VERTIKAL</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
             for i in range(len(clean_data)):
                 df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
                 if df_clean is not None and not df_clean.empty and not (len(df_clean.columns) == 2 and 'Keterangan' in df_clean.columns):
@@ -500,7 +500,7 @@ def main():
                         .format(precision=2)  # Format numerical values with two decimal places
                         )
                         
-            st.markdown("<h1 class='centered-title'>CEK HORIZONTAL</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
             for item in horizontal_clean_keys_list:
                 df_clean_hori = pd.DataFrame(horizontal_clean_data[item])
                 if df_clean_hori is not None and not df_clean_hori.empty:
@@ -514,7 +514,7 @@ def main():
                     st.markdown('**Keterangan**')
                     st.text('✓: Data sudah konsisten pada periode tersebut')
 
-            st.markdown("<h1 class='centered-title'>CEK BEFORE AFTER</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 class='centered-title'>BEFORE AFTER CHECK</h1>", unsafe_allow_html=True)
             for item in beforeafter_data_keys_list:
                 df_clean_ba = pd.DataFrame(beforeafter_data[item])
                 if df_clean_ba is not None and not df_clean_ba.empty:
