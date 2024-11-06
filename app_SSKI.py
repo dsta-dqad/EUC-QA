@@ -104,7 +104,7 @@ def display_detail_data(df_clean,summary_data, sum_keys_list,i,clean_keys_list):
 
 
 def main():
-    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/09b3fa2da193d1c26269f02b4643c3574204e0ab/data/data_sski.json"
+    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/eab2d88e1eb6e3e9740c51c984615b236f70ef76/data/data_sski.json"
     # Load the JSON file
     response = requests.get(file_path)
     data = response.json()
