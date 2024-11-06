@@ -66,12 +66,12 @@ def create_pie_chart(miss_data, corr_data, a, b):
 
 def main():
     #file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=ES0AUKl8jblBrp7BkbpUitQBrA3RE96Yg6ItD4msu3HXfg"
-    file_path = "https://drive.google.com/uc?export=download&id=1XV5Pt-i5cND1IJfNPfaKmhEpsK4ggnTQ"
+    file_path = "https://drive.google.com/uc?export=download&id=1lcIteSQTdQ5D-2HUTn-UbnhxWlc1TF80"
     response = requests.get(file_path)
     data = response.json()
 
     # File CSV
-    file_path_json = "https://drive.google.com/uc?export=download&id=1gfwP6Lci1S0Eb0oHURhjkjw7AjlNTXlk"
+    file_path_json = "https://drive.google.com/uc?export=download&id=1yDdeCqHwm9h2i8iwKEHB2UJYOXqTYBEQ"
     response_json = requests.get(file_path_json)
     json_data = response_json.json()
     df = pd.DataFrame(json_data)
