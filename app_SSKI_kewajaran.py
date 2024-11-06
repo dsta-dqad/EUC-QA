@@ -18,8 +18,6 @@ file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/a71ab9cb64
 outlier_df = pd.read_csv(file_path)
 outlier_df = outlier_df[["Tabel", "No_Komponen", "Komponen", "Tahun", "Nilai", "Outlier"]]
 
-
-
 def is_numeric(x):
     # Convert to string and strip whitespace
     x = str(x).strip()  
