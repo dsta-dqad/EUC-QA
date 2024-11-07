@@ -85,7 +85,12 @@ def main():
         if confirm_token:
             response = session.get(file_path, params={'confirm': confirm_token}, stream=True)
 
-    data = response.json()
+    # Pastikan file adalah JSON sebelum memproses
+    if 'application/json' in response.headers['Content-Type']:
+        data = response.json()
+        print(data)  # Cetak data JSON
+    else:
+        print("File bukan JSON atau tidak dapat diunduh sebagai JSON.")
     
     # File CSV
     file_path_json = "https://drive.google.com/uc?export=download&id=1WZkdWbm-RMp4lNf5BYI7Idm5nIcGiRsQ"
