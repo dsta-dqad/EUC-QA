@@ -66,7 +66,7 @@ def main():
     data = response.json()
     
     # File CSV
-    file_path_json = "https://drive.google.com/uc?export=download&id=1VhgjIqPcedpaEfdd3ZUx-SAmeEYBBxpf"
+    file_path_json = "https://drive.google.com/uc?export=download&id=1MgvKLLj8hao-qzt-iF2Tqm4MEL6zxqrs"
     response_json = requests.get(file_path_json)
     json_data = response_json.json()
     df = pd.DataFrame(json_data)
@@ -234,6 +234,13 @@ def main():
         # Use an expander to show the dataframe in a dropdown-like view
         with st.expander("Lihat rincian:"):
             st.markdown(html_rincian_df, unsafe_allow_html=True)
+
+        st.download_button(
+            label="Unduh Data Rekapitulasi",
+            data=csv,
+            file_name='Data Rekap Antar Tabel.csv',
+            mime='text/csv',use_container_width=True
+        )
 
     # Define layout with two columns
     col1, col2 = st.columns((1, 4))
