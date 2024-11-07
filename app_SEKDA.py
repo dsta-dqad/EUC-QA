@@ -66,8 +66,25 @@ def create_pie_chart(miss_data, corr_data, a, b):
 
 def main():
     #file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=ES0AUKl8jblBrp7BkbpUitQBrA3RE96Yg6ItD4msu3HXfg"
+    # file_path = "https://drive.google.com/uc?export=download&id=1lcIteSQTdQ5D-2HUTn-UbnhxWlc1TF80"
+    # response = requests.get(file_path)
+    # data = response.json()
+
     file_path = "https://drive.google.com/uc?export=download&id=1lcIteSQTdQ5D-2HUTn-UbnhxWlc1TF80"
-    response = requests.get(file_path)
+    
+    session = requests.Session()
+    response = session.get(file_path, stream=True)
+    
+    # Cek apakah file memerlukan konfirmasi unduhan
+    if 'text/html' in response.headers['Content-Type']:
+        confirm_token = None
+        for key, value in response.cookies.items():
+            if key.startswith('download_warning'):
+                confirm_token = value
+
+        if confirm_token:
+            response = session.get(file_path, params={'confirm': confirm_token}, stream=True)
+
     data = response.json()
     
     # File CSV
