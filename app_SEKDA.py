@@ -308,7 +308,7 @@ def main():
         st.download_button(
             label="Unduh Data Rekapitulasi",
             data=csv,
-            file_name='Data Rekap.csv',
+            file_name='Data Rekap Uji Konsistensi.csv',
             mime='text/csv',use_container_width=True
         )
 
