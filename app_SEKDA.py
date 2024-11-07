@@ -71,7 +71,7 @@ def main():
     data = response.json()
     
     # File CSV
-    file_path_json = "https://drive.google.com/uc?export=download&id=1E-q74Sg4W-R0ViYqSU_IrwnPKaTJPbcW"
+    file_path_json = "https://drive.google.com/uc?export=download&id=1WZkdWbm-RMp4lNf5BYI7Idm5nIcGiRsQ"
     response_json = requests.get(file_path_json)
     json_data = response_json.json()
     df = pd.DataFrame(json_data)
