@@ -60,13 +60,31 @@ def create_pie_chart(miss_data, corr_data, a, b):
 
 
 def main():
-    file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=Eb1RKnVLiYtGrdEtL03KxE0BCDODJE6LBw9VZ_VyTkBEvA"
+    #file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=Eb1RKnVLiYtGrdEtL03KxE0BCDODJE6LBw9VZ_VyTkBEvA"
+    file_path = "https://drive.google.com/uc?export=download&id=11Yp4laeW-W6h4fPQTotZyM80qe3PLVVPA"
     response = requests.get(file_path)
-    # Assuming the content is JSON
     data = response.json()
     
-    if st.button("Kembali Ke Halaman Utama"):
-        st.session_state['page'] = 'main'
+    # File CSV
+    file_path_json = "https://drive.google.com/uc?export=download&id=1VhgjIqPcedpaEfdd3ZUx-SAmeEYBBxpf"
+    response_json = requests.get(file_path_json)
+    json_data = response_json.json()
+    df = pd.DataFrame(json_data)
+    csv = df.to_csv(index=False)
+
+    log_data = data["log_data"]
+
+    col1a, col2a = st.columns([1, 3]) 
+    
+    with col1a:
+        if st.button("Kembali Ke Halaman Utama"):
+            st.session_state['page'] = 'main'
+
+    with col2a:
+        st.markdown(
+            f"<p style='text-align: right; font-size:13px;'>Di proses pada {log_data['created_at']} WIB</p>",
+            unsafe_allow_html=True
+        )
         
     # Custom CSS to apply Frutiger45 font to the entire page using an external font link
     st.markdown("""
@@ -88,9 +106,6 @@ def main():
         </style>
         """, unsafe_allow_html=True)
 
-    # Centered title using custom class
-    st.markdown("<h1 class='centered-title'>LAPORAN QUALITY ASSURANCE SEKDA - AGUSTUS 2024</h1>", unsafe_allow_html=True)
-    st.markdown(divider_style, unsafe_allow_html=True)
 
     # Centralized styling for the DataFrames
     dataframe_style = {
@@ -186,12 +201,17 @@ def main():
     correct_count = ringkasan_df['Provinsi Lolos QA'].values[0]
     error_count = ringkasan_df['Provinsi Tidak Lolos QA'].values[0]
     total_count = ringkasan_df['Total provinsi'].values[0]
+    periode_publikasi = ringkasan_df['Periode Publikasi'].values[0]
     correct_count = int(correct_count)
     error_count = int(error_count)
     total_count = int(total_count)
 
     # Calculate mismatch ratio
     mismatch_ratio_prov = calculate_mismatch_ratio(error_count, total_count)
+
+    # Centered title using custom class
+    st.markdown(f"<h1 class='centered-title'>LAPORAN QUALITY ASSURANCE SEKDA - {periode_publikasi.upper()} </h1>", unsafe_allow_html=True)
+    st.markdown(divider_style, unsafe_allow_html=True)
 
     col1_g, col2_g = st.columns((2, 2))
 
@@ -219,7 +239,7 @@ def main():
     col1, col2 = st.columns((1, 4))
 
     with col1:
-        st.text("Ingin melakukan apa?")
+        st.text("Apa yang ingin dilakukan?")
 
         # Create a button for each distinct number, replace number with province name
         for num in filtered_keys_list:
