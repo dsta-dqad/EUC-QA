@@ -71,23 +71,8 @@ def main():
     # data = response.json()
 
     file_path = "https://drive.google.com/uc?export=download&id=1lcIteSQTdQ5D-2HUTn-UbnhxWlc1TF80"
-    
-    session = requests.Session()
-    response = session.get(file_path, stream=True)
-    
-    # Cek apakah file memerlukan konfirmasi unduhan
-    if 'text/html' in response.headers['Content-Type']:
-        confirm_token = None
-        for key, value in response.cookies.items():
-            if key.startswith('download_warning'):
-                confirm_token = value
-
-        if confirm_token:
-            response = session.get(file_path, params={'confirm': confirm_token}, stream=True)
-
-    # Pastikan file adalah JSON sebelum memproses
-    if 'application/json' in response.headers['Content-Type']:
-        data = response.json()
+    response = requests.get(file_path)
+    data = response.json()
     
     # File CSV
     file_path_json = "https://drive.google.com/uc?export=download&id=1WZkdWbm-RMp4lNf5BYI7Idm5nIcGiRsQ"
