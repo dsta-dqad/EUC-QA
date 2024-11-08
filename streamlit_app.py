@@ -6,7 +6,6 @@ import app_SSKI_kewajaran
 
 st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 
-# Initialize session state
 if 'page' not in st.session_state:
     st.session_state['page'] = 'main'  # Default to main page
 
@@ -38,6 +37,7 @@ st.markdown("""
     }
     </style>
     """, unsafe_allow_html=True)
+
 # CSS styles for the container and elements
 st.markdown("""
     <style>
@@ -158,14 +158,14 @@ def main_page():
             <div class="inner-column">
                 <h3 class="centered-title">Uji Konsistensi</h3>
                 <div class="container">
-                    <h4>Vertical Check</h4>
+                    <h4>Vertikal Cek</h4>
                     <p class="description">
                     Fitur pengecekan konsistensi nilai agregat dengan penjumlahan
                     nilai komponen-komponen pembentuk pada tabel secara vertikal.
                     </p>
                 </div>
                 <div class="container">
-                    <h4>Horizontal Check</h4>
+                    <h4>Horizontal Cek</h4>
                     <p class="description">
                         Fitur pengecekan konsistensi nilai tahunan dengan nilai posisi atau
                         nilai transaksi pada komponen tabel.
@@ -182,7 +182,7 @@ def main_page():
                     </p>
                 </div>
                 <div class="container">
-                    <h4>Before After Check </h4>
+                    <h4>Before-After Cek </h4>
                     <p class="description">
                     Fitur pengecekan konsistensi data periode yang akan dirilis dibandingkan dengan data periode terakhir dirilis.
                     </p>

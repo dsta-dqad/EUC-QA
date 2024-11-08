@@ -16,7 +16,7 @@ table_list = ["1", "2", "3", "4", "5a", "5b", "5c", "5d", "5d.1", "5.d.2", "6",
                     "7", "8", "9", "10", "11a", "12", "13", "14", "15", "16a", 
                     "17", "18", "19", "20"]
 
-# st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
+st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 
 divider_style = """
     <hr style="border: none; 
@@ -27,7 +27,25 @@ divider_style = """
     opacity: 0.2">
 """
 
-def create_pie_chart(miss_data, corr_data):
+def show_item_red(table_name,count):
+    if count != 0:  #
+        softred_background = '#ff6961'  # Highlight mismatches
+        st.markdown(
+            f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px; "
+            f"font-weight:bold;'>SSKI - {table_name}: {count} mismatch(es)</p>",
+            unsafe_allow_html=True
+        )
+    else:
+        st.markdown(
+            f"<p style=padding: 10px; border-radius:5px; "
+            f"font-weight:bold;'>SSKI - {table_name}: {count} mismatch(es)</p>",
+            unsafe_allow_html=True
+        )
+
+
+def create_pie_chart(vertical_mismatch, vertical_total):
+    vertical_mismatch = int(vertical_mismatch)
+    vertical_total = int(vertical_total)
     options = {
                 "tooltip": {"trigger": "item"},
                 "legend": {
@@ -53,8 +71,8 @@ def create_pie_chart(miss_data, corr_data):
                         },
                         "labelLine": {"show": False},
                         "data": [
-                            {"value": miss_data, "name": "Tidak Konsisten", "itemStyle": {"color": "#ff6961"}},  # Soft red for mismatch
-                            {"value":  corr_data, "name": "Konsisten", "itemStyle": {"color": "#90ee90"}},  # Soft green for correct
+                            {"value": vertical_mismatch, "name": "Tidak Konsisten", "itemStyle": {"color": "#ff6961"}},  # Soft red for mismatch
+                            {"value":  vertical_total, "name": "Konsisten", "itemStyle": {"color": "#90ee90"}},  # Soft green for correct
                         ],
                     }
                 ],
@@ -104,16 +122,10 @@ def display_detail_data(df_clean,summary_data, sum_keys_list,i,clean_keys_list):
 
 
 def main():
-    file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/eab2d88e1eb6e3e9740c51c984615b236f70ef76/data/data_sski.json"
-    # Load the JSON file
+    google_drive_file_id = "1LTzkdQoDyoJ1qL8_e1NQu9DLzAbDcCqn"
+    file_path = f"https://drive.google.com/uc?export=download&id={google_drive_file_id}"
     response = requests.get(file_path)
     data = response.json()
-
-    # file_path = "/Users/ferroyudisthira/Desktop/DSTA_DQAD/V&H_Check/application/data/data_sski.json"
-    
-    # # Load the JSON file
-    # with open(file_path, 'r') as f:
-    #     data = json.load(f)
 
     log_data = data["log_data"]
 
@@ -156,8 +168,6 @@ def main():
     st.markdown(f"<h1 class='centered-title'>SSKI QUALITY ASSURANCE REPORT - {log_data['period']}</h1>", unsafe_allow_html=True)
     st.markdown(divider_style, unsafe_allow_html=True)
 
-    raw_data = data['raw_data']
-    raw_keys_list = list(raw_data.keys())
 
     clean_data = data['clean_data']
     clean_keys_list = list(clean_data.keys())
@@ -168,72 +178,32 @@ def main():
     horizontal_clean_data = data['horizontal_clean_data']
     hor_clean_keys_list = list(horizontal_clean_data.keys())
 
-    horizontal_raw_data = data['horizontal_raw_data']
-    hor_raw_keys_list = list(horizontal_raw_data.keys())
-
     before_after_data = data['before_after_data']
     before_after_keys_list = list(before_after_data.keys())
 
     df_recap = data['recap_download']
     df_recap = pd.read_json(df_recap)
 
-    # Display the final merged DataFrame
-    csv = df_recap.to_csv(index=False).encode('utf-8')
-
-    error_counts = {}
-    ver_error_count = 0
-    ver_total_count = 0
-    for i in range(len(clean_data)):
-        df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
-        df_raw = pd.DataFrame(raw_data[raw_keys_list[i]])
-
-        sski_path = df_clean['Path'][0]  # Assuming 'Path' column exists
-        sski_number = sski_path.split('.')[1]  # Extract the number after 'SSKI'
-
-
-        column_count_error = len(df_clean.columns) - 2
-        ver_error_count += column_count_error
-
-        column_count_correct = len(df_raw.columns) -2
-        ver_total_count += column_count_correct
-        error_counts[sski_number] = error_counts.get(sski_number, 0) + column_count_error
-
-    total_error_rows = 0
-    total_correct_rows = 0
-    total_rows = 0
-    hor_error = {}
-    for item in hor_raw_keys_list:
-        hor_error[item] = 0
-        final = pd.DataFrame(horizontal_raw_data[item])
-        if final is not None and not final.empty:
-            if item in horizontal_clean_data:
-                clean = pd.DataFrame(horizontal_clean_data[item])
-                total_rows_in_table = len(final) 
-                error_rows = len(clean) 
-                correct_rows = total_rows_in_table - error_rows 
-                hor_error[item] = error_rows
-                total_error_rows += error_rows
-            
-            total_correct_rows += correct_rows
-            total_rows += total_rows_in_table
-
     # Define layout with two columns
     col1_g, col2_g, col3_g = st.columns((2, 2,4))
     with col1_g:
         st.markdown("<h5 style='text-align: center;'><span style='text-align: center;font-weight: bold;'>Rasio Konsistensi Vertical Check</span></h5>", unsafe_allow_html=True)
-        create_pie_chart(ver_error_count,ver_total_count)
-        st.markdown(f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{(ver_error_count/(ver_error_count + ver_total_count)) * 100:.2f}%</span> data tidak konsisten.</p>", unsafe_allow_html=True)
+        create_pie_chart(df_recap['Vertikal - Jumlah Selisih'].sum(),df_recap['Vertikal - Jumlah Total'].sum())
+        st.markdown(f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{(df_recap['Vertikal - Jumlah Selisih'].sum()/df_recap['Vertikal - Jumlah Total'].sum()) * 100:.2f}%</span> data tidak konsisten.</p>", unsafe_allow_html=True)
 
     with col2_g:
         st.markdown("<h5 style='text-align: center;'><span style='text-align: center;font-weight: bold;'>Rasio Konsistensi Horizontal Check</span></h5>", unsafe_allow_html=True)
-        create_pie_chart(total_error_rows,total_rows)
-        st.markdown(f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{(total_error_rows/total_rows) * 100:.2f}%</span> data tidak konsisten.</p>", unsafe_allow_html=True)
+        create_pie_chart(df_recap['Horizontal - Jumlah Selisih'].sum(), df_recap['Horizontal - Jumlah Total'].sum())
+        st.markdown(f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{(df_recap['Horizontal - Jumlah Selisih'].sum()/df_recap['Horizontal - Jumlah Total'].sum()) * 100:.2f}%</span> data tidak konsisten.</p>", unsafe_allow_html=True)
+
+    vertical_errors = dict(zip(df_recap['table_name'], df_recap['Vertikal - Jumlah Selisih']))
+    horizontal_errors = dict(zip(df_recap['table_name'], df_recap['Horizontal - Jumlah Selisih']))
 
     with col3_g:
-        filtered_dict = {key: value for key, value in error_counts.items() if value != 0}
-        filtered_dict_hor = {key: value for key, value in hor_error.items() if value != 0}
+        filtered_dict_ver = {key: value for key, value in vertical_errors.items() if value != 0}
+        filtered_dict_hor = {key: value for key, value in horizontal_errors.items() if value != 0}
 
-        length = len(filtered_dict)
+        length = len(filtered_dict_ver)
         st.markdown("<h1 style='text-align: center;'>Ringkasan Singkat</h1>", unsafe_allow_html=True)
         st.markdown(divider_style, unsafe_allow_html=True)
         st.markdown("<h4 style='margin: 0;'>Informasi Mengenai Konsistensi Vertical Check</4>", unsafe_allow_html=True)
@@ -244,27 +214,15 @@ def main():
             # Create two columns for better layout
             col1, col2 = st.columns(2)
             with col1:
-                for i, (sski_number, count) in enumerate(error_counts.items()):
-                    if i % 2 == 0:
-                        softred_background = '#ff6961'  # Soft red color hex code
-                        if count != 0:
-                            st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px; "
-                            f"font-weight:bold;'>SSKI - {sski_number}: {count} mismatch(es)</p>", 
-                            unsafe_allow_html=True)
-                        else:
-                            st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
-        
+                for i, (table_name, count) in enumerate(vertical_errors.items()):
+                    if i % 2 == 0:  # Show every second item in col1
+                        show_item_red(table_name, count)
+            
             with col2:
-                for i, (sski_number, count) in enumerate(error_counts.items()):
-                    if i % 2 != 0:
-                        softred_background = '#ff6961'  # Soft red color hex code
-                        if count != 0:
-                            st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px; "
-                            f"font-weight:bold;'>SSKI - {sski_number}: {count} mismatch(es)</p>", 
-                            unsafe_allow_html=True)
-                        else:
-                            st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
-        
+                for i, (table_name, count) in enumerate(vertical_errors.items()):
+                    if i % 2 != 0:  # Show every second item in col2
+                        show_item_red(table_name, count)
+
         st.markdown("<h4 style='margin: 0;'>Informasi Mengenai Konsistensi Horizontal Check</4>", unsafe_allow_html=True)
         st.markdown(f"<p><strong>{25-len(filtered_dict_hor)}/25</strong> Tabel Sudah Konsisten</p>", unsafe_allow_html=True)
 
@@ -272,32 +230,14 @@ def main():
         with st.expander("Lihat Data Tidak Konsisten Horizontal Check"):
             col1, col2 = st.columns(2)
             with col1:
-                for i, (sski_number, count) in enumerate(hor_error.items()):
-                    if i % 2 == 0:
-                        softred_background = '#ff6961'  # Soft red color hex code
-                        if count != 0:
-                            st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px; "
-                            f"font-weight:bold;'>SSKI - {sski_number}: {count} mismatch(es)</p>", 
-                            unsafe_allow_html=True)
-                        else:
-                            st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
-            
+                for i, (table_name, count) in enumerate(horizontal_errors.items()):
+                    if i % 2 == 0:  # Show every second item in col1
+                        show_item_red(table_name, count)
+                
             with col2:
-                for i, (sski_number, count) in enumerate(hor_error.items()):
-                    if i % 2 != 0:
-                        if count != 0:
-                            st.markdown(f"<p style='background-color:{softred_background}; padding: 10px; border-radius:5px; "
-                            f"font-weight:bold;'>SSKI - {sski_number}: {count} mismatch(es)</p>", 
-                            unsafe_allow_html=True)
-                        else:
-                            st.markdown(f"SSKI - {sski_number}: {count} mismatch(es)")
-
-        st.download_button(
-            label="Unduh Data Rekap",
-            data=csv,
-            file_name='Data Rekap.csv',
-            mime='text/csv',use_container_width=True
-        )
+                for i, (table_name, count) in enumerate(horizontal_errors.items()):
+                    if i % 2 != 0:  # Show every second item in col2
+                        show_item_red(table_name, count)
 
     st.markdown(divider_style, unsafe_allow_html=True)
 
@@ -363,11 +303,13 @@ def main():
                 selected_number = st.session_state.selected_table
                 filtered_keys = [key for key in clean_keys_list if key.split('-')[0] == str(selected_number)]
                 for i in filtered_keys:
+                    print(i)
+                    st.markdown("<h1 class='centered-title'>VERTIKAL CEK</h1>", unsafe_allow_html=True)
                     df_clean = pd.DataFrame(clean_data[i])
                     display_detail_data(summary_data, sum_keys_list,i,clean_keys_list)
 
                 if selected_number in horizontal_clean_data:
-                    st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
+                    st.markdown("<h1 class='centered-title'>HORIZONTAL CEK</h1>", unsafe_allow_html=True)
 
                     df_clean = pd.DataFrame(horizontal_clean_data[selected_number])
                     st.subheader(f"SSKI - {selected_number}")
