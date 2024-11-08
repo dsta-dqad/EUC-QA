@@ -69,8 +69,9 @@ def main():
     # file_path = "https://drive.google.com/uc?export=download&id=1lcIteSQTdQ5D-2HUTn-UbnhxWlc1TF80"
     # response = requests.get(file_path)
     # data = response.json()
-
-    file_path = "https://drive.google.com/uc?export=download&id=1lcIteSQTdQ5D-2HUTn-UbnhxWlc1TF80"
+    google_drive_id = "1lcIteSQTdQ5D-2HUTn-UbnhxWlc1TF80"
+    file_path = f"https://drive.google.com/uc?export=download&id={google_drive_id}"
+    #file_path = "https://drive.google.com/uc?export=download&id=1lcIteSQTdQ5D-2HUTn-UbnhxWlc1TF80"
     response = requests.get(file_path)
     data = response.json()
     
