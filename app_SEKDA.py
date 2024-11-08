@@ -75,10 +75,14 @@ def main():
     data = response.json()
     
     # File CSV
-    file_path_json = "https://drive.google.com/uc?export=download&id=1WZkdWbm-RMp4lNf5BYI7Idm5nIcGiRsQ"
-    response_json = requests.get(file_path_json)
-    json_data = response_json.json()
-    df = pd.DataFrame(json_data)
+    # file_path_json = "https://drive.google.com/uc?export=download&id=1WZkdWbm-RMp4lNf5BYI7Idm5nIcGiRsQ"
+    # response_json = requests.get(file_path_json)
+    # json_data = response_json.json()
+    # df = pd.DataFrame(json_data)
+    # csv = df.to_csv(index=False)
+
+    file_path_csv = "https://drive.google.com/uc?export=download&id=1e-WYFymKuogUST0DDcP9A8Go_gCNB0Bz"
+    df = pd.DataFrame(file_path_csv)
     csv = df.to_csv(index=False)
 
     log_data = data["log_data"]
