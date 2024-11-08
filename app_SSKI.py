@@ -165,7 +165,7 @@ def main():
     month = calendar.month_name[current_month]
     month = month.upper()
 
-    st.markdown(f"<h1 class='centered-title'>SSKI QUALITY ASSURANCE REPORT - {log_data['period']}</h1>", unsafe_allow_html=True)
+    st.markdown(f"<h1 class='centered-title'>SSKI QUALITY ASSURANCE REPORT - {log_data['period'].upper()}</h1>", unsafe_allow_html=True)
     st.markdown(divider_style, unsafe_allow_html=True)
 
 
