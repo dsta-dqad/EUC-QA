@@ -71,8 +71,10 @@ def main():
     # json_data = response_json.json()
     # df = pd.DataFrame(json_data)
     # csv = df.to_csv(index=False)
+    #file_path_csv = "https://drive.google.com/uc?export=download&id=1GwiUWyqbz2wrPR4xv1KT1huKO8MeafvZ"
     
-    file_path_csv = "https://drive.google.com/uc?export=download&id=1GwiUWyqbz2wrPR4xv1KT1huKO8MeafvZ"
+    google_drive_id = "1GwiUWyqbz2wrPR4xv1KT1huKO8MeafvZ"
+    file_path_csv = f"https://drive.google.com/uc?export=download&id={google_drive_id}"
     df = pd.read_csv(file_path_csv)
     csv = df.to_csv(index=False)
 
