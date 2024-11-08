@@ -82,7 +82,7 @@ def main():
     # csv = df.to_csv(index=False)
 
     file_path_csv = "https://drive.google.com/uc?export=download&id=1e-WYFymKuogUST0DDcP9A8Go_gCNB0Bz"
-    df = pd.DataFrame(file_path_csv)
+    df = pd.read_csv(file_path_csv)
     csv = df.to_csv(index=False)
 
     log_data = data["log_data"]
