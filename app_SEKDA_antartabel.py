@@ -27,7 +27,6 @@ def create_pie_chart(miss_data, corr_data, a, b):
         "legend": {
             "top": "5%",
             "left": "center",
-            "textStyle": {"color": "#000"}  # Legend text color to white
         },
         "series": [
             {
@@ -37,13 +36,12 @@ def create_pie_chart(miss_data, corr_data, a, b):
                 "avoidLabelOverlap": False,
                 "itemStyle": {
                     "borderRadius": 0,
-                    "borderColor": "#000",
                     "borderWidth": 0,
                 },
                 "label": {
                     "show": False,
                     "position": "center",
-                    "color": "#000",  # Text color white
+                    "fontColor":"white",
                     "fontSize": 16,
                     "fontWeight": "bold"
                 },
@@ -62,19 +60,48 @@ def create_pie_chart(miss_data, corr_data, a, b):
 
 
 def main():
-    if st.button("Kembali Ke Halaman Utama"):
-        st.session_state['page'] = 'main'
+    #file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=Eb1RKnVLiYtGrdEtL03KxE0BCDODJE6LBw9VZ_VyTkBEvA"
+    file_path = "https://drive.google.com/uc?export=download&id=1Yp4laeW-W6h4fPQTotZyM80qe3PLVVPA"
+    response = requests.get(file_path)
+    data = response.json()
+    
+    # File CSV
+    # file_path_json = "https://drive.google.com/uc?export=download&id=1MgvKLLj8hao-qzt-iF2Tqm4MEL6zxqrs"
+    # response_json = requests.get(file_path_json)
+    # json_data = response_json.json()
+    # df = pd.DataFrame(json_data)
+    # csv = df.to_csv(index=False)
+    #file_path_csv = "https://drive.google.com/uc?export=download&id=1GwiUWyqbz2wrPR4xv1KT1huKO8MeafvZ"
+    
+    google_drive_id = "1GwiUWyqbz2wrPR4xv1KT1huKO8MeafvZ"
+    file_path_csv = f"https://drive.google.com/uc?export=download&id={google_drive_id}"
+    df = pd.read_csv(file_path_csv)
+    csv = df.to_csv(index=False)
+
+    log_data = data["log_data"]
+
+    col1a, col2a = st.columns([1, 3]) 
+    
+    with col1a:
+        if st.button("Kembali Ke Halaman Utama"):
+            st.session_state['page'] = 'main'
+
+    with col2a:
+        st.markdown(
+            f"<p style='text-align: right; font-size:13px;'>Di proses pada {log_data['created_at']} WIB</p>",
+            unsafe_allow_html=True
+        )
+        
     # Custom CSS to apply Frutiger45 font to the entire page using an external font link
     st.markdown("""
         <style>
         @import url('https://db.onlinewebfonts.com/c/c214e055a9aae386324285c45892f7b5?family=Frutiger+LT+W02+45+Light');
 
-        *,html, body, h1, h2, h3, h4 [class*="css"] {
+        *, html, body,h3,h4 [class="css"] {
             font-family: 'Frutiger LT W02 45 Light', sans-serif;
         }
         </style>
         """, unsafe_allow_html=True)
-
     # Custom CSS to center the title
     st.markdown("""
         <style>
@@ -85,9 +112,6 @@ def main():
         </style>
         """, unsafe_allow_html=True)
 
-    # Centered title using custom class
-    st.markdown("<h1 class='centered-title'>LAPORAN QUALITY ASSURANCE SEKDA - AGUSTUS 2024</h1>", unsafe_allow_html=True)
-    st.markdown(divider_style, unsafe_allow_html=True)
 
     # Centralized styling for the DataFrames
     dataframe_style = {
@@ -118,22 +142,6 @@ def main():
             [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
         ).format(precision=2))
 
-    # file_path = "https://raw.githubusercontent.com/annisazahra01/EUC/0a1f5ee99d5848a75824b4aaafb2f834600d3b16/data_SEKDA.json"
-    #
-    # # Load the JSON file
-    # response = requests.get(file_path)
-    # data = response.json()
-
-    file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=Eb1RKnVLiYtGrdEtL03KxE0BCDODJE6LBw9VZ_VyTkBEvA"
-    response = requests.get(file_path)
-    # Assuming the content is JSON
-    data = response.json()
-
-    # file_path = "C:\\Users\\annis\\Downloads\\Ferro\\data_antartabel_2210_ver1.json"
-    # #
-    # # Load the JSON file
-    # with open(file_path, 'r') as f:
-    #     data = json.load(f)
 
     raw_data = data['data_raw']
     raw_keys_list = list(raw_data.keys())
@@ -199,12 +207,17 @@ def main():
     correct_count = ringkasan_df['Provinsi Lolos QA'].values[0]
     error_count = ringkasan_df['Provinsi Tidak Lolos QA'].values[0]
     total_count = ringkasan_df['Total provinsi'].values[0]
+    periode_publikasi = ringkasan_df['Periode Publikasi'].values[0]
     correct_count = int(correct_count)
     error_count = int(error_count)
     total_count = int(total_count)
 
     # Calculate mismatch ratio
     mismatch_ratio_prov = calculate_mismatch_ratio(error_count, total_count)
+
+    # Centered title using custom class
+    st.markdown(f"<h1 class='centered-title'>LAPORAN QUALITY ASSURANCE SEKDA - {periode_publikasi.upper()} </h1>", unsafe_allow_html=True)
+    st.markdown(divider_style, unsafe_allow_html=True)
 
     col1_g, col2_g = st.columns((2, 2))
 
@@ -222,17 +235,24 @@ def main():
             unsafe_allow_html=True)
 
     with col2_g:
-        st.markdown("<h1 style='text-align: center;'>RINGKASAN</h1>", unsafe_allow_html=True)
+        st.markdown("<h1 style='text-align: center;'>Ringkasan Singkat</h1>", unsafe_allow_html=True)
         st.markdown(divider_style, unsafe_allow_html=True)
         # Use an expander to show the dataframe in a dropdown-like view
         with st.expander("Lihat rincian:"):
             st.markdown(html_rincian_df, unsafe_allow_html=True)
 
+        st.download_button(
+            label="Unduh Data Rekapitulasi",
+            data=csv,
+            file_name='Data Rekap Antar Tabel.csv',
+            mime='text/csv',use_container_width=True
+        )
+
     # Define layout with two columns
     col1, col2 = st.columns((1, 4))
 
     with col1:
-        st.text("Ingin melakukan apa?")
+        st.text("Apa yang ingin dilakukan?")
 
         # Create a button for each distinct number, replace number with province name
         for num in filtered_keys_list:

@@ -66,15 +66,24 @@ def create_pie_chart(miss_data, corr_data, a, b):
 
 def main():
     #file_path = "https://univindonesia-my.sharepoint.com/personal/annisa_zahra01_office_ui_ac_id/_layouts/15/download.aspx?share=ES0AUKl8jblBrp7BkbpUitQBrA3RE96Yg6ItD4msu3HXfg"
-    file_path = "https://drive.google.com/uc?export=download&id=1XV5Pt-i5cND1IJfNPfaKmhEpsK4ggnTQ"
+    # file_path = "https://drive.google.com/uc?export=download&id=1lcIteSQTdQ5D-2HUTn-UbnhxWlc1TF80"
+    # response = requests.get(file_path)
+    # data = response.json()
+    google_drive_id = "1lcIteSQTdQ5D-2HUTn-UbnhxWlc1TF80"
+    file_path = f"https://drive.google.com/uc?export=download&id={google_drive_id}"
+    #file_path = "https://drive.google.com/uc?export=download&id=1lcIteSQTdQ5D-2HUTn-UbnhxWlc1TF80"
     response = requests.get(file_path)
     data = response.json()
-
+    
     # File CSV
-    file_path_json = "https://drive.google.com/uc?export=download&id=1gfwP6Lci1S0Eb0oHURhjkjw7AjlNTXlk"
-    response_json = requests.get(file_path_json)
-    json_data = response_json.json()
-    df = pd.DataFrame(json_data)
+    # file_path_json = "https://drive.google.com/uc?export=download&id=1WZkdWbm-RMp4lNf5BYI7Idm5nIcGiRsQ"
+    # response_json = requests.get(file_path_json)
+    # json_data = response_json.json()
+    # df = pd.DataFrame(json_data)
+    # csv = df.to_csv(index=False)
+
+    file_path_csv = "https://drive.google.com/uc?export=download&id=1e-WYFymKuogUST0DDcP9A8Go_gCNB0Bz"
+    df = pd.read_csv(file_path_csv)
     csv = df.to_csv(index=False)
 
     log_data = data["log_data"]
@@ -141,13 +150,9 @@ def main():
             [{'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}]
         ).format(precision=2))
 
-    raw_data = data['vertikal_data_raw']
-    raw_keys_list = list(raw_data.keys())
-
     clean_data = data['vertikal_data_clean']
     clean_keys_list = list(clean_data.keys())
     filtered_keys_list = [key for key in clean_keys_list if clean_data.get(key, []) != []]
-    #distinct_numbers = sorted(list(set(key.split('-')[0] for key in filtered_keys_list)))
 
     # Province mapping
     provinsi_mapping = {
@@ -193,9 +198,6 @@ def main():
     horizontal_clean_data = data['horizontal_clean_data']
     horizontal_clean_keys_list = list(horizontal_clean_data.keys())
     hor_filtered_keys_list = [key for key in horizontal_clean_keys_list if horizontal_clean_data.get(key, []) != []]  
-
-    horizontal_raw_data = data['horizontal_raw_data']
-    horizontal_raw_keys_list = list(horizontal_raw_data.keys())
 
     beforeafter_data = data['beforeafter_data']
     beforeafter_data_keys_list = list(beforeafter_data.keys())
@@ -308,7 +310,7 @@ def main():
         st.download_button(
             label="Unduh Data Rekapitulasi",
             data=csv,
-            file_name='Data Rekap.csv',
+            file_name='Data Rekap Uji Konsistensi.csv',
             mime='text/csv',use_container_width=True
         )
 
