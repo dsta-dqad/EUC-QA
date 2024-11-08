@@ -1,8 +1,9 @@
 import streamlit as st
-import app_SSKI
-import app_SEKDA  
-import app_SEKDA_antartabel
-import app_SSKI_kewajaran
+import importlib
+app_SSKI = importlib.import_module('views.sski.app_SSKI')
+app_SEKDA = importlib.import_module('views.sekda.app_SEKDA')
+app_SEKDA_antartabel = importlib.import_module('views.sekda.app_SEKDA_antartabel')
+app_SSKI_kewajaran = importlib.import_module('views.sski.app_SSKI_kewajaran')
 
 st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 
