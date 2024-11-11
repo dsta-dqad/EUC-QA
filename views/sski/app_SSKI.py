@@ -16,7 +16,7 @@ table_list = ["1", "2", "3", "4", "5a", "5b", "5c", "5d", "5d.1", "5.d.2", "6",
                     "7", "8", "9", "10", "11a", "12", "13", "14", "15", "16a", 
                     "17", "18", "19", "20"]
 
-st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
+# st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 
 divider_style = """
     <hr style="border: none; 
