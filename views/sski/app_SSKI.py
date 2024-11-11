@@ -16,7 +16,7 @@ table_list = ["1", "2", "3", "4", "5a", "5b", "5c", "5d", "5d.1", "5.d.2", "6",
                     "7", "8", "9", "10", "11a", "12", "13", "14", "15", "16a", 
                     "17", "18", "19", "20"]
 
-# st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
+st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 
 divider_style = """
     <hr style="border: none; 
@@ -187,12 +187,12 @@ def main():
     # Define layout with two columns
     col1_g, col2_g, col3_g = st.columns((2, 2,4))
     with col1_g:
-        st.markdown("<h5 style='text-align: center;'><span style='text-align: center;font-weight: bold;'>Rasio Konsistensi Vertical Check</span></h5>", unsafe_allow_html=True)
+        st.markdown("<h5 style='text-align: center;'><span style='text-align: center;font-weight: bold;'>Rasio Konsistensi Cek Vertikal</span></h5>", unsafe_allow_html=True)
         create_pie_chart(df_recap['Vertikal - Jumlah Selisih'].sum(),df_recap['Vertikal - Jumlah Total'].sum())
         st.markdown(f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{(df_recap['Vertikal - Jumlah Selisih'].sum()/df_recap['Vertikal - Jumlah Total'].sum()) * 100:.2f}%</span> data tidak konsisten.</p>", unsafe_allow_html=True)
 
     with col2_g:
-        st.markdown("<h5 style='text-align: center;'><span style='text-align: center;font-weight: bold;'>Rasio Konsistensi Horizontal Check</span></h5>", unsafe_allow_html=True)
+        st.markdown("<h5 style='text-align: center;'><span style='text-align: center;font-weight: bold;'>Rasio Konsistensi Cek Horizontal</span></h5>", unsafe_allow_html=True)
         create_pie_chart(df_recap['Horizontal - Jumlah Selisih'].sum(), df_recap['Horizontal - Jumlah Total'].sum())
         st.markdown(f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{(df_recap['Horizontal - Jumlah Selisih'].sum()/df_recap['Horizontal - Jumlah Total'].sum()) * 100:.2f}%</span> data tidak konsisten.</p>", unsafe_allow_html=True)
 
@@ -206,11 +206,11 @@ def main():
         length = len(filtered_dict_ver)
         st.markdown("<h1 style='text-align: center;'>Ringkasan Singkat</h1>", unsafe_allow_html=True)
         st.markdown(divider_style, unsafe_allow_html=True)
-        st.markdown("<h4 style='margin: 0;'>Informasi Mengenai Konsistensi Vertical Check</4>", unsafe_allow_html=True)
+        st.markdown("<h4 style='margin: 0;'>Informasi Mengenai Konsistensi Cek Vertikal</4>", unsafe_allow_html=True)
         st.markdown(f"<p><strong>{23-length}/23</strong> Tabel Sudah Konsisten", unsafe_allow_html=True)
     
     
-        with st.expander("Lihat Data Tidak Konsisten Vertical Check"):
+        with st.expander("Lihat Data Tidak Konsisten Cek Vertikal"):
             # Create two columns for better layout
             col1, col2 = st.columns(2)
             with col1:
@@ -227,7 +227,7 @@ def main():
         st.markdown(f"<p><strong>{25-len(filtered_dict_hor)}/25</strong> Tabel Sudah Konsisten</p>", unsafe_allow_html=True)
 
         # Expander for horizontal mismatch counts
-        with st.expander("Lihat Data Tidak Konsisten Horizontal Check"):
+        with st.expander("Lihat Data Tidak Konsisten Cek Horizontal"):
             col1, col2 = st.columns(2)
             with col1:
                 for i, (table_name, count) in enumerate(horizontal_errors.items()):
@@ -260,13 +260,13 @@ def main():
         # Display the list of unique numbers (optional for debugging)
         st.markdown("<h4>Apa yang ingin dilakukan?</h4>", unsafe_allow_html=True)
         
-        if st.button(f"Lihat Konsistensi Seluruh Vertikal Check",use_container_width=True):
+        if st.button(f"Lihat Cek Vertikal",use_container_width=True):
                 st.session_state.selected_table = "Vertical Check"
 
-        if st.button(f"Lihat Konsistensi Seluruh Horizontal Check",use_container_width=True):
+        if st.button(f"Lihat Cek Horizontal",use_container_width=True):
                 st.session_state.selected_table = "Horizontal Check"
 
-        if st.button(f"Lihat Before After Check",use_container_width=True):
+        if st.button(f"Lihat Cek Before After ",use_container_width=True):
                 st.session_state.selected_table = "Before_after"
 
         st.markdown(divider_style, unsafe_allow_html=True)
@@ -279,20 +279,20 @@ def main():
     with col2:
         if 'selected_table' in st.session_state:
             if st.session_state.selected_table == "Vertical Check":
-                st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
+                st.markdown("<h1 class='centered-title'>VERTICAL CEK</h1>", unsafe_allow_html=True)
                 for i in range(len(clean_data)):        
                     df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
                     display_detail_data(df_clean, summary_data, sum_keys_list,i,clean_keys_list)
 
             if st.session_state.selected_table == "Horizontal Check":
-                st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
+                st.markdown("<h1 class='centered-title'>HORIZONTAL CEK</h1>", unsafe_allow_html=True)
                 for item in hor_clean_keys_list:
                     df_clean = pd.DataFrame(horizontal_clean_data[item])
                     st.subheader(f"SSKI - {item}")
                     display_dataframe(df_clean)
             
             if st.session_state.selected_table == "Before_after":
-                st.markdown("<h1 class='centered-title'>BEFORE-AFTER CHECK</h1>", unsafe_allow_html=True)
+                st.markdown("<h1 class='centered-title'>BEFORE-AFTER CEK</h1>", unsafe_allow_html=True)
                 for item in before_after_keys_list:
                     df_clean = pd.DataFrame(before_after_data[item])
                     st.subheader(f"SSKI - {item}")
@@ -314,21 +314,27 @@ def main():
                     df_clean = pd.DataFrame(horizontal_clean_data[selected_number])
                     st.subheader(f"SSKI - {selected_number}")
                     display_dataframe(df_clean)
+
+                if selected_number in before_after_data:
+                    st.markdown("<h1 class='centered-title'>BEFORE-AFTER CEK</h1>", unsafe_allow_html=True)
+                    df_clean = pd.DataFrame(before_after_data[selected_number])
+                    st.subheader(f"SSKI - {selected_number}")
+                    display_dataframe(df_clean)
                     
         else:
-            st.markdown("<h1 class='centered-title'>VERTICAL CHECK</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 class='centered-title'>VERTICAL CEK</h1>", unsafe_allow_html=True)
             for i in range(len(clean_data)):        
                 df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
                 display_detail_data(df_clean, summary_data, sum_keys_list,i,clean_keys_list)
             
-            st.markdown("<h1 class='centered-title'>HORIZONTAL CHECK</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 class='centered-title'>HORIZONTAL CEK</h1>", unsafe_allow_html=True)
     
             for item in hor_clean_keys_list:
                 df_clean = pd.DataFrame(horizontal_clean_data[item])
                 st.subheader(f"SSKI - {item}")
                 display_dataframe(df_clean)
 
-            st.markdown("<h1 class='centered-title'>BEFORE-AFTER CHECK</h1>", unsafe_allow_html=True)
+            st.markdown("<h1 class='centered-title'>BEFORE-AFTER CEK</h1>", unsafe_allow_html=True)
             for item in before_after_keys_list:
                 df_clean = pd.DataFrame(before_after_data[item])
                 st.subheader(f"SSKI - {item}")
