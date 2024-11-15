@@ -70,7 +70,7 @@ def main():
     response = requests.get(file_path)
     data = response.json()
 
-    google_drive_id_csv = "1lFk21gsagYMIh7UeVTWJ_WFC4Da64aOD"
+    google_drive_id_csv = "1FrbIrvsrnThTf6knvsJ3cwuLvwdm__GD"
     file_path_csv = f"https://drive.google.com/uc?export=download&id={google_drive_id_csv}"
     df = pd.read_csv(file_path_csv)
     csv = df.to_csv(index=False)
