@@ -61,7 +61,7 @@ def create_pie_chart(miss_data, corr_data, a, b):
 
 def main(): 
     google_drive_id = "1UKENkZEPricfEortNc_b7pKqb5gdD9uB" #tautan json_app_SEKDA_antartabel_count.json
-    file_path = "https://drive.google.com/uc?export=download&id=1UKENkZEPricfEortNc_b7pKqb5gdD9uB" 
+    file_path = "https://drive.google.com/uc?export=download&id={google_drive_id}" 
     response = requests.get(file_path)
     data = response.json()
     
