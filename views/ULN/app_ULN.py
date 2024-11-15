@@ -170,7 +170,7 @@ def main():
     st.markdown(divider_style, unsafe_allow_html=True)
 
     # Define the main two-column layout: left for pie charts and right for col4_g
-    col1_g, col2_g = st.columns((4, 6))  # Adjust width ratio as needed
+    col1_g, col2_g = st.columns((5, 6))  # Adjust width ratio as needed
     
     # In the left column, create two rows with two pie charts each
     with col1_g:
