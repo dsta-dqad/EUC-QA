@@ -77,7 +77,7 @@ def main():
 
     log_data = data["log_data"]
 
-    col1a, col2a = st.columns([1, 3]) 
+    col1a, col2a = st.columns([2, 1]) 
 
     with col1a:
         if st.button("Kembali Ke Halaman Utama"):
