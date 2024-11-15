@@ -61,10 +61,9 @@ def create_pie_chart(miss_data, corr_data, a, b):
 
 def main(): 
     google_drive_id = "1UKENkZEPricfEortNc_b7pKqb5gdD9uB" #tautan json_app_SEKDA_antartabel_count.json
-    file_path = "https://drive.google.com/uc?export=download&id={google_drive_id}" 
+    file_path = "https://drive.google.com/uc?export=download&id=1UKENkZEPricfEortNc_b7pKqb5gdD9uB" 
     response = requests.get(file_path)
     data = response.json()
-    
     
     google_drive_id_csv = "1uSmMwuNvJ95kux9_y_GgRRGvc__oRfRg" #tautan csv_app_SEKDA_antartabel_count.csv
     file_path_csv = f"https://drive.google.com/uc?export=download&id={google_drive_id_csv}"
