@@ -70,7 +70,7 @@ def main():
     response = requests.get(file_path)
     data = response.json()
 
-    google_drive_id_csv = "1e-1lOilq8w6qlLFzjPv-HoG4ldn6QqRGwj4"
+    google_drive_id_csv = "1lOilq8w6qlLFzjPv-HoG4ldn6QqRGwj4"
     file_path_csv = f"https://drive.google.com/uc?export=download&id={google_drive_id_csv}"
     df = pd.read_csv(file_path_csv)
     csv = df.to_csv(index=False)
@@ -116,22 +116,6 @@ def main():
         'background-color': '#E8F6F3'
     }
 
-    # def highlight_rows(row, df):
-    #     # Apply green to the first row
-    #     if row.name == 0:
-    #         return ['background-color: #A9DFBF; color: black'] * len(row)  # Green background for the first row
-
-    #     # Apply red if 'Keterangan' is 'Selisih'
-    #     elif row['Keterangan'] == 'Selisih':
-    #         return ['background-color: #F1948A; color: black'] * len(row)  # Red background
-
-    #     # Apply green to the row after a 'Selisih' row
-    #     elif row.name > 0 and df.iloc[row.name - 1]['Keterangan'] == 'Selisih':
-    #         return ['background-color: #A9DFBF; color: black'] * len(row)  # Green background
-
-    #     # Apply yellow for all other rows
-    #     else:
-    #         return ['background-color: #F9E79F; color: black'] * len(row)  # Yellow background for other rows
 
     def highlight_rows(row, df):
         
