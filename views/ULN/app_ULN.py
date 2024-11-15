@@ -69,15 +69,8 @@ def main():
     file_path = f"https://drive.google.com/uc?export=download&id={google_drive_id}"
     response = requests.get(file_path)
     data = response.json()
-    
-    # File CSV
-    # file_path_json = "https://drive.google.com/uc?export=download&id=1WZkdWbm-RMp4lNf5BYI7Idm5nIcGiRsQ"
-    # response_json = requests.get(file_path_json)
-    # json_data = response_json.json()
-    # df = pd.DataFrame(json_data)
-    # csv = df.to_csv(index=False)
 
-    google_drive_id_csv = "1e-WYFymKuogUST0DDcP9A8Go_gCNB0Bz"
+    google_drive_id_csv = "1e-1lOilq8w6qlLFzjPv-HoG4ldn6QqRGwj4"
     file_path_csv = f"https://drive.google.com/uc?export=download&id={google_drive_id_csv}"
     df = pd.read_csv(file_path_csv)
     csv = df.to_csv(index=False)
