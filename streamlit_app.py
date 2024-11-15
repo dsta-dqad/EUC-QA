@@ -2,6 +2,7 @@ import streamlit as st
 import importlib
 app_SSKI = importlib.import_module('views.sski.app_SSKI')
 app_SEKDA = importlib.import_module('views.sekda.app_SEKDA')
+app_ULN = importlib.import_module('views.ULN.app_ULN')
 app_SEKDA_antartabel = importlib.import_module('views.sekda.app_SEKDA_antartabel')
 app_SSKI_kewajaran = importlib.import_module('views.sski.app_SSKI_kewajaran')
 
@@ -233,6 +234,8 @@ elif st.session_state['page'] == 'app_SSKI':
     app_SSKI.main()  
 elif st.session_state['page'] == 'app_SEKDA':
     app_SEKDA.main()  
+elif st.session_state['page'] == 'app_ULN':
+    app_ULN.main()
 elif st.session_state['page'] == 'app_SEKDA_antartabel':
     app_SEKDA_antartabel.main()
 elif st.session_state['page'] == 'app_SSKI_kewajaran':
