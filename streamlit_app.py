@@ -2,6 +2,7 @@ import streamlit as st
 import importlib
 app_SSKI = importlib.import_module('views.sski.app_SSKI')
 app_SEKDA = importlib.import_module('views.sekda.app_SEKDA')
+app_ULN = importlib.import_module('views.ULN.app_ULN')
 app_SEKDA_antartabel = importlib.import_module('views.sekda.app_SEKDA_antartabel')
 app_SSKI_kewajaran = importlib.import_module('views.sski.app_SSKI_kewajaran')
 
@@ -146,11 +147,11 @@ def main_page():
             if st.button("Antar Tabel (SEKDA)", use_container_width=True):
                 st.session_state['page'] = 'app_SEKDA_antartabel'  # Navigate to SEKDA page
 
-        # with st.expander("Utang Luar Negeri: Statistik Ekonomi dan Keuangan Indonesia (SEKI)-Statistik Utang Luar Negeri Indonesia (SULNI)-Spesial Data Dissemination Standard (SDDS):External Debt", expanded=False):
-        #     # Section for Antar Tabel buttons (under SEKDA)
-        #     st.subheader("Inter Tabel")
-        #     if st.button("Antar Publikasi (ULN)", use_container_width=True, help="COMING SOON"):
-        #         st.markdown("""<p class="description">Coming Soon.</p>""", unsafe_allow_html=True)
+        with st.expander("Utang Luar Negeri (ULN)", expanded=False):
+            # Section for Antar Tabel buttons (under SEKDA)
+            st.subheader("Inter Tabel")
+            if st.button("Antar Publikasi (ULN)", use_container_width=True):
+                st.session_state['page'] = 'app_ULN'
 
     with col2:
         st.markdown("""
@@ -233,6 +234,8 @@ elif st.session_state['page'] == 'app_SSKI':
     app_SSKI.main()  
 elif st.session_state['page'] == 'app_SEKDA':
     app_SEKDA.main()  
+elif st.session_state['page'] == 'app_ULN':
+    app_ULN.main()
 elif st.session_state['page'] == 'app_SEKDA_antartabel':
     app_SEKDA_antartabel.main()
 elif st.session_state['page'] == 'app_SSKI_kewajaran':
