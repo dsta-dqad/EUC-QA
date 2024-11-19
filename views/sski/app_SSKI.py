@@ -98,11 +98,15 @@ def display_dataframe(input_df):
 
 def display_detail_data(df_clean,summary_data, sum_keys_list,i,clean_keys_list):
     if df_clean is not None and not (len(df_clean.columns) == 2 and 'Path' in df_clean.columns):
-        df_summary = pd.DataFrame(summary_data[sum_keys_list[i]])
+        if isinstance(i, str):
+            df_summary = pd.DataFrame(summary_data[i])
+            number, text = i.split('-', 1)  
+        else:
+            df_summary = pd.DataFrame(summary_data[sum_keys_list[i]])
+            number, text = clean_keys_list[i].split('-', 1)  
         df_clean = df_clean.drop('Path', axis=1)
         
         st.markdown(divider_style, unsafe_allow_html=True)
-        number, text = clean_keys_list[i].split('-', 1)  
         
         # Strip any leading/trailing spaces
         number = number.strip()
@@ -118,11 +122,16 @@ def display_detail_data(df_clean,summary_data, sum_keys_list,i,clean_keys_list):
             - 🟨 : Calculated
             - 🟥 : Selisih
             """)
-            display_dataframe(df_clean)
+            st.dataframe(df_clean.style.apply(lambda row: highlight_rows(row, df_clean), axis=1)
+                            .set_properties(**{'text-align': 'center'})  # Set text alignment to center
+                            .set_table_styles([  # Apply styling to the header
+                            {'selector': 'th', 'props': [('text-align', 'center'), ('background-color', '#E8F6F3')]}])
+                            .format(precision=2)  # Format numerical values with two decimal places
+                        )
 
 
 def main():
-    google_drive_file_id = "1BYDzdABqIoyU9UV_aYH420wvSAAwTVdL"
+    google_drive_file_id = "1LTzkdQoDyoJ1qL8_e1NQu9DLzAbDcCqn"
     file_path = f"https://drive.google.com/uc?export=download&id={google_drive_file_id}"
     response = requests.get(file_path)
     data = response.json()
@@ -238,6 +247,16 @@ def main():
                 for i, (table_name, count) in enumerate(horizontal_errors.items()):
                     if i % 2 != 0:  # Show every second item in col2
                         show_item_red(table_name, count)
+        csv_data = df_recap.to_csv(index=False,sep=";")
+
+        # Create a download button for the CSV
+        st.download_button(
+            label="Unduh Data Rekap",
+            data=csv_data,
+            file_name="data_rekap_konsistensi.csv",
+            mime="text/csv",
+            use_container_width=True
+        )
 
     st.markdown(divider_style, unsafe_allow_html=True)
 
@@ -283,30 +302,26 @@ def main():
                 for i in range(len(clean_data)):        
                     df_clean = pd.DataFrame(clean_data[clean_keys_list[i]])
                     display_detail_data(df_clean, summary_data, sum_keys_list,i,clean_keys_list)
-
-            if st.session_state.selected_table == "Horizontal Check":
+            elif st.session_state.selected_table == "Horizontal Check":
                 st.markdown("<h1 class='centered-title'>HORIZONTAL CEK</h1>", unsafe_allow_html=True)
                 for item in hor_clean_keys_list:
                     df_clean = pd.DataFrame(horizontal_clean_data[item])
                     st.subheader(f"SSKI - {item}")
-                    display_dataframe(df_clean)
-            
-            if st.session_state.selected_table == "Before_after":
+                    display_dataframe(df_clean)       
+            elif st.session_state.selected_table == "Before_after":
                 st.markdown("<h1 class='centered-title'>BEFORE-AFTER CEK</h1>", unsafe_allow_html=True)
                 for item in before_after_keys_list:
                     df_clean = pd.DataFrame(before_after_data[item])
                     st.subheader(f"SSKI - {item}")
                     display_dataframe(df_clean)
-
-
             else:
                 selected_number = st.session_state.selected_table
                 filtered_keys = [key for key in clean_keys_list if key.split('-')[0] == str(selected_number)]
+                st.markdown("<h1 class='centered-title'>VERTIKAL CEK</h1>", unsafe_allow_html=True)
                 for i in filtered_keys:
                     print(i)
-                    st.markdown("<h1 class='centered-title'>VERTIKAL CEK</h1>", unsafe_allow_html=True)
                     df_clean = pd.DataFrame(clean_data[i])
-                    display_detail_data(summary_data, sum_keys_list,i,clean_keys_list)
+                    display_detail_data(df_clean,summary_data, sum_keys_list,i,clean_keys_list)
 
                 if selected_number in horizontal_clean_data:
                     st.markdown("<h1 class='centered-title'>HORIZONTAL CEK</h1>", unsafe_allow_html=True)
@@ -337,6 +352,12 @@ def main():
             st.markdown("<h1 class='centered-title'>BEFORE-AFTER CEK</h1>", unsafe_allow_html=True)
             for item in before_after_keys_list:
                 df_clean = pd.DataFrame(before_after_data[item])
+                # Cari kolom yang hanya berisi tanda centang
+                cols_to_remove = [col for col in df_clean.columns if df_clean[col].nunique() == 1 and df_clean[col].iloc[0] == '✓']
+
+                # Hapus kolom tersebut
+                df_clean = df_clean.drop(columns=cols_to_remove)
+
                 st.subheader(f"SSKI - {item}")
                 display_dataframe(df_clean)
 

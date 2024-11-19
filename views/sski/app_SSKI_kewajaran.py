@@ -12,6 +12,7 @@ from datetime import datetime
 import calendar
 import re
 
+st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 file_path = "https://raw.githubusercontent.com/YudisthiraPutra/EUC_QA/a71ab9cb64890af49881cd25327b2d153c1d0bf2/data/data_pencilan_sski.csv"
 
 # Load the Excel file into a DataFrame
