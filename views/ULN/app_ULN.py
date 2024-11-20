@@ -65,8 +65,8 @@ def create_pie_chart(miss_data, corr_data, a, b):
 
 
 def main():
-    google_drive_id = "1iQW7p_PC7RC7a1sQPk47sZDb29CHCdcj"
-    file_path = f"https://drive.google.com/uc?export=download&id={google_drive_id}"
+    google_drive_id_json = "1iQW7p_PC7RC7a1sQPk47sZDb29CHCdcj"
+    file_path = f"https://drive.google.com/uc?export=download&id={google_drive_id_json}"
     response = requests.get(file_path)
     data = response.json()
    
