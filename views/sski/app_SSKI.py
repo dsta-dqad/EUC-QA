@@ -131,11 +131,11 @@ def display_detail_data(df_clean,summary_data, sum_keys_list,i,clean_keys_list):
 
 
 def main():
-    google_drive_file_id = "1LTzkdQoDyoJ1qL8_e1NQu9DLzAbDcCqn"
+    google_drive_file_id = "1BYDzdABqIoyU9UV_aYH420wvSAAwTVdL"
     file_path = f"https://drive.google.com/uc?export=download&id={google_drive_file_id}"
     response = requests.get(file_path)
     data = response.json()
-
+    
     log_data = data["log_data"]
 
     col1, col2 = st.columns([1, 3])  
