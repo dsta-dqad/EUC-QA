@@ -6,7 +6,8 @@ import streamlit as st # type: ignore
 from streamlit_echarts import st_echarts # type: ignore
 
 st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
-raw_df = pd.read_csv("/Users/ferroyudisthira/Downloads/data_pencilan_sski (2).csv", sep=",")
+file_id = "1m2CfIthJPOUbbzS9WNkSPRgWCAR3zev0"
+raw_df = pd.read_csv(f'https://drive.google.com/uc?export=download&id={file_id}', sep=",")
 
 def pivot_dataframe(input_df, raw_df):
     # Pivot the dataframe
