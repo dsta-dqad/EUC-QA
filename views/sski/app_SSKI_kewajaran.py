@@ -5,9 +5,9 @@ from datetime import datetime
 import streamlit as st # type: ignore
 from streamlit_echarts import st_echarts # type: ignore
 
-st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
+# st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 file_id = "1m2CfIthJPOUbbzS9WNkSPRgWCAR3zev0"
-raw_df = pd.read_csv(f'https://drive.google.com/uc?export=download&id={file_id}', sep=",")
+raw_df = pd.read_csv(f'https://drive.google.com/uc?export=download&id={file_id}', sep=";")
 
 divider_style = """
     <hr style="border: none; 
