@@ -9,19 +9,35 @@ st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 file_id = "1m2CfIthJPOUbbzS9WNkSPRgWCAR3zev0"
 raw_df = pd.read_csv(f'https://drive.google.com/uc?export=download&id={file_id}', sep=",")
 
+divider_style = """
+    <hr style="border: none; 
+    height: 2px; 
+    background-color: black; 
+    border-radius: 10px; 
+    margin: 20px 0;
+    opacity: 0.2">
+"""
+
 def pivot_dataframe(input_df, raw_df):
+    # Preserve the original order of "Periode" as it appears in input_df
+    unique_periods = input_df["Periode"].unique()
+    input_df.fillna("-", inplace=True)
     # Pivot the dataframe
     formatted_df = input_df.pivot_table(
         index=["No_Komponen", "Komponen"],  # Rows
         columns="Periode",                 # Columns
         values="Nilai",                    # Values
         aggfunc="first"                    # Aggregation function
-    ).reset_index()
+    )
+    
+    # Reorder columns to match the original order of "Periode"
+    formatted_df = formatted_df[unique_periods]
 
-    # Rename and clean up the dataframe
+    # Reset index and clean up
+    formatted_df.reset_index(inplace=True)
     formatted_df.rename(columns={"No_Komponen": "No."}, inplace=True)
     formatted_df.columns.name = None  
-    formatted_df.fillna("", inplace=True) 
+    formatted_df.fillna("-", inplace=True) 
 
     # Identify outliers
     outlier_values = raw_df[raw_df["Outlier"] == "Ya"]["Nilai"].values
@@ -35,7 +51,9 @@ def pivot_dataframe(input_df, raw_df):
     # Apply highlighting using a style
     styled_df = formatted_df.style.applymap(highlight_outliers)
 
-    return formatted_df,styled_df
+    return formatted_df, styled_df
+
+
 
 def show_dropdown(sheet_to_check, start_df):
     placeholder = f'Pilih Komponen Tabel {sheet_to_check}'
@@ -210,12 +228,7 @@ def main():
 
         # Convert index to categorical type with the specified order
         outlier_counts.index = pd.Categorical(outlier_counts.index, categories=desired_order, ordered=True)
-        # Replace NaN with 0 in the counts (or handle it appropriately)
-        sorted_outlier_counts = outlier_counts.fillna(0)
-
-        # Ensure the index is a string type for JSON compatibility
-        sorted_outlier_counts.index = sorted_outlier_counts.index.astype(str)
-
+        sorted_outlier_counts = outlier_counts.reindex(desired_order, fill_value=0)
         # Prepare options for st_echarts
         options = {
             "xAxis": {
@@ -274,7 +287,7 @@ def main():
                     detail_list_df = raw_df_selected[raw_df_selected["Tabel"] == item]
 
                     for detail in detail_list_df["Detail"].unique():
-                        st.text(detail)
+                        st.markdown(f"<p>{detail}</p>", unsafe_allow_html=True)
                         raw_df_1_filtered = raw_df_selected[
                             (raw_df_selected["Tabel"] == item) & (raw_df_selected["Detail"] == detail)
                         ]
@@ -289,6 +302,7 @@ def main():
                         st.dataframe(styled_df)
                         sheet_name = f"{item}:{detail}"
                         show_dropdown(sheet_name, formatted_df)
+                        st.markdown(divider_style, unsafe_allow_html=True)
                 
                 else:
                     detail_list_df = raw_df_selected[raw_df_selected["Tabel"] == item]
@@ -304,6 +318,9 @@ def main():
 
                     st.dataframe(styled_df)
                     show_dropdown(item, formatted_df)
+                
+                st.markdown(divider_style, unsafe_allow_html=True)
+
         elif len(st.session_state.selected_table.split(":")) >1:
             item, detail = st.session_state.selected_table.split(":")
             detail_list_df = raw_df_selected[raw_df_selected["Tabel"] == item]
