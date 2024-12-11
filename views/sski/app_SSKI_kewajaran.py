@@ -5,7 +5,7 @@ from datetime import datetime
 import streamlit as st # type: ignore
 from streamlit_echarts import st_echarts # type: ignore
 
-st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
+# st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 file_id = "1RUM0EHWnV1bAmxlTRBZ0UMEfCBkcBIeU"
 raw_df = pd.read_csv(f'https://drive.google.com/uc?export=download&id={file_id}', sep=";")
 
