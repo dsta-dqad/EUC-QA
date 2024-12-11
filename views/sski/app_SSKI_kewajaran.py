@@ -5,7 +5,7 @@ from datetime import datetime
 import streamlit as st # type: ignore
 from streamlit_echarts import st_echarts # type: ignore
 
-# st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
+st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
 file_id = "1RUM0EHWnV1bAmxlTRBZ0UMEfCBkcBIeU"
 raw_df = pd.read_csv(f'https://drive.google.com/uc?export=download&id={file_id}', sep=";")
 
@@ -227,8 +227,15 @@ def main():
         desired_order = ["1","2","3","4","5a","5b","5c","5d","5d.1","5.d.2","6","7","8","9","10","11","11a","12","13","14","15","16","16a","17","18","19","20"]  # Replace with actual sheet names
 
         # Convert index to categorical type with the specified order
+        # Convert the index to string type first
+        outlier_counts.index = outlier_counts.index.astype(str)
+
+        # Convert the index to categorical type with the specified order
         outlier_counts.index = pd.Categorical(outlier_counts.index, categories=desired_order, ordered=True)
-        sorted_outlier_counts = outlier_counts.reindex(desired_order, fill_value=0)
+
+        # Sort the outlier counts based on the desired order
+        sorted_outlier_counts = outlier_counts.sort_index()
+        sorted_outlier_counts = sorted_outlier_counts[:-1]
         # Prepare options for st_echarts
         options = {
             "xAxis": {
