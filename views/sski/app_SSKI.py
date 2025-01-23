@@ -132,7 +132,7 @@ def display_detail_data(df_clean,summary_data, sum_keys_list,i,clean_keys_list):
 
 def main():
     google_drive_file_id = "1BYDzdABqIoyU9UV_aYH420wvSAAwTVdL"
-    file_path = f"https://drive.google.com/uc?export=download&id={google_drive_file_id}"
+    file_path = f"https://drive.google.com/uc?export=download&id={google_drive_file_id}" #tautan web dari file data_sski.json
     response = requests.get(file_path)
     data = response.json()
     
