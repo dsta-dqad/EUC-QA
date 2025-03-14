@@ -6,8 +6,8 @@ import streamlit as st # type: ignore
 from streamlit_echarts import st_echarts # type: ignore
 
 # st.set_page_config(layout="wide", page_title="EUC QA", page_icon="📊")
-file_id = "1vDRv6eqhamVB7OwqOA2BiuLDaNRwk5yf"
-raw_df = pd.read_csv(f'https://drive.google.com/uc?export=download&id={file_id}', sep=";") #data_pencilan_sski_mad_to_streamlit.csv
+file_id = "1K6eYH3Vhd6kU47yWfFNUrXkJ6osQUpSX"
+raw_df = pd.read_csv(f'https://drive.google.com/uc?export=download&id={file_id}', sep=";") #data_pencilan_sski.csv
 
 divider_style = """
     <hr style="border: none; 
