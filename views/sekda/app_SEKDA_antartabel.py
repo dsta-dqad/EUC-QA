@@ -65,7 +65,7 @@ def main():
     response = requests.get(file_path)
     data = response.json()
     
-    google_drive_id_csv = "13PNmJQDjPzMS3XqeIbOGp3yF0tm5Qp0c" #tautan csv_app_SEKDA_antartabel_count.csv
+    google_drive_id_csv = "1vJvR_sVNyGnS2LtYz4yQIAXmc6hzHcli" #tautan csv_app_SEKDA_antartabel_count.csv
     file_path_csv = f"https://drive.google.com/uc?export=download&id={google_drive_id_csv}"
     df = pd.read_csv(file_path_csv)
     csv = df.to_csv(index=False)
