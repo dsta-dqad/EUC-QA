@@ -264,7 +264,7 @@ def main():
     
     # In the left column, create two rows with two pie charts each
     with left_col:
-    row1_col1, row1_col2 = st.columns(2)
+        row1_col1, row1_col2 = st.columns(2)
 
     with row1_col1:
         ver_correct_count = total_vertikal - ver_error_tabel
