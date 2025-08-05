@@ -251,7 +251,7 @@ def main():
     mismatch_ratio_hor = calculate_mismatch_ratio(hor_error_tabel, total_horizontal)
     mismatch_ratio_ba = calculate_mismatch_ratio(ba_error_tabel, total_beforeafter)
 
-    kode = st.session_state.get("kode", "UNKNOWN")   
+    kode = st.session_state.get("kode", "SEKDA")   
     # Centered title using custom class
     if kode:
         st.markdown(f"<h1 class='centered-title'>LAPORAN QUALITY ASSURANCE {kode.upper()}</h1>", unsafe_allow_html=True)
