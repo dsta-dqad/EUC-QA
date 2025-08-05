@@ -26,7 +26,15 @@ divider_style = """
 # st.set_page_config(layout="wide", page_title="EUC QA")
 
 
-def create_pie_chart(miss_data, corr_data, a, b):
+def create_pie_chart(
+    miss_data: int,
+    corr_data: int,
+    correct_label: str,
+    incorrect_label: str,
+    key: str,
+    chart_title: str = "",
+    mismatch_ratio: float = None
+):
     options = {
         "tooltip": {"trigger": "item"},
         "legend": {
@@ -46,22 +54,32 @@ def create_pie_chart(miss_data, corr_data, a, b):
                 "label": {
                     "show": False,
                     "position": "center",
-                    "fontColor":"white",
                     "fontSize": 16,
                     "fontWeight": "bold"
                 },
                 "labelLine": {"show": False},
                 "data": [
-                    {"value": miss_data, "name": b, "itemStyle": {"color": "#ff6961"}},  # Soft red for mismatch
-                    {"value": corr_data, "name": a, "itemStyle": {"color": "#90ee90"}},  # Soft green for correct
+                    {"value": miss_data, "name": incorrect_label, "itemStyle": {"color": "#ff6961"}},
+                    {"value": corr_data, "name": correct_label, "itemStyle": {"color": "#90ee90"}},
                 ],
             }
         ],
     }
 
-    st_echarts(
-        options=options, height="300px",
-    )
+    if chart_title:
+        st.markdown(
+            f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{chart_title}</span></p>",
+            unsafe_allow_html=True
+        )
+
+    st_echarts(options=options, height="300px", key=key)
+
+    if mismatch_ratio is not None:
+        st.markdown(
+            f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio:.2f}%</span> data tidak konsisten.</p>",
+            unsafe_allow_html=True
+        )
+
 
 def main(): 
     google_drive_id = "1hwxM4fbgKHvTDMhwz8lY4uiFlK2IUVI1" #tautan web dari file data_app_SEKDA.json
@@ -246,50 +264,56 @@ def main():
     
     # In the left column, create two rows with two pie charts each
     with left_col:
-        # First row: pie chart 1 and pie chart 2
-        row1_col1, row1_col2 = st.columns(2)
-        
-        with row1_col1:
-            st.markdown(
-                "<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Vertical Check</span></p>",
-                unsafe_allow_html=True)
-            ver_correct_count = total_vertikal - ver_error_tabel
-            create_pie_chart(ver_error_tabel, ver_correct_count, "Konsisten", "Tidak Konsisten")
-            st.markdown(
-                f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_ver:.2f}%</span> data tidak konsisten.</p>",
-                unsafe_allow_html=True)
-    
-        with row1_col2:
-            st.markdown(
-                "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Horizontal Check</span></p>",
-                unsafe_allow_html=True)
-            hor_correct_count = total_horizontal - hor_error_tabel
-            create_pie_chart(hor_error_tabel, hor_correct_count, "Konsisten", "Tidak Konsisten")
-            st.markdown(
-                f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_hor:.2f}%</span> data tidak konsisten.</p>",
-                unsafe_allow_html=True)
-    
-        # Second row: pie chart 3 and pie chart 4
-        row2_col1, row2_col2 = st.columns(2)
-        
-        with row2_col1:
-            st.markdown(
-                "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Konsistensi Before After Check</span></p>",
-                unsafe_allow_html=True)
-            ba_correct_count = total_beforeafter - ba_error_tabel
-            create_pie_chart(ba_error_tabel, ba_correct_count, "Konsisten", "Tidak Konsisten")
-            st.markdown(
-                f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_ba:.2f}%</span> data tidak konsisten.</p>",
-                unsafe_allow_html=True)
-    
-        with row2_col2:
-            st.markdown(
-                "<p style='text-align: center;'><span style='text-align: center;font-weight: bold; text-decoration: underline;'>Rasio Provinsi Lolos dan Tidak Lolos QA</span></p>",
-                unsafe_allow_html=True)
-            create_pie_chart(error_count, correct_count, "Lolos", "Tidak Lolos")
-            st.markdown(
-                f"<p style='text-align: center;'><span style='font-weight: bold; text-decoration: underline;'>{mismatch_ratio_prov:.2f}%</span> provinsi tidak lolos.</p>",
-                unsafe_allow_html=True)
+    row1_col1, row1_col2 = st.columns(2)
+
+    with row1_col1:
+        ver_correct_count = total_vertikal - ver_error_tabel
+        create_pie_chart(
+            miss_data=ver_error_tabel,
+            corr_data=ver_correct_count,
+            correct_label="Konsisten",
+            incorrect_label="Tidak Konsisten",
+            key="chart_vertikal",
+            chart_title="Rasio Konsistensi Vertical Check",
+            mismatch_ratio=mismatch_ratio_ver
+        )
+
+    with row1_col2:
+        hor_correct_count = total_horizontal - hor_error_tabel
+        create_pie_chart(
+            miss_data=hor_error_tabel,
+            corr_data=hor_correct_count,
+            correct_label="Konsisten",
+            incorrect_label="Tidak Konsisten",
+            key="chart_horizontal",
+            chart_title="Rasio Konsistensi Horizontal Check",
+            mismatch_ratio=mismatch_ratio_hor
+        )
+
+    row2_col1, row2_col2 = st.columns(2)
+
+    with row2_col1:
+        ba_correct_count = total_beforeafter - ba_error_tabel
+        create_pie_chart(
+            miss_data=ba_error_tabel,
+            corr_data=ba_correct_count,
+            correct_label="Konsisten",
+            incorrect_label="Tidak Konsisten",
+            key="chart_beforeafter",
+            chart_title="Rasio Konsistensi Before After Check",
+            mismatch_ratio=mismatch_ratio_ba
+        )
+
+    with row2_col2:
+        create_pie_chart(
+            miss_data=error_count,
+            corr_data=correct_count,
+            correct_label="Lolos",
+            incorrect_label="Tidak Lolos",
+            key="chart_lolos",
+            chart_title="Rasio Provinsi Lolos dan Tidak Lolos QA",
+            mismatch_ratio=mismatch_ratio_prov
+        )
     
     # Right column for col4_g
     with col4_g:
