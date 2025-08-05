@@ -233,8 +233,12 @@ def main():
     mismatch_ratio_hor = calculate_mismatch_ratio(hor_error_tabel, total_horizontal)
     mismatch_ratio_ba = calculate_mismatch_ratio(ba_error_tabel, total_beforeafter)
 
+    kode = st.session_state.get("kode", "UNKNOWN")   
     # Centered title using custom class
-    st.markdown(f"<h1 class='centered-title'>LAPORAN QUALITY ASSURANCE SEKDA - {periode_publikasi.upper()} </h1>", unsafe_allow_html=True)
+    if kode:
+        st.markdown(f"<h1 class='centered-title'>LAPORAN QUALITY ASSURANCE {kode.upper()}</h1>", unsafe_allow_html=True)
+    else:
+        st.markdown("<h1 class='centered-title'>LAPORAN QUALITY ASSURANCE</h1>", unsafe_allow_html=True)
     st.markdown(divider_style, unsafe_allow_html=True)
 
     # Define the main two-column layout: left for pie charts and right for col4_g
