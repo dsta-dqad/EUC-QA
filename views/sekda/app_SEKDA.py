@@ -64,12 +64,12 @@ def create_pie_chart(miss_data, corr_data, a, b):
     )
 
 def main(): 
-    google_drive_id = "1oNbml0oqeN7SYG31io50YGtCzJoKvRFj" #tautan web dari file data_app_SEKDA.json
+    google_drive_id = "1hwxM4fbgKHvTDMhwz8lY4uiFlK2IUVI1" #tautan web dari file data_app_SEKDA.json
     file_path = f"https://drive.google.com/uc?export=download&id={google_drive_id}"
     response = requests.get(file_path)
     data = response.json()
 
-    google_drive_id_csv = "1xn6r2gjHT2YS6hDu2eDdbsOmk4ND4cjh" #tautan web dari file csv_app_SEKDA_count.csv
+    google_drive_id_csv = "1uFbEuEQC9j-LzSbVYMs3vkuy7utbhRNI" #tautan web dari file csv_app_SEKDA_count.csv
     file_path_csv = f"https://drive.google.com/uc?export=download&id={google_drive_id_csv}"
     df = pd.read_csv(file_path_csv)
     csv = df.to_csv(index=False)
