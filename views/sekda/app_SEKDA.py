@@ -82,7 +82,7 @@ def create_pie_chart(
 
 
 def main(): 
-    google_drive_id = "1itnPeoB50qr3KFx7pYPnZFkSas3gIKqw" #tautan web dari file data_app_SEKDA.json
+    google_drive_id = "1hwxM4fbgKHvTDMhwz8lY4uiFlK2IUVI1" #tautan web dari file data_app_SEKDA.json
     file_path = f"https://drive.google.com/uc?export=download&id={google_drive_id}"
     response = requests.get(file_path)
     data = response.json()
